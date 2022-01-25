@@ -1,7 +1,8 @@
 ﻿using Marketplace.Domain.Common;
+using Marketplace.Domain.Sales.Events;
 using System.Threading.Tasks;
 
-namespace Marketplace.Domain.Sales
+namespace Marketplace.Domain.Sales.BuyerAggregate
 {
 	public class BuyerMoveOfferToAcceptedWhenOfferAcceptedEventHandler : IHandler<OfferAcceptedEvent>
 	{

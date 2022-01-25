@@ -1,4 +1,6 @@
 ﻿using Marketplace.Domain.Sales;
+using Marketplace.Domain.Sales.Events;
+using Marketplace.Domain.Sales.SellerAggregate;
 using System;
 using Xunit;
 
@@ -17,7 +19,7 @@ namespace Marketplace.Tests.Sales.SellerSpecs
 			seller.PublishProductForSale(product.Id);
 
 			// Assert
-			Assert.Equal(product.Id, seller.ProductIdsForSelling[0]);
+			Assert.Equal(product.Id, seller.ProductIdsForSale[0]);
 		}
 
 		[Fact]
@@ -61,7 +63,9 @@ namespace Marketplace.Tests.Sales.SellerSpecs
 			seller.PublishProductForSale(product.Id);
 
 			// Assert
-			Assert.Equal(typeof(ProbuctPublishedForSaleEvent), seller.DomainEvents[0].GetType());
+			var actualEvent = seller.DomainEvents[0];
+			Assert.Equal(typeof(ProbuctPublishedForSaleEvent), actualEvent.GetType());
+			Assert.Equal(product.Id, (actualEvent as ProbuctPublishedForSaleEvent).ProductId);
 		}
 	}
 }

@@ -1,4 +1,4 @@
-﻿namespace Marketplace.Domain.Sales
+﻿namespace Marketplace.Domain.Sales.ProductAggregate
 {
 	public enum ProductStatus
 	{

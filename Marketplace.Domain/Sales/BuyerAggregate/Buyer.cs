@@ -1,9 +1,10 @@
 ﻿using Marketplace.Domain.Common;
+using Marketplace.Domain.Sales.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Marketplace.Domain.Sales
+namespace Marketplace.Domain.Sales.BuyerAggregate
 {
 	public class Buyer : AggregateRoot
 	{

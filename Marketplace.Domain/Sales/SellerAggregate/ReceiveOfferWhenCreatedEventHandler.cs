@@ -1,13 +1,14 @@
 ﻿using Marketplace.Domain.Common;
+using Marketplace.Domain.Sales.Events;
 using System.Threading.Tasks;
 
-namespace Marketplace.Domain.Sales
+namespace Marketplace.Domain.Sales.SellerAggregate
 {
-	public class OfferCreatedEventHandler : IHandler<OfferCreatedEvent>
+	public class ReceiveOfferWhenCreatedEventHandler : IHandler<OfferCreatedEvent>
 	{
 		private readonly IRepository<Seller> sellerRepository;
 
-		public OfferCreatedEventHandler(IRepository<Seller> sellerRepository)
+		public ReceiveOfferWhenCreatedEventHandler(IRepository<Seller> sellerRepository)
 		{
 			this.sellerRepository = sellerRepository;
 		}
@@ -16,7 +17,7 @@ namespace Marketplace.Domain.Sales
 		{
 			var seller = await this.sellerRepository.GetByIdAsync(domainEvent.SellerId);
 			var offer = new Offer(domainEvent.BuyerId, domainEvent.ProductId, seller.Id);
-			seller.AddOffer(offer);
+			seller.ReceiveOffer(offer);
 		}
 	}
 }

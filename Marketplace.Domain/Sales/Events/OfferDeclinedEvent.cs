@@ -1,10 +1,10 @@
 ﻿using Marketplace.Domain.Common;
 
-namespace Marketplace.Domain.Sales
+namespace Marketplace.Domain.Sales.Events
 {
-	public class OfferAcceptedEvent : IDomainEvent
+	public class OfferDeclinedEvent : IDomainEvent
 	{
-		public OfferAcceptedEvent(string productId, string buyerId)
+		public OfferDeclinedEvent(string productId, string buyerId)
 		{
 			this.ProductId = productId;
 			this.BuyerId = buyerId;

@@ -1,4 +1,5 @@
 ﻿using Marketplace.Domain.Sales;
+using Marketplace.Domain.Sales.Events;
 using Xunit;
 
 namespace Marketplace.Tests.Sales.BuyerSpecs

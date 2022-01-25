@@ -1,10 +1,11 @@
 ﻿using Marketplace.Domain.Common;
+using Marketplace.Domain.Sales.SellerAggregate;
 using Marketplace.Domain.SharedKernel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Marketplace.Domain.Sales
+namespace Marketplace.Domain.Sales.ProductAggregate
 {
 	public class Product : AggregateRoot
 	{

@@ -1,4 +1,6 @@
 ﻿using Marketplace.Domain.Sales;
+using Marketplace.Domain.Sales.ProductAggregate;
+using Marketplace.Domain.Sales.SellerAggregate;
 
 namespace Marketplace.Tests.Sales
 {
