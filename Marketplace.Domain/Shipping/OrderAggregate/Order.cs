@@ -1,7 +1,7 @@
 ﻿using Marketplace.Domain.Common;
 using System;
 
-namespace Marketplace.Domain.Shipping
+namespace Marketplace.Domain.Shipping.OrderAggregate
 {
 	public class Order : AggregateRoot
 	{
@@ -9,21 +9,21 @@ namespace Marketplace.Domain.Shipping
 
 		public string TrackingNumber { get; private set; }
 
-		public User Seller { get; private set; }
+		public string SellerId { get; private set; }
 
-		public User Buyer { get; private set; }
+		public string BuyerId { get; private set; }
 
-		public User CanceledBy { get; private set; }
+		public string CanceledById { get; private set; }
 
-		public void CancelDelivery(User initiator)
+		public void CancelDelivery(string initiatorId)
 		{
-			if (initiator != this.Seller || initiator != this.Buyer)
+			if (initiatorId != this.SellerId || initiatorId != this.BuyerId)
 				throw new InvalidOperationException();
 			if (this.Status == Status.Cancelled || this.Status == Status.Shipped)
 				throw new InvalidOperationException();
 
 			this.Status = Status.Cancelled;
-			this.CanceledBy = initiator;
+			this.CanceledById = initiatorId;
 		}
 
 		public void StartDelivery(string trackingNumber)

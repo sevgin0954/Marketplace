@@ -41,7 +41,8 @@ namespace Marketplace.Domain.Sales.ProductAggregate
 
 		public void AddPicture(Picture picture)
 		{
-			// Add some invariants
+			if (this.Pictures.Count == DomainConstants.MAX_PICTURES_COUNT)
+				throw new InvalidOperationException();
 
 			this.pictures.Add(picture);
 		}
@@ -49,9 +50,7 @@ namespace Marketplace.Domain.Sales.ProductAggregate
 		public void Edit(Product editedProduct)
 		{
 			if (editedProduct.Creator != this.Creator)
-			{
 				throw new InvalidOperationException();
-			}
 
 			this.Price = editedProduct.Price;
 			this.Name = editedProduct.Name;

@@ -1,4 +1,4 @@
-﻿namespace Marketplace.Domain.Shipping
+﻿namespace Marketplace.Domain.Shipping.OrderAggregate
 {
 	public enum Status
 	{
