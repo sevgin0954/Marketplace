@@ -5,6 +5,11 @@ namespace Marketplace.Domain.Shipping.OrderAggregate
 {
 	public class Order : AggregateRoot
 	{
+		public Order()
+		{
+			this.Status = Status.Processing;
+		}
+
 		public Status Status { get; private set; }
 
 		public string TrackingNumber { get; private set; }
@@ -26,13 +31,25 @@ namespace Marketplace.Domain.Shipping.OrderAggregate
 			this.CanceledById = initiatorId;
 		}
 
-		public void StartDelivery(string trackingNumber)
+		public void StartShipping(string initiatorId, string trackingNumber)
 		{
+			if (initiatorId != this.SellerId)
+				throw new InvalidOperationException();
 			if (this.Status != Status.Processing)
 				throw new InvalidOperationException();
 
 			this.TrackingNumber = trackingNumber;
 			this.Status = Status.Shipped;
+		}
+
+		public void ChangeStatusToDelivered(string initiatorId)
+		{
+			if (initiatorId != this.BuyerId)
+				throw new InvalidOperationException();
+			if (this.Status != Status.Shipped)
+				throw new InvalidOperationException();
+
+			this.Status = Status.Delivered;
 		}
 	}
 }

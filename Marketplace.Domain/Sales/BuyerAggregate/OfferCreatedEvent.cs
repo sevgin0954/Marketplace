@@ -1,6 +1,6 @@
 ﻿using Marketplace.Domain.Common;
 
-namespace Marketplace.Domain.Sales.Events
+namespace Marketplace.Domain.Sales.BuyerAggregate
 {
 	public class OfferCreatedEvent : IDomainEvent
 	{
