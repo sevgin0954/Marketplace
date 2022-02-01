@@ -1,6 +1,6 @@
 ﻿using Marketplace.Domain.Common;
 
-namespace Marketplace.Domain.Shipping.UserAggregate
+namespace Marketplace.Domain.Shipping.UserAggregate.Events
 {
 	public class OrderArrivedEvent : IDomainEvent
 	{

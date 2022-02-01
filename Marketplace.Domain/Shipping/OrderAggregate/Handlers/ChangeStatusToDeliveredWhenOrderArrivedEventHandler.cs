@@ -2,7 +2,7 @@
 using Marketplace.Domain.Shipping.UserAggregate;
 using System.Threading.Tasks;
 
-namespace Marketplace.Domain.Shipping.OrderAggregate
+namespace Marketplace.Domain.Shipping.OrderAggregate.Handlers
 {
 	class ChangeStatusToDeliveredWhenOrderArrivedEventHandler : IHandler<OrderArrivedEvent>
 	{

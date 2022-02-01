@@ -1,8 +1,8 @@
 ﻿using Marketplace.Domain.Common;
-using Marketplace.Domain.Sales.Events;
+using Marketplace.Domain.Sales.SellerAggregate;
 using System.Threading.Tasks;
 
-namespace Marketplace.Domain.Sales.ProductAggregate
+namespace Marketplace.Domain.Sales.ProductAggregate.Handlers
 {
 	public class ChangeProductStatusWhenOfferAcceptedEventHandler : IHandler<OfferAcceptedEvent>
 	{

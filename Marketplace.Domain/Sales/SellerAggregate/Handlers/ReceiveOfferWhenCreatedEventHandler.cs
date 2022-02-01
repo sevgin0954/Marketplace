@@ -1,8 +1,8 @@
 ﻿using Marketplace.Domain.Common;
-using Marketplace.Domain.Sales.Events;
+using Marketplace.Domain.Sales.BuyerAggregate;
 using System.Threading.Tasks;
 
-namespace Marketplace.Domain.Sales.SellerAggregate
+namespace Marketplace.Domain.Sales.SellerAggregate.Handlers
 {
 	public class ReceiveOfferWhenCreatedEventHandler : IHandler<OfferCreatedEvent>
 	{
