@@ -1,5 +1,5 @@
 ﻿using Marketplace.Domain.Common;
-using Marketplace.Domain.Shipping.UserAggregate;
+using Marketplace.Domain.Shipping.UserAggregate.Events;
 using System.Threading.Tasks;
 
 namespace Marketplace.Domain.Shipping.OrderAggregate.Handlers

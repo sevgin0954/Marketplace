@@ -22,7 +22,7 @@ namespace Marketplace.Tests.Sales.BuyerSpecs
 			buyer.MoveOfferToAccepted(productId);
 
 			// Assert
-			Assert.Empty(buyer.PendingOffers);
+			Assert.Empty(buyer.PendingOffersProductIds);
 		}
 
 		[Fact]
@@ -39,7 +39,7 @@ namespace Marketplace.Tests.Sales.BuyerSpecs
 			buyer.MoveOfferToAccepted(productId);
 
 			// Assert
-			Assert.Equal(offer, buyer.AcceptedOffers[0]);
+			Assert.Equal(offer, buyer.AcceptedOffersProductIds[0]);
 		}
 
 		[Fact]

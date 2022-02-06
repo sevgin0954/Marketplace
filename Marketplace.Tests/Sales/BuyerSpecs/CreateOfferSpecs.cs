@@ -20,7 +20,7 @@ namespace Marketplace.Tests.Sales.BuyerSpecs
 			buyer.CreateOffer(productId, sellerId);
 
 			// Assert
-			Assert.Equal(expectedOffer, buyer.PendingOffers[0]);
+			Assert.Equal(expectedOffer, buyer.PendingOffersProductIds[0]);
 		}
 
 		[Fact]

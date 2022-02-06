@@ -6,6 +6,8 @@ namespace Marketplace.Domain.Common
 	{
 		Task<T> GetByIdAsync(string id);
 
+		Task<T> GetAll();
+
 		Task<int> SaveChangesAsync();
 	}
 }

@@ -5,9 +5,11 @@ VisualStudioVersion = 16.0.31729.503
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Marketplace.Domain", "Marketplace.Domain\Marketplace.Domain.csproj", "{688376FD-6FC6-4F63-82AA-8B63C2C4B227}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Marketplace.Tests", "Marketplace.Tests\Marketplace.Tests.csproj", "{BF60D567-B3A0-49C6-A985-EEC312DCF1B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Marketplace.Tests", "Marketplace.Tests\Marketplace.Tests.csproj", "{BF60D567-B3A0-49C6-A985-EEC312DCF1B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Marketplace.UI", "Marketplace.UI\Marketplace.UI.csproj", "{C6195D0A-E9CF-4397-8160-51E47035D378}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Marketplace.UI", "Marketplace.UI\Marketplace.UI.csproj", "{2D85218A-06F3-4223-9554-D9A7C5877E60}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Marketplace.Infrastructure", "Marketplace.Infrastructure\Marketplace.Infrastructure.csproj", "{B7287A81-4687-46F3-8ED9-3ED8E2A9C374}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +25,14 @@ Global
 		{BF60D567-B3A0-49C6-A985-EEC312DCF1B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF60D567-B3A0-49C6-A985-EEC312DCF1B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF60D567-B3A0-49C6-A985-EEC312DCF1B0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C6195D0A-E9CF-4397-8160-51E47035D378}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C6195D0A-E9CF-4397-8160-51E47035D378}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C6195D0A-E9CF-4397-8160-51E47035D378}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C6195D0A-E9CF-4397-8160-51E47035D378}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D85218A-06F3-4223-9554-D9A7C5877E60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D85218A-06F3-4223-9554-D9A7C5877E60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D85218A-06F3-4223-9554-D9A7C5877E60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D85218A-06F3-4223-9554-D9A7C5877E60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7287A81-4687-46F3-8ED9-3ED8E2A9C374}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7287A81-4687-46F3-8ED9-3ED8E2A9C374}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7287A81-4687-46F3-8ED9-3ED8E2A9C374}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7287A81-4687-46F3-8ED9-3ED8E2A9C374}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

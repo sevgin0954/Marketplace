@@ -1,5 +1,5 @@
 ﻿using Marketplace.Domain.Common;
-using Marketplace.Domain.Sales.Events;
+using Marketplace.Domain.Sales.SellerAggregate.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
