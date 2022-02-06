@@ -18,7 +18,7 @@ namespace Marketplace.Tests.Sales.ProductSpecs
 			product.AddPicture(picture);
 
 			// Assert
-			Assert.Equal(picture, product.Pictures[0]);
+			Assert.Equal(picture, product.PictureIds[0]);
 		}
 
 		[Fact]

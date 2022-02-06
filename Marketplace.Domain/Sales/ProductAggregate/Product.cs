@@ -1,6 +1,4 @@
 ﻿using Marketplace.Domain.Common;
-using Marketplace.Domain.Sales.SellerAggregate;
-using Marketplace.Domain.SharedKernel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,14 +7,14 @@ namespace Marketplace.Domain.Sales.ProductAggregate
 {
 	public class Product : AggregateRoot
 	{
-		private readonly ICollection<Picture> pictures = new List<Picture>();
+		private ICollection<string> pictureIds = new List<string>();
 
-		public Product(string name, decimal price, string description, Seller creator)
+		public Product(string name, decimal price, string description, string creatorId)
 		{
 			this.Price = price;
 			this.Name = name;
 			this.Description = description;
-			this.Creator = creator;
+			this.CreatorId = creatorId;
 			this.Status = ProductStatus.Unsold;
 		}
 
@@ -26,36 +24,37 @@ namespace Marketplace.Domain.Sales.ProductAggregate
 
 		public string Description { get; private set; }
 
-		public Seller Creator { get; private set; }
+		public string CreatorId { get; private set; }
 
 		public long TotalViews { get; private set; }
 
 		public ProductStatus Status { get; set; }
 
-		public IReadOnlyList<Picture> Pictures => this.pictures.ToList();
+		public IReadOnlyList<string> PictureIds => this.pictureIds.ToList();
 
 		public void IncreaseTotalViews()
 		{
 			this.TotalViews++;
 		}
 
-		public void AddPicture(Picture picture)
+		public void AddPicture(string pictureId)
 		{
-			if (this.Pictures.Count == DomainConstants.MAX_PICTURES_COUNT)
+			if (this.PictureIds.Count == ProductConstants.MAX_PICTURES_COUNT)
 				throw new InvalidOperationException();
 
-			this.pictures.Add(picture);
+			this.pictureIds.Add(pictureId);
 		}
 
 		public void Edit(Product editedProduct)
 		{
-			if (editedProduct.Creator != this.Creator)
+			if (editedProduct.CreatorId != this.CreatorId)
 				throw new InvalidOperationException();
 
 			this.Price = editedProduct.Price;
 			this.Name = editedProduct.Name;
 			this.Description = editedProduct.Description;
-			this.Creator = editedProduct.Creator;
+			this.CreatorId = editedProduct.CreatorId;
+			this.pictureIds = editedProduct.pictureIds;
 		}
 	}
 }

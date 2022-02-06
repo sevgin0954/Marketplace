@@ -12,4 +12,8 @@
     <ProjectReference Include="..\Marketplace.Domain\Marketplace.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Shipping\Mappings\" />
+  </ItemGroup>
+
 </Project>

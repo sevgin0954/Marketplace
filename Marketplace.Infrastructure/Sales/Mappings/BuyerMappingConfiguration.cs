@@ -11,7 +11,12 @@ namespace Marketplace.Infrastructure.Sales.Mappings
 			builder
 				.Property("PendingOffersProductIds")
 				.HasField("productIdsForPendingOffers")
-				.UsePropertyAccessMode(PropertyAccessMode.FieldDuringConstruction);
+				.IsRequired();
+
+			builder
+				.Property("AcceptedOffersProductIds")
+				.HasField("productIdsForAcceptedOffers")
+				.IsRequired();
 		}
 	}
 }

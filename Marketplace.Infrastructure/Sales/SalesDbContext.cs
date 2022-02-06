@@ -1,4 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Marketplace.Domain.Sales.BuyerAggregate;
+using Marketplace.Domain.Sales.ProductAggregate;
+using Marketplace.Domain.Sales.SellerAggregate;
+using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace Marketplace.Infrastructure.Sales
 {
@@ -11,6 +15,12 @@ namespace Marketplace.Infrastructure.Sales
 			this.connectionString = connectionString;
 		}
 
+		public DbSet<Product> Products { get; set; }
+
+		public DbSet<Seller> Sellers { get; set; }
+
+		public DbSet<Buyer> Buyers { get; set; }
+
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			optionsBuilder.UseSqlServer(connectionString);
@@ -20,6 +30,8 @@ namespace Marketplace.Infrastructure.Sales
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
+			modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
 			base.OnModelCreating(modelBuilder);
 		}
 	}

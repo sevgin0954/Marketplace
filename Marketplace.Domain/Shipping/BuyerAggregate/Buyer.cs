@@ -1,8 +1,9 @@
 ﻿using Marketplace.Domain.Common;
+using Marketplace.Domain.Shipping.BuyerAggregate.Events;
 using System;
 using System.Collections.Generic;
 
-namespace Marketplace.Domain.Shipping.UserAggregate
+namespace Marketplace.Domain.Shipping.BuyerAggregate
 {
 	public class Buyer : AggregateRoot
 	{
