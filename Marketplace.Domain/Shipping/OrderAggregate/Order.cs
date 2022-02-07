@@ -5,6 +5,8 @@ namespace Marketplace.Domain.Shipping.OrderAggregate
 {
 	public class Order : AggregateRoot
 	{
+		private string trackingNumber;
+
 		public Order()
 		{
 			this.Status = Status.Processing;
@@ -12,7 +14,20 @@ namespace Marketplace.Domain.Shipping.OrderAggregate
 
 		public Status Status { get; private set; }
 
-		public string TrackingNumber { get; private set; }
+		public string TrackingNumber
+		{
+			get
+			{
+				return this.trackingNumber;
+			}
+			set
+			{
+				if (value.Length > OrderConstants.MaxTrackingNumberLenght)
+					throw new InvalidOperationException();
+
+				this.trackingNumber = value;
+			}
+		}
 
 		public string SellerId { get; private set; }
 

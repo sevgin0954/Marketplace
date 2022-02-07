@@ -7,11 +7,11 @@ namespace Marketplace.Domain.Shipping.BuyerAggregate
 {
 	public class Buyer : AggregateRoot
 	{
-		private readonly ICollection<string> OrderIds = new List<string>();
+		private readonly ICollection<string> orderIds = new List<string>();
 
 		public void ConfirmShippementArrival(string orderId)
 		{
-			if (this.OrderIds.Contains(orderId) == false)
+			if (this.orderIds.Contains(orderId) == false)
 				throw new InvalidOperationException();
 
 			this.AddDomainEvent(new OrderArrivedEvent(orderId, this.Id));
