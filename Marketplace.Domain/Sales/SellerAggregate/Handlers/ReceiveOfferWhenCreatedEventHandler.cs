@@ -1,5 +1,5 @@
 ﻿using Marketplace.Domain.Common;
-using Marketplace.Domain.Sales.BuyerAggregate;
+using Marketplace.Domain.Sales.BuyerAggregate.Events;
 using System.Threading.Tasks;
 
 namespace Marketplace.Domain.Sales.SellerAggregate.Handlers
@@ -16,7 +16,7 @@ namespace Marketplace.Domain.Sales.SellerAggregate.Handlers
 		public async Task HandleAsync(OfferCreatedEvent domainEvent)
 		{
 			var seller = await this.sellerRepository.GetByIdAsync(domainEvent.SellerId);
-			var offer = new Offer(domainEvent.BuyerId, domainEvent.ProductId, seller.Id);
+			var offer = new Offer(domainEvent.BuyerId, domainEvent.ProductId);
 			seller.ReceiveOffer(offer);
 		}
 	}

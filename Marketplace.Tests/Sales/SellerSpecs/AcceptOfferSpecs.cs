@@ -1,5 +1,5 @@
-﻿using Marketplace.Domain.Sales;
-using Marketplace.Domain.Sales.Events;
+﻿using Marketplace.Domain.Sales.SellerAggregate;
+using Marketplace.Domain.Sales.SellerAggregate.Events;
 using System;
 using Xunit;
 
@@ -12,7 +12,7 @@ namespace Marketplace.Tests.Sales.SellerSpecs
 		{
 			// Arrange
 			var seller = new TestableSeller("123");
-			var product = new TestableProduct("234", seller);
+			var product = new TestableProduct("234", seller.Id);
 			seller.AddProductToSelling(product.Id);
 
 			// Act
@@ -27,7 +27,7 @@ namespace Marketplace.Tests.Sales.SellerSpecs
 		{
 			// Arrange
 			var seller = new TestableSeller("123");
-			var product = new TestableProduct("234", seller);
+			var product = new TestableProduct("234", seller.Id);
 			seller.AddProductToSelling(product.Id);
 
 			// Act
@@ -42,7 +42,7 @@ namespace Marketplace.Tests.Sales.SellerSpecs
 		{
 			// Arrange
 			var seller = new TestableSeller("123");
-			var product = new TestableProduct("234", seller);
+			var product = new TestableProduct("234", seller.Id);
 
 			// Act
 
@@ -55,7 +55,7 @@ namespace Marketplace.Tests.Sales.SellerSpecs
 		{
 			// Arrange
 			var seller = new TestableSeller("123");
-			var product = new TestableProduct("234", seller);
+			var product = new TestableProduct("234", seller.Id);
 			seller.AddProductToSelling(product.Id);
 
 			// Act
@@ -72,7 +72,7 @@ namespace Marketplace.Tests.Sales.SellerSpecs
 	{
 		public static void AcceptOffer(this TestableSeller seller, string sellerId, string productId)
 		{
-			var offer = new Offer("345", productId, sellerId);
+			var offer = new Offer("345", productId);
 			seller.AcceptOffer(offer);
 		}
 	}

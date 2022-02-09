@@ -3,11 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 
-namespace Marketplace.Infrastructure.Sales.Mappings
+namespace Marketplace.Infrastructure.Sales.Mappings.ProductPersistence
 {
-	public class ProductMappingConfiguration : IEntityTypeConfiguration<Product>
+	public class ProductMappingConfiguration : IEntityTypeConfiguration<Sales.ProductPersistence.Product>
 	{
-		public void Configure(EntityTypeBuilder<Product> builder)
+		public void Configure(EntityTypeBuilder<Sales.ProductPersistence.Product> builder)
 		{
 			builder
 				.Property(p => p.Price)
@@ -39,7 +39,7 @@ namespace Marketplace.Infrastructure.Sales.Mappings
 				.IsRequired();
 
 			builder
-				.HasMany(p => p.PictureIds);
+				.HasMany(p => p.Pictures);
 		}
 	}
 }

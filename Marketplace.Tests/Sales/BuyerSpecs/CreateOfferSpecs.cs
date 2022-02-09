@@ -1,5 +1,5 @@
-﻿using Marketplace.Domain.Sales;
-using Marketplace.Domain.Sales.Events;
+﻿using Marketplace.Domain.Sales.BuyerAggregate.Events;
+using Marketplace.Domain.Sales.SellerAggregate;
 using Xunit;
 
 namespace Marketplace.Tests.Sales.BuyerSpecs
@@ -14,13 +14,11 @@ namespace Marketplace.Tests.Sales.BuyerSpecs
 			var productId = "234";
 			var sellerId = "345";
 
-			var expectedOffer = new Offer(buyer.Id, productId, sellerId);
-
 			// Act
 			buyer.CreateOffer(productId, sellerId);
 
 			// Assert
-			Assert.Equal(expectedOffer, buyer.PendingOffersProductIds[0]);
+			Assert.Equal(productId, buyer.PendingOffersProductIds[0]);
 		}
 
 		[Fact]

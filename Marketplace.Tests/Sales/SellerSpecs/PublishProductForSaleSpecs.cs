@@ -1,6 +1,5 @@
-﻿using Marketplace.Domain.Sales;
-using Marketplace.Domain.Sales.Events;
-using Marketplace.Domain.Sales.SellerAggregate;
+﻿using Marketplace.Domain.Sales.SellerAggregate;
+using Marketplace.Domain.Sales.SellerAggregate.Events;
 using System;
 using Xunit;
 
@@ -13,7 +12,7 @@ namespace Marketplace.Tests.Sales.SellerSpecs
 		{
 			// Arrange
 			var seller = new Seller();
-			var product = new TestableProduct("123", seller);
+			var product = new TestableProduct("123", seller.Id);
 
 			// Act
 			seller.PublishProductForSale(product.Id);
@@ -27,7 +26,7 @@ namespace Marketplace.Tests.Sales.SellerSpecs
 		{
 			// Arrange
 			var seller = new Seller();
-			var product = new TestableProduct("123", seller);
+			var product = new TestableProduct("123", seller.Id);
 
 			seller.PublishProductForSale(product.Id);
 
@@ -42,7 +41,7 @@ namespace Marketplace.Tests.Sales.SellerSpecs
 		{
 			// Arrange
 			var seller = new TestableSeller();
-			var product = new TestableProduct("123", seller);
+			var product = new TestableProduct("123", seller.Id);
 
 			seller.AddProductToSold(product.Id);
 
@@ -57,7 +56,7 @@ namespace Marketplace.Tests.Sales.SellerSpecs
 		{
 			// Arrange
 			var seller = new Seller();
-			var product = new TestableProduct("123", seller);
+			var product = new TestableProduct("123", seller.Id);
 
 			// Act
 			seller.PublishProductForSale(product.Id);

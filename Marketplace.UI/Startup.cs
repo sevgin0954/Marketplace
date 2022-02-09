@@ -1,13 +1,20 @@
+using SalesPersistence = Marketplace.Infrastructure.Sales.BuyerPersistence;
+using Marketplace.Infrastructure.Sales.ProductPersistence;
+using Marketplace.Infrastructure.Sales.SellerPersistence;
+using ShippingPesistence = Marketplace.Infrastructure.Shipping.BuyerPersistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Marketplace.Infrastructure.Shipping.OrderPersistence;
 
 namespace Marketplace.UI
 {
 	public class Startup
 	{
+		const string CONNECTION_STRING_NAME = "Marketplace";
+
 		public Startup(IConfiguration configuration)
 		{
 			Configuration = configuration;
@@ -19,7 +26,24 @@ namespace Marketplace.UI
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddAutoMapper(typeof(Startup));
+
 			services.AddControllersWithViews();
+
+			services.AddScoped(
+				_ => new SalesPersistence.BuyerDbContext(Configuration.GetConnectionString(CONNECTION_STRING_NAME))
+			);
+			services.AddScoped(
+				_ => new ProductDbContext(Configuration.GetConnectionString(CONNECTION_STRING_NAME))
+			);
+			services.AddScoped(
+				_ => new SellerDbContext(Configuration.GetConnectionString(CONNECTION_STRING_NAME))
+			);
+			services.AddScoped(
+				_ => new ShippingPesistence.BuyerDbContext(Configuration.GetConnectionString(CONNECTION_STRING_NAME))
+			);
+			services.AddScoped(
+				_ => new OrderDbContext(Configuration.GetConnectionString(CONNECTION_STRING_NAME))
+			);
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

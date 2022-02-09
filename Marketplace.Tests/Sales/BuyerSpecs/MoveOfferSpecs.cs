@@ -1,5 +1,4 @@
-﻿using Marketplace.Domain.Sales;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Xunit;
@@ -14,9 +13,8 @@ namespace Marketplace.Tests.Sales.BuyerSpecs
 			// Arrange
 			var buyer = new TestableBuyer("123");
 			var productId = "234";
-			var offer = new Offer(buyer.Id, productId, "345");
 
-			this.AddOfferToPendings(buyer, offer, productId);
+			this.AddOfferToPendings(buyer, productId);
 
 			// Act
 			buyer.MoveOfferToAccepted(productId);
@@ -31,15 +29,14 @@ namespace Marketplace.Tests.Sales.BuyerSpecs
 			// Arrange
 			var buyer = new TestableBuyer("123");
 			var productId = "234";
-			var offer = new Offer(buyer.Id, productId, "345");
 
-			this.AddOfferToPendings(buyer, offer, productId);
+			this.AddOfferToPendings(buyer, productId);
 
 			// Act
 			buyer.MoveOfferToAccepted(productId);
 
 			// Assert
-			Assert.Equal(offer, buyer.AcceptedOffersProductIds[0]);
+			Assert.Equal(productId, buyer.AcceptedOffersProductIds[0]);
 		}
 
 		[Fact]
@@ -55,14 +52,14 @@ namespace Marketplace.Tests.Sales.BuyerSpecs
 			Assert.Throws<InvalidOperationException>(() => buyer.MoveOfferToAccepted(nonExistentProductId));
 		}
 
-		private void AddOfferToPendings(TestableBuyer buyer, Offer offer, string productId)
+		private void AddOfferToPendings(TestableBuyer buyer, string productId)
 		{
-			var dict = new Dictionary<string, Offer>();
-			dict.Add(productId, offer);
+			var productIds = new List<string>();
+			productIds.Add(productId);
 
 			var field = typeof(TestableBuyer).BaseType
-				.GetField("productIdsAndPendingOrders", BindingFlags.NonPublic | BindingFlags.Instance);
-			field.SetValue(buyer, dict);
+				.GetField("productIdsForPendingOffers", BindingFlags.NonPublic | BindingFlags.Instance);
+			field.SetValue(buyer, productIds);
 		}
 	}
 }
