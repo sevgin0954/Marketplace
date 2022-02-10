@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Marketplace.Domain.Shipping.OrderAggregate;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace Marketplace.Infrastructure.Shipping.OrderPersistence
 
 			builder
 				.Property(s => s.Name)
+				.HasMaxLength(OrderConstants.StatusNameMaxLength)
 				.IsRequired();
 
 			var statusNames = Enum.GetNames(typeof(Domain.Shipping.OrderAggregate.Status));

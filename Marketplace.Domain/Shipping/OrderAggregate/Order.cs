@@ -22,7 +22,7 @@ namespace Marketplace.Domain.Shipping.OrderAggregate
 			}
 			set
 			{
-				if (value.Length > OrderConstants.MaxTrackingNumberLenght)
+				if (value.Length > OrderConstants.TrackingNumberMaxLength)
 					throw new InvalidOperationException();
 
 				this.trackingNumber = value;

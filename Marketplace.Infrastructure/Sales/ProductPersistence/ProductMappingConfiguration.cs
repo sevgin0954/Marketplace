@@ -32,11 +32,7 @@ namespace Marketplace.Infrastructure.Sales.Mappings.ProductPersistence
 				.IsRequired();
 
 			builder
-				.Property(p => p.Status)
-				.HasConversion(
-					v => v.ToString(),
-					v => Enum.Parse<ProductStatus>(v))
-				.IsRequired();
+				.HasOne(p => p.Status);
 
 			builder
 				.HasMany(p => p.Pictures);

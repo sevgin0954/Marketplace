@@ -2,6 +2,23 @@
 {
 	public class Order
 	{
+		private Order(
+			string sellerId,
+			string buyerId)
+		{
+			this.SellerId = sellerId;
+			this.BuyerId = buyerId;
+		}
+
+		public Order(
+			string sellerId,
+			string buyerId,
+			Status status
+		) : this(sellerId, buyerId)
+		{
+			this.Status = status;
+		}
+
 		public string Id { get; set; }
 
 		public string TrackingNumber { get; set; }

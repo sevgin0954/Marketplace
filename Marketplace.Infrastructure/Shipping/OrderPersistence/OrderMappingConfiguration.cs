@@ -13,7 +13,7 @@ namespace Marketplace.Infrastructure.Shipping.OrderPersistence
 
 			builder
 				.Property(o => o.TrackingNumber)
-				.HasMaxLength(OrderConstants.MaxTrackingNumberLenght)
+				.HasMaxLength(OrderConstants.TrackingNumberMaxLength)
 				.IsRequired();
 
 			builder

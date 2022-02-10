@@ -2,6 +2,7 @@
 {
 	public static class OrderConstants
 	{
-		public static int MaxTrackingNumberLenght = 10;
+		public static int TrackingNumberMaxLength = 10;
+		public static int StatusNameMaxLength = 10;
 	}
 }

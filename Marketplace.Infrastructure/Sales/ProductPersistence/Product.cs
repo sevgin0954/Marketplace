@@ -5,6 +5,28 @@ namespace Marketplace.Infrastructure.Sales.ProductPersistence
 {
 	public class Product
 	{
+		private Product(
+			decimal price,
+			string name,
+			string description,
+			string creatorId)
+		{
+			this.Price = price;
+			this.Name = name;
+			this.Description = description;
+			this.CreatorId = creatorId;
+		}
+
+		public Product(
+			decimal price,
+			string name,
+			string description,
+			string creatorId,
+			Status status) : this(price, name, description, creatorId)
+		{
+			this.Status = status;
+		}
+
 		public string Id { get; set; }
 
 		public decimal Price { get; set; }
@@ -17,7 +39,7 @@ namespace Marketplace.Infrastructure.Sales.ProductPersistence
 
 		public long TotalViews { get; set; }
 
-		public ProductStatus Status { get; set; }
+		public Status Status { get; set; }
 
 		public ICollection<Picture> Pictures { get; set; } = new List<Picture>();
 	}
