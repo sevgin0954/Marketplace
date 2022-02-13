@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Marketplace.Domain.Common
 {
@@ -6,7 +7,7 @@ namespace Marketplace.Domain.Common
 	{
 		Task<T> GetByIdAsync(string id);
 
-		Task<T> GetAll();
+		Task<IList<T>> GetAll();
 
 		Task<int> SaveChangesAsync();
 	}

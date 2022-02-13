@@ -8,6 +8,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Marketplace.Infrastructure.Shipping.OrderPersistence;
+using Marketplace.Domain.Common;
+using SalesBuyer = Marketplace.Domain.Sales.BuyerAggregate.Buyer;
+using Marketplace.Infrastructure.Sales.BuyerPersistence;
+using ShippingBuyer = Marketplace.Domain.Shipping.BuyerAggregate.Buyer;
+using SalesProduct = Marketplace.Domain.Sales.ProductAggregate.Product;
+using Marketplace.Infrastructure.Identity;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 
 namespace Marketplace.UI
 {
@@ -29,8 +37,28 @@ namespace Marketplace.UI
 
 			services.AddControllersWithViews();
 
+			services
+				.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+				.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
+					options =>
+					{
+						options.LoginPath = new PathString("/Auth/Login/Index");
+						options.AccessDeniedPath = new PathString("/Auth/Register/Index");
+					});
+
+			services
+				.AddIdentityCore<User>()
+				.AddEntityFrameworkStores<IdentityDbContext>();
+
+			this.AddDbContextServices(services);
+
+			this.AddRepositoryServices(services);
+		}
+
+		private void AddDbContextServices(IServiceCollection services)
+		{
 			services.AddScoped(
-				_ => new SalesPersistence.BuyerDbContext(Configuration.GetConnectionString(CONNECTION_STRING_NAME))
+				_ => new BuyerDbContext(Configuration.GetConnectionString(CONNECTION_STRING_NAME))
 			);
 			services.AddScoped(
 				_ => new ProductDbContext(Configuration.GetConnectionString(CONNECTION_STRING_NAME))
@@ -44,6 +72,15 @@ namespace Marketplace.UI
 			services.AddScoped(
 				_ => new OrderDbContext(Configuration.GetConnectionString(CONNECTION_STRING_NAME))
 			);
+			services.AddScoped(
+				_ => new IdentityDbContext(Configuration.GetConnectionString(CONNECTION_STRING_NAME))
+			);
+		}
+
+		private void AddRepositoryServices(IServiceCollection services)
+		{
+			services.AddScoped<IRepository<SalesBuyer>, BuyerRepository>();
+			services.AddScoped<IRepository<SalesProduct>, ProductRepository>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,10 +101,15 @@ namespace Marketplace.UI
 
 			app.UseRouting();
 
+			app.UseAuthentication();
 			app.UseAuthorization();
 
 			app.UseEndpoints(endpoints =>
 			{
+				endpoints.MapControllerRoute(
+					name: "MyArea",
+					pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
 				endpoints.MapControllerRoute(
 					name: "default",
 					pattern: "{controller=Home}/{action=Index}/{id?}");

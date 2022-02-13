@@ -1,0 +1,14 @@
+﻿@model LoginBindingModel
+
+<form asp-controller="Login" asp-action="Index">
+	<label asp-for="@Model.Email"></label>
+	<input asp-for="@Model.Email" />
+
+	<label asp-for="@Model.Password"></label>
+	<input asp-for="@Model.Password" />
+
+	<label asp-for="@Model.ConfirmPassword"></label>
+	<input asp-for="@Model.ConfirmPassword" />
+
+	<button type="submit">Submit</button>
+</form>

@@ -13,8 +13,6 @@ namespace Marketplace.Infrastructure.Sales.BuyerPersistence
 
 		public DbSet<Buyer> Buyers { get; set; }
 
-		public DbSet<Offer> Offers { get; set; }
-
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			optionsBuilder.UseSqlServer(connectionString);
