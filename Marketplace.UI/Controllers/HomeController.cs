@@ -23,7 +23,7 @@ namespace Marketplace.UI.Controllers
 
 		public async Task<IActionResult> Index()
 		{
-			var allProducts = await this.productRepository.GetAll();
+			var allProducts = await this.productRepository.GetAllAsync();
 			var productModels = this.mapper.Map<ICollection<ProductViewModel>>(allProducts);
 			var model = new HomeViewModel()
 			{

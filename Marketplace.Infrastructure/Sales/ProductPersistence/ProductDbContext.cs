@@ -25,7 +25,10 @@ namespace Marketplace.Infrastructure.Sales.ProductPersistence
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
+			modelBuilder.HasDefaultSchema("Sales.Product");
+
 			modelBuilder.ApplyConfiguration(new ProductMappingConfiguration());
+			modelBuilder.ApplyConfiguration(new StatusMappingConfiguration());
 
 			base.OnModelCreating(modelBuilder);
 		}

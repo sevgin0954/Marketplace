@@ -6,23 +6,25 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Marketplace.Infrastructure.Migrations
+namespace Marketplace.Infrastructure.Migrations.SalesBuyerDb
 {
     [DbContext(typeof(BuyerDbContext))]
-    [Migration("20220209194104_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20220214195022_intialMigration")]
+    partial class intialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasDefaultSchema("Sales.Buyer")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.13")
+                .HasAnnotation("ProductVersion", "5.0.14")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Marketplace.Infrastructure.Sales.BuyerPersistence.Buyer", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -33,6 +35,7 @@ namespace Marketplace.Infrastructure.Migrations
             modelBuilder.Entity("Marketplace.Infrastructure.Sales.BuyerPersistence.Offer", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("BuyerId")
@@ -51,7 +54,7 @@ namespace Marketplace.Infrastructure.Migrations
 
                     b.HasIndex("BuyerId1");
 
-                    b.ToTable("Offers");
+                    b.ToTable("Offer");
                 });
 
             modelBuilder.Entity("Marketplace.Infrastructure.Sales.BuyerPersistence.Offer", b =>

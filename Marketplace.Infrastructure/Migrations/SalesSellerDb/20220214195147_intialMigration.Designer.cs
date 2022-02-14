@@ -3,27 +3,32 @@ using Marketplace.Infrastructure.Sales.SellerPersistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Marketplace.Infrastructure.Migrations.SellerDb
+namespace Marketplace.Infrastructure.Migrations.SalesSellerDb
 {
     [DbContext(typeof(SellerDbContext))]
-    partial class SellerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220214195147_intialMigration")]
+    partial class intialMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasDefaultSchema("Sales.Seller")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.13")
+                .HasAnnotation("ProductVersion", "5.0.14")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Marketplace.Infrastructure.Sales.SellerPersistence.Offer", b =>
                 {
                     b.Property<string>("BuyerId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProductId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("SellerId")
@@ -69,6 +74,7 @@ namespace Marketplace.Infrastructure.Migrations.SellerDb
             modelBuilder.Entity("Marketplace.Infrastructure.Sales.SellerPersistence.Seller", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");

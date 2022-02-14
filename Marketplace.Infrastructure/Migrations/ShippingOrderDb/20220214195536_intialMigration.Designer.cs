@@ -3,24 +3,28 @@ using Marketplace.Infrastructure.Shipping.OrderPersistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Marketplace.Infrastructure.Migrations.OrderDb
+namespace Marketplace.Infrastructure.Migrations.ShippingOrderDb
 {
     [DbContext(typeof(OrderDbContext))]
-    partial class OrderDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220214195536_intialMigration")]
+    partial class intialMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasDefaultSchema("Shipping.Order")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.13")
+                .HasAnnotation("ProductVersion", "5.0.14")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Marketplace.Infrastructure.Shipping.OrderPersistence.Order", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("BuyerId")
@@ -53,6 +57,7 @@ namespace Marketplace.Infrastructure.Migrations.OrderDb
             modelBuilder.Entity("Marketplace.Infrastructure.Shipping.OrderPersistence.Status", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
@@ -67,22 +72,22 @@ namespace Marketplace.Infrastructure.Migrations.OrderDb
                     b.HasData(
                         new
                         {
-                            Id = "f11adae9-6bdc-43cd-96e6-d5983af7507a",
+                            Id = "5568e295-4fb2-496e-bb93-4ecd6ee1df92",
                             Name = "Delivered"
                         },
                         new
                         {
-                            Id = "3ad3b877-a4aa-4c21-8a2f-446f1054e793",
+                            Id = "7610d721-3e7b-4d58-9fee-0bb2102734bd",
                             Name = "Shipped"
                         },
                         new
                         {
-                            Id = "567d765f-5662-4f91-86dd-52ce586b12a9",
+                            Id = "b769292f-1260-4283-b482-b5d5ef3ce806",
                             Name = "Processing"
                         },
                         new
                         {
-                            Id = "299302ba-4bc2-4489-bb15-ec06c43e04b2",
+                            Id = "0e6299f8-a320-43bc-bcf3-9213607defcb",
                             Name = "Cancelled"
                         });
                 });

@@ -3,26 +3,26 @@ using Marketplace.Infrastructure.Shipping.OrderPersistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Marketplace.Infrastructure.Migrations.OrderDb
+namespace Marketplace.Infrastructure.Migrations.ShippingOrderDb
 {
     [DbContext(typeof(OrderDbContext))]
-    [Migration("20220209223208_InitialMigration")]
-    partial class InitialMigration
+    partial class OrderDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasDefaultSchema("Shipping.Order")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.13")
+                .HasAnnotation("ProductVersion", "5.0.14")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Marketplace.Infrastructure.Shipping.OrderPersistence.Order", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("BuyerId")
@@ -55,11 +55,13 @@ namespace Marketplace.Infrastructure.Migrations.OrderDb
             modelBuilder.Entity("Marketplace.Infrastructure.Shipping.OrderPersistence.Status", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.HasKey("Id");
 
@@ -68,22 +70,22 @@ namespace Marketplace.Infrastructure.Migrations.OrderDb
                     b.HasData(
                         new
                         {
-                            Id = "ae10037d-d29a-4052-9af7-08587b0e8ae3",
+                            Id = "5568e295-4fb2-496e-bb93-4ecd6ee1df92",
                             Name = "Delivered"
                         },
                         new
                         {
-                            Id = "bb619c5d-711d-4143-aea7-02e95039295d",
+                            Id = "7610d721-3e7b-4d58-9fee-0bb2102734bd",
                             Name = "Shipped"
                         },
                         new
                         {
-                            Id = "61a45093-586f-4e0a-ab25-75ed09177002",
+                            Id = "b769292f-1260-4283-b482-b5d5ef3ce806",
                             Name = "Processing"
                         },
                         new
                         {
-                            Id = "f5039077-6cc9-4292-8068-1ee030d10394",
+                            Id = "0e6299f8-a320-43bc-bcf3-9213607defcb",
                             Name = "Cancelled"
                         });
                 });

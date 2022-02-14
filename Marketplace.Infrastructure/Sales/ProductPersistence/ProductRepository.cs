@@ -20,10 +20,18 @@ namespace Marketplace.Infrastructure.Sales.ProductPersistence
 			this.mapper = mapper;
 		}
 
-		public async Task<IList<SalesProduct>> GetAll()
+		public async Task<int> AddAsync(SalesProduct element)
+		{
+			var productEntity = mapper.Map<Product>(element);
+			await this.productDbContext.Products.AddAsync(productEntity);
+
+			return await this.SaveChangesAsync();
+		}
+
+		public async Task<IList<SalesProduct>> GetAllAsync()
 		{
 			var productEntities = await this.productDbContext.Products.ToListAsync();
-			var productDomainModels = mapper.Map<IList<SalesProduct>>(productEntities);
+			var productDomainModels = mapper.Map<List<SalesProduct>>(productEntities);
 
 			return productDomainModels;
 		}

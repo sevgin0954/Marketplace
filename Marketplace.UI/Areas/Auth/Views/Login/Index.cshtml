@@ -10,5 +10,9 @@
 	<label asp-for="@Model.ConfirmPassword"></label>
 	<input asp-for="@Model.ConfirmPassword" />
 
+	<input type="checkbox" asp-for="@Model.RememberMe" />
+
 	<button type="submit">Submit</button>
 </form>
+
+<a asp-controller="Register" asp-action="Index">Register</a>

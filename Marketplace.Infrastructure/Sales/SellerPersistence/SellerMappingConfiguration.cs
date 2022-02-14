@@ -11,6 +11,10 @@ namespace Marketplace.Infrastructure.Sales.SellerPersistence
 				.HasKey(s => s.Id);
 
 			builder
+				.Property(s => s.Id)
+				.ValueGeneratedOnAdd();
+
+			builder
 				.HasMany(s => s.ProductForSale);
 
 			builder

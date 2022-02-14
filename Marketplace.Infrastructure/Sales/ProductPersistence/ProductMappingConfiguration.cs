@@ -10,6 +10,13 @@ namespace Marketplace.Infrastructure.Sales.Mappings.ProductPersistence
 		public void Configure(EntityTypeBuilder<Sales.ProductPersistence.Product> builder)
 		{
 			builder
+				.HasKey(p => p.Id);
+
+			builder
+				.Property(p => p.Id)
+				.ValueGeneratedOnAdd();
+
+			builder
 				.Property(p => p.Price)
 				.IsRequired();
 

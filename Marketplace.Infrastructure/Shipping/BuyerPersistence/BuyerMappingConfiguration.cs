@@ -9,6 +9,8 @@ namespace Marketplace.Infrastructure.Shipping.BuyerPersistence
 		{
 			builder.HasKey(b => b.Id);
 
+			builder.Property(b => b.Id).ValueGeneratedOnAdd();
+
 			builder.HasMany(b => b.Orders);
 		}
 	}

@@ -22,6 +22,8 @@ namespace Marketplace.Infrastructure.Sales.BuyerPersistence
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
+			modelBuilder.HasDefaultSchema("Sales.Buyer");
+
 			modelBuilder.ApplyConfiguration(new BuyerMappingConfiguration());
 			modelBuilder.ApplyConfiguration(new OfferMappingConfiguration());
 

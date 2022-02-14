@@ -3,26 +3,26 @@ using Marketplace.Infrastructure.Shipping.BuyerPersistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Marketplace.Infrastructure.Migrations.BuyerDb
+namespace Marketplace.Infrastructure.Migrations.ShippingBuyerDb
 {
     [DbContext(typeof(BuyerDbContext))]
-    [Migration("20220209215301_InitialMigration")]
-    partial class InitialMigration
+    partial class BuyerDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasDefaultSchema("Shipping.Buyer")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.13")
+                .HasAnnotation("ProductVersion", "5.0.14")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Marketplace.Infrastructure.Shipping.BuyerPersistence.Buyer", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -33,6 +33,7 @@ namespace Marketplace.Infrastructure.Migrations.BuyerDb
             modelBuilder.Entity("Marketplace.Infrastructure.Shipping.BuyerPersistence.Order", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("BuyerId")

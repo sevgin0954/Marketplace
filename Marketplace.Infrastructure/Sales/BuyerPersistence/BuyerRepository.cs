@@ -7,7 +7,12 @@ namespace Marketplace.Infrastructure.Sales.BuyerPersistence
 {
 	public class BuyerRepository : IRepository<BuyerAggregate.Buyer>
 	{
-		public Task<IList<BuyerAggregate.Buyer>> GetAll()
+		public Task<int> AddAsync(BuyerAggregate.Buyer element)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public Task<IList<BuyerAggregate.Buyer>> GetAllAsync()
 		{
 			throw new System.NotImplementedException();
 		}

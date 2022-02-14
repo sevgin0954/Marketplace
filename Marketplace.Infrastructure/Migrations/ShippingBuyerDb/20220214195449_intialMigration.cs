@@ -1,13 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Marketplace.Infrastructure.Migrations.BuyerDb
+namespace Marketplace.Infrastructure.Migrations.ShippingBuyerDb
 {
-    public partial class InitialMigration : Migration
+    public partial class intialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.EnsureSchema(
+                name: "Shipping.Buyer");
+
             migrationBuilder.CreateTable(
                 name: "Buyers",
+                schema: "Shipping.Buyer",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false)
@@ -19,6 +23,7 @@ namespace Marketplace.Infrastructure.Migrations.BuyerDb
 
             migrationBuilder.CreateTable(
                 name: "Orders",
+                schema: "Shipping.Buyer",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -30,6 +35,7 @@ namespace Marketplace.Infrastructure.Migrations.BuyerDb
                     table.ForeignKey(
                         name: "FK_Orders_Buyers_BuyerId",
                         column: x => x.BuyerId,
+                        principalSchema: "Shipping.Buyer",
                         principalTable: "Buyers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -37,6 +43,7 @@ namespace Marketplace.Infrastructure.Migrations.BuyerDb
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_BuyerId",
+                schema: "Shipping.Buyer",
                 table: "Orders",
                 column: "BuyerId");
         }
@@ -44,10 +51,12 @@ namespace Marketplace.Infrastructure.Migrations.BuyerDb
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Orders");
+                name: "Orders",
+                schema: "Shipping.Buyer");
 
             migrationBuilder.DropTable(
-                name: "Buyers");
+                name: "Buyers",
+                schema: "Shipping.Buyer");
         }
     }
 }

@@ -15,6 +15,13 @@ namespace Marketplace.Infrastructure.Sales.ProductPersistence
 			builder.HasData(statuses);
 
 			builder
+				.HasKey(s => s.Id);
+
+			builder
+				.Property(s => s.Id)
+				.ValueGeneratedOnAdd();
+
+			builder
 				.Property(s => s.Name)
 				.HasMaxLength(ProductConstants.StatusNameMaxLength)
 				.IsRequired();

@@ -24,6 +24,8 @@ namespace Marketplace.Infrastructure.Shipping.OrderPersistence
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
+			modelBuilder.HasDefaultSchema("Shipping.Order");
+
 			modelBuilder.ApplyConfiguration(new OrderMappingConfiguration());
 			modelBuilder.ApplyConfiguration(new StatusMappingConfiguration());
 

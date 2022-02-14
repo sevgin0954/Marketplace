@@ -24,7 +24,10 @@ namespace Marketplace.Infrastructure.Shipping.BuyerPersistence
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
+			modelBuilder.HasDefaultSchema("Shipping.Buyer");
+
 			modelBuilder.ApplyConfiguration(new BuyerMappingConfiguration());
+			modelBuilder.ApplyConfiguration(new OrderMappingConfiguration());
 
 			base.OnModelCreating(modelBuilder);
 		}

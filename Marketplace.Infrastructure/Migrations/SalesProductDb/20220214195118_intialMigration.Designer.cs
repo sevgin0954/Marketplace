@@ -6,18 +6,19 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Marketplace.Infrastructure.Migrations.ProductDb
+namespace Marketplace.Infrastructure.Migrations.SalesProductDb
 {
     [DbContext(typeof(ProductDbContext))]
-    [Migration("20220210152507_AddedValidation")]
-    partial class AddedValidation
+    [Migration("20220214195118_intialMigration")]
+    partial class intialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasDefaultSchema("Sales.Product")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.13")
+                .HasAnnotation("ProductVersion", "5.0.14")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Marketplace.Infrastructure.Sales.ProductPersistence.Picture", b =>
@@ -38,6 +39,7 @@ namespace Marketplace.Infrastructure.Migrations.ProductDb
             modelBuilder.Entity("Marketplace.Infrastructure.Sales.ProductPersistence.Product", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CreatorId")
@@ -73,14 +75,39 @@ namespace Marketplace.Infrastructure.Migrations.ProductDb
             modelBuilder.Entity("Marketplace.Infrastructure.Sales.ProductPersistence.Status", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Status");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "b306a84d-3de2-4a6a-9be5-4870214beadf",
+                            Name = "Delivered"
+                        },
+                        new
+                        {
+                            Id = "c712af99-4097-436a-85cb-abbcf6b9e5fa",
+                            Name = "Shipped"
+                        },
+                        new
+                        {
+                            Id = "f1b74d75-54b6-4949-8070-60333bb62c3e",
+                            Name = "Processing"
+                        },
+                        new
+                        {
+                            Id = "f5d01ad5-ea5d-4dc0-b622-028da940a257",
+                            Name = "Cancelled"
+                        });
                 });
 
             modelBuilder.Entity("Marketplace.Infrastructure.Sales.ProductPersistence.Picture", b =>

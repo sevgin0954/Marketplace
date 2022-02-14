@@ -11,6 +11,10 @@ namespace Marketplace.Infrastructure.Sales.BuyerPersistence
 				.HasKey(o => o.Id);
 
 			builder
+				.Property(o => o.Id)
+				.ValueGeneratedOnAdd();
+
+			builder
 				.Property(o => o.ProductId)
 				.IsRequired();
 		}

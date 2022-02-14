@@ -14,6 +14,10 @@ namespace Marketplace.Infrastructure.Shipping.OrderPersistence
 				.HasKey(s => s.Id);
 
 			builder
+				.Property(s => s.Id)
+				.ValueGeneratedOnAdd();
+
+			builder
 				.Property(s => s.Name)
 				.HasMaxLength(OrderConstants.StatusNameMaxLength)
 				.IsRequired();

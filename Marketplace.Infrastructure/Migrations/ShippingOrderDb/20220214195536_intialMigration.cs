@@ -1,17 +1,21 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Marketplace.Infrastructure.Migrations.OrderDb
+namespace Marketplace.Infrastructure.Migrations.ShippingOrderDb
 {
-    public partial class InitialMigration : Migration
+    public partial class intialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.EnsureSchema(
+                name: "Shipping.Order");
+
             migrationBuilder.CreateTable(
                 name: "Statuses",
+                schema: "Shipping.Order",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -20,6 +24,7 @@ namespace Marketplace.Infrastructure.Migrations.OrderDb
 
             migrationBuilder.CreateTable(
                 name: "Orders",
+                schema: "Shipping.Order",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -35,24 +40,27 @@ namespace Marketplace.Infrastructure.Migrations.OrderDb
                     table.ForeignKey(
                         name: "FK_Orders_Statuses_StatusId",
                         column: x => x.StatusId,
+                        principalSchema: "Shipping.Order",
                         principalTable: "Statuses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
+                schema: "Shipping.Order",
                 table: "Statuses",
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { "ae10037d-d29a-4052-9af7-08587b0e8ae3", "Delivered" },
-                    { "bb619c5d-711d-4143-aea7-02e95039295d", "Shipped" },
-                    { "61a45093-586f-4e0a-ab25-75ed09177002", "Processing" },
-                    { "f5039077-6cc9-4292-8068-1ee030d10394", "Cancelled" }
+                    { "5568e295-4fb2-496e-bb93-4ecd6ee1df92", "Delivered" },
+                    { "7610d721-3e7b-4d58-9fee-0bb2102734bd", "Shipped" },
+                    { "b769292f-1260-4283-b482-b5d5ef3ce806", "Processing" },
+                    { "0e6299f8-a320-43bc-bcf3-9213607defcb", "Cancelled" }
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_StatusId",
+                schema: "Shipping.Order",
                 table: "Orders",
                 column: "StatusId");
         }
@@ -60,10 +68,12 @@ namespace Marketplace.Infrastructure.Migrations.OrderDb
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Orders");
+                name: "Orders",
+                schema: "Shipping.Order");
 
             migrationBuilder.DropTable(
-                name: "Statuses");
+                name: "Statuses",
+                schema: "Shipping.Order");
         }
     }
 }

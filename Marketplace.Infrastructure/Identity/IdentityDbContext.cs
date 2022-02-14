@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace Marketplace.Infrastructure.Identity
 {
-	public class IdentityDbContext : DbContext
+	public class IdentityDbContext : IdentityDbContext<User>
 	{
 		private readonly string connectionString;
 
@@ -10,8 +11,6 @@ namespace Marketplace.Infrastructure.Identity
 		{
 			this.connectionString = connectionString;
 		}
-
-		public DbSet<User> Users { get; set; }
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{

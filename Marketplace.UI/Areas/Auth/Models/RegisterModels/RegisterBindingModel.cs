@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Marketplace.UI.Areas.Auth.Models.Register
+namespace Marketplace.UI.Areas.Auth.Models.RegisterModels
 {
 	public class RegisterBindingModel
 	{

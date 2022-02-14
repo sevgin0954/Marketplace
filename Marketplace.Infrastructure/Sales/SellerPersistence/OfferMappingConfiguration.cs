@@ -9,6 +9,14 @@ namespace Marketplace.Infrastructure.Sales.SellerPersistence
 		{
 			builder
 				.HasKey(o => new { o.BuyerId, o.ProductId });
+
+			builder
+				.Property(o => o.BuyerId)
+				.ValueGeneratedOnAdd();
+
+			builder
+				.Property(o => o.ProductId)
+				.ValueGeneratedOnAdd();
 		}
 	}
 }

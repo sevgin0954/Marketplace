@@ -26,6 +26,8 @@ namespace Marketplace.Infrastructure.Sales.SellerPersistence
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
+			modelBuilder.HasDefaultSchema("Sales.Seller");
+
 			modelBuilder.ApplyConfiguration(new SellerMappingConfiguration());
 			modelBuilder.ApplyConfiguration(new OfferMappingConfiguration());
 

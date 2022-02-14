@@ -1,13 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Marketplace.Infrastructure.Migrations
+namespace Marketplace.Infrastructure.Migrations.SalesBuyerDb
 {
-    public partial class InitialMigration : Migration
+    public partial class intialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.EnsureSchema(
+                name: "Sales.Buyer");
+
             migrationBuilder.CreateTable(
                 name: "Buyers",
+                schema: "Sales.Buyer",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false)
@@ -18,7 +22,8 @@ namespace Marketplace.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Offers",
+                name: "Offer",
+                schema: "Sales.Buyer",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -28,39 +33,45 @@ namespace Marketplace.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Offers", x => x.Id);
+                    table.PrimaryKey("PK_Offer", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Offers_Buyers_BuyerId",
+                        name: "FK_Offer_Buyers_BuyerId",
                         column: x => x.BuyerId,
+                        principalSchema: "Sales.Buyer",
                         principalTable: "Buyers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Offers_Buyers_BuyerId1",
+                        name: "FK_Offer_Buyers_BuyerId1",
                         column: x => x.BuyerId1,
+                        principalSchema: "Sales.Buyer",
                         principalTable: "Buyers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Offers_BuyerId",
-                table: "Offers",
+                name: "IX_Offer_BuyerId",
+                schema: "Sales.Buyer",
+                table: "Offer",
                 column: "BuyerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Offers_BuyerId1",
-                table: "Offers",
+                name: "IX_Offer_BuyerId1",
+                schema: "Sales.Buyer",
+                table: "Offer",
                 column: "BuyerId1");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Offers");
+                name: "Offer",
+                schema: "Sales.Buyer");
 
             migrationBuilder.DropTable(
-                name: "Buyers");
+                name: "Buyers",
+                schema: "Sales.Buyer");
         }
     }
 }

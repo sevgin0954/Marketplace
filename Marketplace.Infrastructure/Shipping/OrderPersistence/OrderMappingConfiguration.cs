@@ -9,6 +9,13 @@ namespace Marketplace.Infrastructure.Shipping.OrderPersistence
 		public void Configure(EntityTypeBuilder<Order> builder)
 		{
 			builder
+				.HasKey(o => o.Id);
+
+			builder
+				.Property(o => o.Id)
+				.ValueGeneratedOnAdd();
+
+			builder
 				.HasOne(o => o.Status);
 
 			builder

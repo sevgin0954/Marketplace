@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Marketplace.UI.Areas.Users.Controllers
 {
-	[Authorize()]
+	[Authorize]
 	[Area("Users")]
 	public abstract class BaseUsersController : Controller
 	{

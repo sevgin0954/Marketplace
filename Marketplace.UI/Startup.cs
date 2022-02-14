@@ -11,11 +11,11 @@ using Marketplace.Infrastructure.Shipping.OrderPersistence;
 using Marketplace.Domain.Common;
 using SalesBuyer = Marketplace.Domain.Sales.BuyerAggregate.Buyer;
 using Marketplace.Infrastructure.Sales.BuyerPersistence;
-using ShippingBuyer = Marketplace.Domain.Shipping.BuyerAggregate.Buyer;
 using SalesProduct = Marketplace.Domain.Sales.ProductAggregate.Product;
 using Marketplace.Infrastructure.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 
 namespace Marketplace.UI
 {
@@ -39,16 +39,21 @@ namespace Marketplace.UI
 
 			services
 				.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-				.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
-					options =>
-					{
-						options.LoginPath = new PathString("/Auth/Login/Index");
-						options.AccessDeniedPath = new PathString("/Auth/Register/Index");
-					});
+				.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme);
 
 			services
-				.AddIdentityCore<User>()
+				.AddIdentity<User, IdentityRole>(config =>
+				{
+					config.Password.RequireNonAlphanumeric = false;
+					config.Password.RequiredLength = 5;
+				})
 				.AddEntityFrameworkStores<IdentityDbContext>();
+
+			services.ConfigureApplicationCookie(options =>
+			{
+				options.LoginPath = new PathString("/Auth/Login/Index");
+				options.AccessDeniedPath = new PathString("/Auth/Register/Index");
+			});
 
 			this.AddDbContextServices(services);
 

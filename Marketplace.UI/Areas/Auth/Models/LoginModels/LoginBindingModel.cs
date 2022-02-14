@@ -15,5 +15,8 @@ namespace Marketplace.UI.Areas.Auth.Models.LoginModels
 		[Required]
 		[DisplayName("Confirm password")]
 		public string ConfirmPassword { get; set; }
+
+		[Required]
+		public bool RememberMe { get; set; }
 	}
 }
