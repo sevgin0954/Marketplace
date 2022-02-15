@@ -3,14 +3,16 @@
     ViewData["Title"] = "Home Page";
 }
 
-<a asp-area="Users" asp-controller="Product" asp-action="AddNew">Add product</a>
+<a asp-area="Users" asp-controller="Products" asp-action="AddNew">Add product</a>
 
-<div>
+<div class="products-container">
     @foreach (var product in Model.Products)
 	{
 		<div class="product-card">
 			<h2>@product.Name</h2>
-			<p>@product.Price</p>
+			<p>@product.Price $</p>
+
+			<button>buy</button>
 		</div>
 	}
 </div>

@@ -9,6 +9,8 @@ namespace Marketplace.Domain.Shipping.BuyerAggregate
 	{
 		private readonly ICollection<string> orderIds = new List<string>();
 
+		public IReadOnlyList<string> OrderIds => this.OrderIds;
+
 		public void ConfirmShippementArrival(string orderId)
 		{
 			if (this.orderIds.Contains(orderId) == false)

@@ -16,6 +16,7 @@ using Marketplace.Infrastructure.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Marketplace.Domain.Shipping.OrderAggregate;
 
 namespace Marketplace.UI
 {
@@ -86,6 +87,8 @@ namespace Marketplace.UI
 		{
 			services.AddScoped<IRepository<SalesBuyer>, BuyerRepository>();
 			services.AddScoped<IRepository<SalesProduct>, ProductRepository>();
+
+			services.AddScoped<IOrderRepository, OrderRepository>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

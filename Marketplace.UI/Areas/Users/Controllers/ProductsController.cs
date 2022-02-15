@@ -1,19 +1,19 @@
 ﻿using Marketplace.Domain.Common;
 using Marketplace.Domain.Sales.ProductAggregate;
 using Marketplace.Infrastructure.Identity;
-using Marketplace.UI.Areas.Users.Models.ProductModels;
+using Marketplace.UI.Areas.Users.Models.ProductsModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace Marketplace.UI.Areas.Users.Controllers
 {
-	public class ProductController : BaseUsersController
+	public class ProductsController : BaseUsersController
 	{
 		private readonly IRepository<Product> productRepository;
 		private readonly UserManager<User> userManager;
 
-		public ProductController(
+		public ProductsController(
 			IRepository<Product> productRepository,
 			UserManager<User> userManager)
 		{

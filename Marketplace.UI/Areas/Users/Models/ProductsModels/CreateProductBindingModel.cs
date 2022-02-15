@@ -1,4 +1,4 @@
-﻿namespace Marketplace.UI.Areas.Users.Models.ProductModels
+﻿namespace Marketplace.UI.Areas.Users.Models.ProductsModels
 {
 	public class CreateProductBindingModel
 	{
