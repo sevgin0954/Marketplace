@@ -1,5 +1,4 @@
 ﻿using Marketplace.Domain.Sales.BuyerAggregate.Events;
-using Marketplace.Domain.Sales.SellerAggregate;
 using Xunit;
 
 namespace Marketplace.Tests.Sales.BuyerSpecs

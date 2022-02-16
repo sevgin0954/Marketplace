@@ -27,7 +27,7 @@
 
 		public string BuyerId { get; set; }
 
-		public string CanceledById { get; set; }
+		public CanceledOrderBy CanceledOrderBy { get; set; }
 
 		public Status Status { get; set; }
 	}

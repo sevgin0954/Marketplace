@@ -6,10 +6,8 @@
 
 		public string TrackingNumber { get; set; }
 
-		public string SellerId { get; private set; }
+		public string SellerName { get; set; }
 
-		public string BuyerId { get; private set; }
-
-		public string CanceledById { get; private set; }
+		public string CanceledBy { get; set; }
 	}
 }

@@ -1,1 +1,12 @@
-﻿@Model OrdersViewModel
+﻿@model OrdersViewModel
+
+<p>@Model.TotalOrders</p>
+@foreach(var order in Model.Orders)
+{
+	<div>
+		<p>@order.Status</p>
+		<p>@order.TrackingNumber</p>
+		<p>@order.Status</p>
+		<p>@order.Status</p>
+	</div>
+}

@@ -1,6 +1,7 @@
 ﻿using Marketplace.Domain.Shipping.OrderAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace Marketplace.Infrastructure.Shipping.OrderPersistence
 {
@@ -32,8 +33,11 @@ namespace Marketplace.Infrastructure.Shipping.OrderPersistence
 				.IsRequired();
 
 			builder
-				.Property(o => o.CanceledById)
-				.IsRequired();
+				.Property(o => o.CanceledOrderBy)
+				.HasConversion(
+					v => v.ToString(),
+					v => Enum.Parse<CanceledOrderBy>(v)
+				).IsRequired();
 		}
 	}
 }

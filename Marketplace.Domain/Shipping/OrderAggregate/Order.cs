@@ -33,7 +33,7 @@ namespace Marketplace.Domain.Shipping.OrderAggregate
 
 		public string BuyerId { get; private set; }
 
-		public string CanceledById { get; private set; }
+		public CanceledOrderBy CanceledOrderBy { get; private set; }
 
 		public void CancelDelivery(string initiatorId)
 		{
@@ -43,7 +43,7 @@ namespace Marketplace.Domain.Shipping.OrderAggregate
 				throw new InvalidOperationException();
 
 			this.Status = Status.Cancelled;
-			this.CanceledById = initiatorId;
+			this.CanceledOrderBy = initiatorId == this.SellerId ? CanceledOrderBy.Seller : CanceledOrderBy.Buyer;
 		}
 
 		public void StartShipping(string initiatorId, string trackingNumber)

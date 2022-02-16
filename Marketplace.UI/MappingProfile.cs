@@ -36,7 +36,11 @@ namespace Marketplace.UI
 			this.CreateMap<IList<ShippingOrderAggregate>, OrdersViewModel>()
 				.ForMember(dest => dest.TotalOrders, opt => opt.MapFrom(src => src.Count));
 
-			this.CreateMap<ShippingOrderEntity, ShippingOrderAggregate>();
+
+			// TODO: Mapper.CreateMap<MyEnum, string>().ConvertUsing(src => src.ToString());
+			this.CreateMap<ShippingOrderEntity, ShippingOrderAggregate>()
+				.ForMember(dest => dest.CanceledOrderBy, opt => opt.MapFrom(src => src.CanceledOrderBy.ToString()))
+				.ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
 		}
 	}
 }
