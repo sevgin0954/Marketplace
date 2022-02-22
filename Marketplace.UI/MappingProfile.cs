@@ -10,6 +10,8 @@ using ShippingOrderEntity = Marketplace.Infrastructure.Shipping.OrderPersistence
 using Marketplace.UI.Areas.Users.Models.OrdersModels;
 using System.Collections.Generic;
 using SalesEntityStatus = Marketplace.Infrastructure.Sales.ProductPersistence.Status;
+using SalesSellerAggregate = Marketplace.Domain.Sales.SellerAggregate.Seller;
+using Marketplace.UI.Areas.Users.Models.OffersModels;
 
 namespace Marketplace.UI
 {
@@ -41,6 +43,11 @@ namespace Marketplace.UI
 			this.CreateMap<ShippingOrderEntity, ShippingOrderAggregate>()
 				.ForMember(dest => dest.CanceledOrderBy, opt => opt.MapFrom(src => src.CanceledOrderBy.ToString()))
 				.ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
+
+			this.CreateMap<SalesSellerAggregate, OffersViewModel>()
+				.ForMember(dest => dest.AcceptedOffersCount, opt => opt.MapFrom(src => src.SoldOutProductIds.Count))
+				.ForMember(dest => dest.PendingOffersCount, opt => opt.MapFrom(src => src.ReceivedOffers.Count))
+				.ForMember(dest => dest.RejectedOffersCount, opt => opt.MapFrom(src => src.ReceivedOffers.Count));
 		}
 	}
 }

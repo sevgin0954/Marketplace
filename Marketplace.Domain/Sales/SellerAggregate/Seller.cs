@@ -8,20 +8,50 @@ namespace Marketplace.Domain.Sales.SellerAggregate
 {
 	public class Seller : AggregateRoot
 	{
-		private readonly ICollection<string> productIdsForSelling = new List<string>();
-		private readonly IDictionary<string, Offer> soldProductIdsAndOffers = new Dictionary<string, Offer>();
-		private readonly ICollection<string> archivedProductIds = new List<string>();
+		private readonly IDictionary<string, Product> productIdsAndProductsForSale = new Dictionary<string, Product>();
+		private readonly IDictionary<string, Product> soldOutProductIdsAndProducts = new Dictionary<string, Product>();
+		private readonly IDictionary<string, Product> archivedProductIdsAndProducts = new Dictionary<string, Product>();
 
-		private readonly ICollection<Offer> receivedOffers = new List<Offer>();
-		private readonly ICollection<Offer> declinedOffers = new List<Offer>();
+		private readonly HashSet<string> bannedBuyerIds = new HashSet<string>();
 
-		public IReadOnlyList<string> ProductIdsForSale => this.productIdsForSelling.ToList();
-		public IReadOnlyList<string> SoldProductIds => this.soldProductIdsAndOffers.Keys.ToList();
-		public IReadOnlyList<string> ArchiedProductIds => this.archivedProductIds.ToList();
+		public IReadOnlyList<string> ProductIdsForSale => this.productIdsAndProductsForSale.Keys.ToList();
+		public IReadOnlyList<string> SoldOutProductIds => this.soldOutProductIdsAndProducts.Keys.ToList();
+		public IReadOnlyList<string> ArchiedProductIds => this.archivedProductIdsAndProducts.Keys.ToList();
+
+		public void AddOffer(Offer offer)
+		{
+			this.ValidateIfProductCanBeSold(offer);
+
+			this.AddDomainEvent(new OfferAddedEvent(this.Id, offer.BuyerId, offer.Quantity));
+		}
+
+		public void AcceptOffer(Offer offer)
+		{
+			this.ValidateIfProductCanBeSold(offer);
+
+			var product = this.productIdsAndProductsForSale[offer.ProductId];
+			product.Buy(offer.Quantity);
+
+			if (product.Status == ProductStatus.Sold)
+			{
+				this.productIdsAndProductsForSale.Remove(product.Id);
+				this.soldOutProductIdsAndProducts.Add(product.Id, product);
+			}
+
+			this.AddDomainEvent(new OfferAcceptedEvent(this.Id, offer.BuyerId, offer.Quantity));
+		}
+
+		// TODO: When product is sold out or archived all offers should be declined
+		public void DeclineOffer(Offer offer)
+		{
+			this.ValidateProductExistence(offer.ProductId);
+
+			this.AddDomainEvent(new OfferDeclinedEvent(this.Id, offer.BuyerId, offer.Quantity));
+		}
 
 		public void PublishProductForSale(string productId)
 		{
-			if (productIdsForSelling.Contains(productId) || soldProductIdsAndOffers.ContainsKey(productId))
+			if (productIdsForSelling.Contains(productId) || soldOutProductIds.Contains(productId))
 				throw new InvalidOperationException();
 
 			this.productIdsForSelling.Add(productId);
@@ -40,36 +70,42 @@ namespace Marketplace.Domain.Sales.SellerAggregate
 			this.AddDomainEvent(new ProductArchivedEvent(productId));
 		}
 
-		public void AcceptOffer(Offer offer)
+		public void BanBuyerFromOffering(string buyerId)
 		{
-			this.ValidateProductForSaleExistence(offer.ProductId);
+			if (string.IsNullOrWhiteSpace(buyerId))
+				throw new InvalidOperationException();
 
-			this.soldProductIdsAndOffers.Add(offer.ProductId, offer);
-			this.productIdsForSelling.Remove(offer.ProductId);
-
-			this.AddDomainEvent(new OfferAcceptedEvent(offer.ProductId, offer.BuyerId));
+			var addingResult = this.bannedBuyerIds.Add(buyerId);
+			if (addingResult == false)
+				throw new InvalidOperationException();
 		}
 
-		public void ReceiveOffer(Offer offer)
+		public void UnbanBuyerFromOffering(string buyerId)
 		{
-			this.ValidateProductForSaleExistence(offer.ProductId);
+			if (string.IsNullOrWhiteSpace(buyerId))
+				throw new InvalidOperationException();
 
-			this.receivedOffers.Add(offer);
+			var removingResult = this.bannedBuyerIds.Remove(buyerId);
+			if (removingResult == false)
+				throw new InvalidOperationException();
 		}
 
-		public void DeclineOffer(Offer offer)
+		private void ValidateIfProductCanBeSold(Offer offer)
 		{
-			this.ValidateProductForSaleExistence(offer.ProductId);
+			var isBuyerBanned = this.bannedBuyerIds.Contains(offer.BuyerId);
+			if (isBuyerBanned)
+				throw new InvalidOperationException();
 
-			this.declinedOffers.Add(offer);
+			this.ValidateProductExistence(offer.ProductId);
 
-			this.AddDomainEvent(new OfferDeclinedEvent(offer.ProductId, offer.BuyerId));
+			var product = this.productIdsAndProductsForSale[offer.ProductId];
+			product.ValidateIfProductCanBeSold(offer.Quantity);
 		}
 
-		private void ValidateProductForSaleExistence(string productId)
+		private void ValidateProductExistence(string productId)
 		{
-			var isProductForSale = this.productIdsForSelling.Contains(productId);
-			if (isProductForSale == false)
+			var isProductExist = this.productIdsAndProductsForSale.ContainsKey(productId);
+			if (isProductExist == false)
 				throw new InvalidOperationException();
 		}
 	}

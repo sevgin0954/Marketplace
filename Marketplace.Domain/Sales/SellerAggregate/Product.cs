@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Marketplace.Domain.Sales.ProductAggregate
+namespace Marketplace.Domain.Sales.SellerAggregate
 {
 	public class Product : AggregateRoot
 	{
@@ -27,6 +27,8 @@ namespace Marketplace.Domain.Sales.ProductAggregate
 		public string CreatorId { get; private set; }
 
 		public long TotalViews { get; private set; }
+
+		public int Quantity { get; private set; }
 
 		public ProductStatus Status { get; set; }
 
@@ -55,6 +57,25 @@ namespace Marketplace.Domain.Sales.ProductAggregate
 			this.Description = editedProduct.Description;
 			this.CreatorId = editedProduct.CreatorId;
 			this.pictureIds = editedProduct.pictureIds;
+		}
+
+		public void Buy(int quantity)
+		{
+			this.ValidateIfProductCanBeSold(quantity);
+
+			this.Quantity -= quantity;
+
+			if (this.Quantity == 0)
+				this.Status = ProductStatus.Sold;
+		}
+
+		public void ValidateIfProductCanBeSold(int quantity)
+		{
+			if (this.Status != ProductStatus.Unsold)
+				throw new InvalidOperationException();
+
+			if (quantity > this.Quantity)
+				throw new InvalidOperationException();
 		}
 	}
 }

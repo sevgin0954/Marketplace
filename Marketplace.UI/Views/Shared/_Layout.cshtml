@@ -30,7 +30,19 @@
 						@if (SignInManager.IsSignedIn(User))
 						{
 							<li class="nav-item">
-								<a class="nav-link text-dark" asp-area="Users" asp-controller="Orders" asp-action="Index">AccountName</a>
+								<a class="nav-link text-dark">
+									@User.Identity.Name
+								</a>
+							</li>
+							<li>
+								<a class="nav-link text-dark" asp-area="Users" asp-controller="Offers" asp-action="Index">
+									Get offers
+								</a>
+							</li>
+							<li>
+								<a class="nav-link text-dark" asp-area="Users" asp-controller="Orders" asp-action="Index">
+									Get orders
+								</a>
 							</li>
 						}
 					</ul>

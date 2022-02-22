@@ -1,4 +1,4 @@
-﻿namespace Marketplace.Domain.Sales.ProductAggregate
+﻿namespace Marketplace.Domain.Sales.SellerAggregate
 {
 	public static class ProductConstants
 	{

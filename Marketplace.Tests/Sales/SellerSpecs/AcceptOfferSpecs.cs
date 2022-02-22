@@ -19,7 +19,7 @@ namespace Marketplace.Tests.Sales.SellerSpecs
 			seller.AcceptOffer(seller.Id, product.Id);
 
 			// Assert
-			Assert.Equal(product.Id, seller.SoldProductIds[0]);
+			Assert.Equal(product.Id, seller.SoldOutProductIds[0]);
 		}
 
 		[Fact]
