@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 
 namespace Marketplace.Domain.Sales.ProductOffersAggregate.Handlers
 {
-	public class DeclineOfferWhenOfferDeclinedEventHandler : IHandler<OfferDeclinedEvent>
+	public class AddDeclinedOfferWhenOfferDeclinedEventHandler : IHandler<OfferDeclinedEvent>
 	{
 		private readonly IRepository<ProductOffers> offersRepository;
 
-		public DeclineOfferWhenOfferDeclinedEventHandler(IRepository<ProductOffers> offersRepository)
+		public AddDeclinedOfferWhenOfferDeclinedEventHandler(IRepository<ProductOffers> offersRepository)
 		{
 			this.offersRepository = offersRepository;
 		}
@@ -17,7 +17,7 @@ namespace Marketplace.Domain.Sales.ProductOffersAggregate.Handlers
 		{
 			var offers = await this.offersRepository.GetByIdAsync(domainEvent.ProductId);
 			var productOffer = new ProductOffer(domainEvent.Quantity, domainEvent.BuyerId, domainEvent.ProductId);
-			offers.DeclineOffer(productOffer);
+			offers.AddDeclinedOffer(productOffer);
 		}
 	}
 }

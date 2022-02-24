@@ -20,19 +20,19 @@ namespace Marketplace.Domain.Sales.ProductOffersAggregate
 		public IReadOnlyList<ProductOffer> DeclinedOffers => this.declinedOffers.ToList();
 		public IReadOnlyList<ProductOffer> AcceptedOffers => this.acceptedOffers.ToList();
 
-		public void AcceptOffer(ProductOffer offer)
+		public void AddAcceptedOffer(ProductOffer offer)
 		{
 			this.RemoveOfferFromPendings(offer);
 
 			this.acceptedOffers.Add(offer);
 		}
 
-		public void AddOffer(ProductOffer offer)
+		public void AddPendingOffer(ProductOffer offer)
 		{
 			this.pendingOffers.Add(offer);
 		}
 
-		public void DeclineOffer(ProductOffer offer)
+		public void AddDeclinedOffer(ProductOffer offer)
 		{
 			this.RemoveOfferFromPendings(offer);
 

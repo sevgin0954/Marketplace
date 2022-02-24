@@ -41,7 +41,6 @@ namespace Marketplace.Domain.Sales.SellerAggregate
 			this.AddDomainEvent(new OfferAcceptedEvent(this.Id, offer.BuyerId, offer.Quantity));
 		}
 
-		// TODO: When product is sold out or archived all offers should be declined
 		public void DeclineOffer(Offer offer)
 		{
 			this.ValidateProductExistence(offer.ProductId);
@@ -61,13 +60,18 @@ namespace Marketplace.Domain.Sales.SellerAggregate
 
 		public void ArchiveProduct(string productId)
 		{
-			var isProductRemoved = this.productIdsForSelling.Remove(productId);
+			var doesProductExist = this.productIdsAndProductsForSale.ContainsKey(productId);
+			if (doesProductExist == false)
+				throw new InvalidOperationException();
+
+			var product = this.productIdsAndProductsForSale[productId];
+
+			var isProductRemoved = this.productIdsAndProductsForSale.Remove(productId);
 			if (isProductRemoved == false)
 				throw new InvalidOperationException();
 
-			this.archivedProductIds.Add(productId);
-
-			this.AddDomainEvent(new ProductArchivedEvent(productId));
+			this.archivedProductIdsAndProducts.Add(productId, product);
+			product.Status = ProductStatus.Archived;
 		}
 
 		public void BanBuyerFromOffering(string buyerId)
