@@ -7,4 +7,14 @@
     <StartupObject />
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Sales\BuyerAggregate\Sagas\MoveOfferToAccepted\" />
+    <Folder Include="Sales\SellerAggregate\Handlers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CSharpFunctionalExtensions" Version="2.29.0" />
+    <PackageReference Include="MediatR" Version="10.0.1" />
+  </ItemGroup>
+
 </Project>

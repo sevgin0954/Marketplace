@@ -8,13 +8,8 @@ namespace Marketplace.Infrastructure.Sales.SellerPersistence
 
 		public ICollection<Product> ProductForSale { get; set; } = new List<Product>();
 
-
-		public ICollection<Offer> AcceptedOffers = new List<Offer>();
-
 		public ICollection<Product> ArchivedProducts { get; set; } = new List<Product>();
 
-		public ICollection<Offer> ReceivedOffers { get; set; } = new List<Offer>();
-
-		public ICollection<Offer> DeclinedOffers { get; set; } = new List<Offer>();
+		public ICollection<Product> SoldOutProducts { get; set; } = new List<Product>();
 	}
 }

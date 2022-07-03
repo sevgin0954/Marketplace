@@ -3,9 +3,14 @@ using System.Collections.Generic;
 
 namespace Marketplace.Domain.Common
 {
-	public class AggregateRoot : Entity
+	public abstract class Saga<TData> where TData : class
 	{
-        private readonly DomainEvents domainEvents = new ();
+        private readonly DomainEvents domainEvents = new();
+
+        protected TData Data { get; set; }
+
+		protected bool IsCompleted { get; set; }
+
         public virtual IReadOnlyList<INotification> DomainEvents => domainEvents.Events;
 
         protected virtual void AddDomainEvent(INotification newEvent)

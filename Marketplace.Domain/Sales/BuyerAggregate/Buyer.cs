@@ -1,34 +1,80 @@
 ﻿using Marketplace.Domain.Common;
 using Marketplace.Domain.Sales.BuyerAggregate.Events;
+using Marketplace.Domain.Sales.BuyerProductOffersAggregate;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Marketplace.Domain.Sales.BuyerAggregate
 {
 	public class Buyer : AggregateRoot
 	{
-		private readonly ICollection<string> productIdsForPendingOffers = new List<string>();
-		private readonly ICollection<string> productIdsForAcceptedOffers = new List<string>();
+		private readonly IDictionary<string, Offer> productIdsAndProccessingOffers = new Dictionary<string, Offer>();
+		private readonly IDictionary<string, Offer> productIdsAndOffers = new Dictionary<string, Offer>();
 
-		public IReadOnlyList<string> PendingOffersProductIds => this.productIdsForPendingOffers.ToList();
-		public IReadOnlyList<string> AcceptedOffersProductIds => this.productIdsForAcceptedOffers.ToList();
+		private readonly IDictionary<string, Offer> productIdsAndDeclinedOffers = new Dictionary<string, Offer>();
 
-		public void CreateOffer(string productId, string sellerId)
+		private readonly IDictionary<string, Offer> productIdsAndAcceptingOffers = new Dictionary<string, Offer>();
+		private readonly IDictionary<string, Offer> productIdsAndAcceptedOffers = new Dictionary<string, Offer>();
+
+		public void StartMovingOfferToAccepted(string productId)
 		{
-			this.productIdsForPendingOffers.Add(productId);
+			if (this.productIdsAndOffers.ContainsKey(productId) == false)
+				throw new InvalidOperationException();
 
-			this.AddDomainEvent(new OfferCreatedEvent(sellerId, productId, this.Id));
+			var pendingOffer = this.productIdsAndOffers[productId];
+
+			this.productIdsAndAcceptingOffers[productId] = pendingOffer;
+			this.productIdsAndOffers.Remove(productId);
+
+			this.AddDomainEvent(new OfferStartedAcceptingEvent(productId, pendingOffer.Quantity));
 		}
 
 		public void MoveOfferToAccepted(string productId)
 		{
-			if (this.productIdsForPendingOffers.Contains(productId) == false)
+			if (this.productIdsAndAcceptingOffers.ContainsKey(productId) == false)
 				throw new InvalidOperationException();
 
-			this.productIdsForAcceptedOffers.Add(productId);
+			var acceptingOffer = this.productIdsAndAcceptingOffers[productId];
 
-			this.productIdsForPendingOffers.Remove(productId);
+			this.productIdsAndAcceptingOffers.Remove(productId);
+			this.productIdsAndAcceptedOffers.Add(productId, acceptingOffer);
+		}
+
+		public void MoveOfferToDeclined(string productId)
+		{
+			if (this.productIdsAndOffers.ContainsKey(productId) == false)
+				throw new InvalidOperationException();
+
+			var pendingOffer = this.productIdsAndOffers[productId];
+
+			this.productIdsAndOffers.Remove(productId);
+			this.productIdsAndDeclinedOffers.Add(productId, pendingOffer);
+		}
+
+		public void StartAddingOffer(string productId, Offer offer)
+		{
+			if (this.productIdsAndOffers.ContainsKey(productId) ||
+				this.productIdsAndProccessingOffers.ContainsKey(productId))
+			{
+				throw new InvalidOperationException();
+			}
+			if (this.productIdsAndOffers.Count == Constants.MaxPendingOffersPerBuyer)
+			{
+				throw new InvalidOperationException();
+			}
+
+			this.productIdsAndProccessingOffers.Add(productId, offer);
+
+			this.AddDomainEvent(new StartAddingOfferEvent(this.Id, productId));
+		}
+
+		internal void AddOffer(string productId)
+		{
+			var offer = this.productIdsAndProccessingOffers[productId];
+
+			this.productIdsAndProccessingOffers.Remove(productId);
+
+			this.productIdsAndOffers.Add(productId, offer);
 		}
 	}
 }

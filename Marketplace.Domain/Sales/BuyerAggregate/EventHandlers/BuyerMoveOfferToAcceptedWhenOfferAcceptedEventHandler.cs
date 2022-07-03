@@ -1,10 +1,10 @@
 ﻿using Marketplace.Domain.Common;
-using Marketplace.Domain.Sales.SellerAggregate.Events;
+using MediatR;
 using System.Threading.Tasks;
 
-namespace Marketplace.Domain.Sales.BuyerAggregate.Handlers
+namespace Marketplace.Domain.Sales.BuyerAggregate.EventHandlers
 {
-	public class BuyerMoveOfferToAcceptedWhenOfferAcceptedEventHandler : IHandler<OfferAcceptedEvent>
+	public class BuyerMoveOfferToAcceptedWhenOfferAcceptedEventHandler : INotificationHandler<OfferAcceptedEvent>
 	{
 		private readonly IRepository<Buyer> buyerRepository;
 
