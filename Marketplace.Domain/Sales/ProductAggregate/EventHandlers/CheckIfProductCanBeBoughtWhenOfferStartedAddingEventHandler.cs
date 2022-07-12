@@ -19,7 +19,7 @@ namespace Marketplace.Domain.Sales.ProductAggregate.EventHandlers
 		{
 			var product = await this.productRepository.GetByIdAsync(notification.ProductId);
 
-			product.CheckIfProductCanBeBought(notification.Quantity);
+			product.RaiseEventProductCanBeBought(notification.Quantity);
 		}
 	}
 }

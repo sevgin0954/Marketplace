@@ -1,12 +1,10 @@
-﻿using System;
-using Tactical.DDD;
+﻿using MediatR;
 
 namespace Marketplace.Domain.Sales.ProductAggregate.Events
 {
-	public record SuccessfulProductPurchaseEvent : DomainEvent
+	public record SuccessfulProductPurchaseEvent : INotification
 	{
 		public SuccessfulProductPurchaseEvent(string buyerId, string productId)
-			: base(DateTime.UtcNow)
 		{
 			this.BuyerId = buyerId;
 			this.ProductId = productId;

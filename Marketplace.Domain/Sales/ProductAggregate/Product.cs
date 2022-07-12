@@ -10,8 +10,6 @@ namespace Marketplace.Domain.Sales.ProductAggregate
 
 		public string SellerId { get; private set; }
 
-		public int Quantity { get; private set; }
-
 		public ProductStatus Status { get; private set; }
 
 		public void Edit(Product editedProduct)
@@ -32,27 +30,9 @@ namespace Marketplace.Domain.Sales.ProductAggregate
 			this.Status = ProductStatus.Archived;
 		}
 
-		public void Buy(int quantity, string buyerId)
+		public void RaiseEventProductCanBeBought(int quantity)
 		{
-			if (this.ProductCanBeBought(quantity))
-			{
-				this.AddDomainEvent(new UnsuccessfulProductPurchaseEvent(buyerId, this.Id));
-				return;
-			}
-
-			this.Quantity -= quantity;
-
-			if (this.Quantity == 0)
-			{
-				this.Status = ProductStatus.Sold;
-			}
-
-			this.AddDomainEvent(new SuccessfulProductPurchaseEvent(buyerId, this.Id)); ;
-		}
-
-		public void CheckIfProductCanBeBought(int quantity)
-		{
-			if (this.ProductCanBeBought(quantity))
+			if (this.Status != ProductStatus.Unsold)
 			{
 				this.AddDomainEvent(new ProductCanBeBoughtEvent(this.Id, quantity));
 			}
@@ -60,21 +40,6 @@ namespace Marketplace.Domain.Sales.ProductAggregate
 			{
 				this.AddDomainEvent(new ProductCannotBeBoughtEvent(this.Id));
 			}
-		}
-
-		private bool ProductCanBeBought(int quantity)
-		{
-			if (this.Status != ProductStatus.Unsold)
-			{
-				return false;
-			}
-
-			if (quantity > this.Quantity)
-			{
-				return false;
-			}
-
-			return true;
 		}
 	}
 }

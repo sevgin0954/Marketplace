@@ -13,30 +13,17 @@ namespace Marketplace.Domain.Sales.BuyerAggregate
 
 		private readonly IDictionary<string, Offer> productIdsAndDeclinedOffers = new Dictionary<string, Offer>();
 
-		private readonly IDictionary<string, Offer> productIdsAndAcceptingOffers = new Dictionary<string, Offer>();
 		private readonly IDictionary<string, Offer> productIdsAndAcceptedOffers = new Dictionary<string, Offer>();
 
-		public void StartMovingOfferToAccepted(string productId)
+		// Move Ofer to separate aggregate away from buyer
+		public void MoveOfferToAccepted(string productId)
 		{
 			if (this.productIdsAndOffers.ContainsKey(productId) == false)
 				throw new InvalidOperationException();
 
-			var pendingOffer = this.productIdsAndOffers[productId];
+			var acceptingOffer = this.productIdsAndOffers[productId];
 
-			this.productIdsAndAcceptingOffers[productId] = pendingOffer;
 			this.productIdsAndOffers.Remove(productId);
-
-			this.AddDomainEvent(new OfferStartedAcceptingEvent(productId, pendingOffer.Quantity));
-		}
-
-		public void MoveOfferToAccepted(string productId)
-		{
-			if (this.productIdsAndAcceptingOffers.ContainsKey(productId) == false)
-				throw new InvalidOperationException();
-
-			var acceptingOffer = this.productIdsAndAcceptingOffers[productId];
-
-			this.productIdsAndAcceptingOffers.Remove(productId);
 			this.productIdsAndAcceptedOffers.Add(productId, acceptingOffer);
 		}
 
