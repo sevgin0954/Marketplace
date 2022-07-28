@@ -8,60 +8,6 @@ namespace Marketplace.Domain.Sales.BuyerAggregate
 {
 	public class Buyer : AggregateRoot
 	{
-		private readonly IDictionary<string, Offer> productIdsAndProccessingOffers = new Dictionary<string, Offer>();
-		private readonly IDictionary<string, Offer> productIdsAndOffers = new Dictionary<string, Offer>();
-
-		private readonly IDictionary<string, Offer> productIdsAndDeclinedOffers = new Dictionary<string, Offer>();
-
-		private readonly IDictionary<string, Offer> productIdsAndAcceptedOffers = new Dictionary<string, Offer>();
-
-		// Move Ofer to separate aggregate away from buyer
-		public void MoveOfferToAccepted(string productId)
-		{
-			if (this.productIdsAndOffers.ContainsKey(productId) == false)
-				throw new InvalidOperationException();
-
-			var acceptingOffer = this.productIdsAndOffers[productId];
-
-			this.productIdsAndOffers.Remove(productId);
-			this.productIdsAndAcceptedOffers.Add(productId, acceptingOffer);
-		}
-
-		public void MoveOfferToDeclined(string productId)
-		{
-			if (this.productIdsAndOffers.ContainsKey(productId) == false)
-				throw new InvalidOperationException();
-
-			var pendingOffer = this.productIdsAndOffers[productId];
-
-			this.productIdsAndOffers.Remove(productId);
-			this.productIdsAndDeclinedOffers.Add(productId, pendingOffer);
-		}
-
-		public void StartAddingOffer(string productId, Offer offer)
-		{
-			if (this.productIdsAndOffers.ContainsKey(productId) ||
-				this.productIdsAndProccessingOffers.ContainsKey(productId))
-			{
-				throw new InvalidOperationException();
-			}
-			if (this.productIdsAndOffers.Count == Constants.MaxPendingOffersPerBuyer)
-			{
-				throw new InvalidOperationException();
-			}
-
-			this.productIdsAndProccessingOffers.Add(productId, offer);
-
-			this.AddDomainEvent(new StartAddingOfferEvent(this.Id, productId));
-		}
-
-		internal void AddOffer(string productId)
-		{
-			var offer = this.productIdsAndProccessingOffers[productId];
-
-			this.productIdsAndProccessingOffers.Remove(productId);
-
-			this.productIdsAndOffers.Add(productId, offer);
-		}
+		
 	}
 }

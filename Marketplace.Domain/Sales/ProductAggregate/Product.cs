@@ -10,7 +10,7 @@ namespace Marketplace.Domain.Sales.ProductAggregate
 
 		public string SellerId { get; private set; }
 
-		public ProductStatus Status { get; private set; }
+		public ProductStatus Status { get; private set; } = ProductStatus.Unsold;
 
 		public void Edit(Product editedProduct)
 		{
@@ -18,7 +18,6 @@ namespace Marketplace.Domain.Sales.ProductAggregate
 				throw new InvalidOperationException();
 
 			this.Price = editedProduct.Price;
-			this.Quantity = editedProduct.Quantity;
 			this.Status = editedProduct.Status;
 		}
 
