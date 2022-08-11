@@ -8,6 +8,6 @@ namespace Marketplace.Domain.Sales.BuyerAggregate
 {
 	public class Buyer : AggregateRoot
 	{
-		
+
 	}
 }
