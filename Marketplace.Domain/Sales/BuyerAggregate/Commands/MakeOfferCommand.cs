@@ -4,7 +4,7 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Marketplace.Domain.Sales.OfferAggregate.Commands
+namespace Marketplace.Domain.Sales.BuyerAggregate.Commands
 {
 	public class MakeOfferCommand : IRequest<Result>
 	{
@@ -24,25 +24,26 @@ namespace Marketplace.Domain.Sales.OfferAggregate.Commands
 
 		public string Message { get; }
 
-		public int Quantity { get; }
-
-		internal class CreateOfferCommandHandler : IRequestHandler<MakeOfferCommand, Result>
+		internal class MakeOfferCommandHandler : IRequestHandler<MakeOfferCommand, Result>
 		{
-			private readonly IRepository<Offer> offerRepository;
+			private readonly IRepository<Buyer> buyerRepository;
 
-			internal CreateOfferCommandHandler(IRepository<Offer> offerRepository)
+			internal MakeOfferCommandHandler(IRepository<Buyer> buyerRepository)
 			{
-				this.offerRepository = offerRepository;
+				this.buyerRepository = buyerRepository;
 			}
 
 			public async Task<Result> Handle(MakeOfferCommand request, CancellationToken cancellationToken)
 			{
 				Result result = Result.Ok();
 
-				var offer = new Offer(request.ProductId, request.SellerId, request.BuyerId, request.Message);
-				await this.offerRepository.AddAsync(offer);
+				var buyer = await this.buyerRepository.GetByIdAsync(request.ProductId);
+				if (buyer == null)
+					result = Result.Fail(BuyerConstants.BUYER_NOT_FOUND_EXCEPTION);
 
-				var changedRowsCount = await this.offerRepository.SaveChangesAsync();
+				buyer.MakeOffer(request.ProductId, request.SellerId, request.Message);
+
+				var changedRowsCount = await this.buyerRepository.SaveChangesAsync();
 				if (changedRowsCount == 0)
 					result = Result.Fail(ErrorConstants.NO_RECORD_ALTERED);
 
