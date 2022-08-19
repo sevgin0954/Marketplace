@@ -2,7 +2,7 @@
 {
 	public enum ProductStatus
 	{
-		Sold,
+		SoldOut,
 		Unsold,
 		Archived
 	}

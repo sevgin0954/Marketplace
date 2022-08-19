@@ -7,8 +7,10 @@ namespace Marketplace.Domain.Sales.BuyerAggregate
 	public class Buyer : AggregateRoot
 	{
 		private IDictionary<string, Offer> productIdsAndOffers;
-
-		public void MakeOffer(string productId, string sellerId, string message)
+		// Can make making offer long running proccess or i can make it domain service????
+		// one aggregate change per transaction in bounded context
+		// reason 1 when one fail other aggregate will fail two (more transactional contention)
+		public void MakeOffer(string productId, string sellerId, string message, int quantity)
 		{
 			if (this.productIdsAndOffers.Count == BuyerConstants.MAX_PENDING_OFFERS_PER_BUYER)
 				throw new InvalidOperationException();
@@ -17,7 +19,7 @@ namespace Marketplace.Domain.Sales.BuyerAggregate
 			if (isProductOffered)
 				throw new InvalidOperationException();
 
-			var offer = new Offer(productId, sellerId, message);
+			var offer = new Offer(productId, sellerId, message, quantity);
 			this.productIdsAndOffers.Add(productId, offer);
 		}
 

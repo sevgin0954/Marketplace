@@ -8,12 +8,13 @@ namespace Marketplace.Domain.Sales.BuyerAggregate.Commands
 {
 	public class MakeOfferCommand : IRequest<Result>
 	{
-		public MakeOfferCommand(string buyerId, string productId, string sellerId, string message)
+		public MakeOfferCommand(string buyerId, string productId, string sellerId, string message, int quantity)
 		{
 			this.BuyerId = buyerId;
 			this.ProductId = productId;
 			this.SellerId = sellerId;
 			this.Message = message;
+			this.Quantity = quantity;
 		}
 
 		public string BuyerId { get; }
@@ -23,6 +24,8 @@ namespace Marketplace.Domain.Sales.BuyerAggregate.Commands
 		public string SellerId { get; }
 
 		public string Message { get; }
+
+		public int Quantity { get; }
 
 		internal class MakeOfferCommandHandler : IRequestHandler<MakeOfferCommand, Result>
 		{

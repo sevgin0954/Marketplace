@@ -5,11 +5,12 @@ namespace Marketplace.Domain.Sales.BuyerAggregate
 {
 	public class Offer : Entity
 	{
-		public Offer(string productId, string sellerId, string message)
+		public Offer(string productId, string sellerId, string message, int quantity)
 		{
 			this.ProductId = productId;
 			this.SellerId = sellerId;
 			this.Message = message;
+			this.Quantity = quantity;
 		}
 
 		public OfferStatus Status { get; private set; } = OfferStatus.Pending;
@@ -21,6 +22,8 @@ namespace Marketplace.Domain.Sales.BuyerAggregate
 		public string Message { get; }
 
 		public string RejectMessage { get; private set; }
+
+		public int Quantity { get; private set; }
 
 		public void AcceptOffer(string initiatorId)
 		{
