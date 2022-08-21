@@ -44,7 +44,7 @@ namespace Marketplace.Domain.Sales.BuyerAggregate.Commands
 				if (buyer == null)
 					result = Result.Fail(BuyerConstants.BUYER_NOT_FOUND_EXCEPTION);
 
-				buyer.MakeOffer(request.ProductId, request.SellerId, request.Message);
+				buyer.MakeOffer(request.ProductId, request.SellerId, request.Message, request.Quantity);
 
 				var changedRowsCount = await this.buyerRepository.SaveChangesAsync();
 				if (changedRowsCount == 0)

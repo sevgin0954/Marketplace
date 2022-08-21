@@ -6,11 +6,10 @@ namespace Marketplace.Domain.Sales.ProductAggregate
 {
 	public class Product : AggregateRoot
 	{
-		public Product(decimal price, string sellerId, int quantity)
+		public Product(decimal price, string sellerId)
 		{
 			this.Price = price;
 			this.SellerId = sellerId;
-			this.Quantity = quantity;
 			this.Status = ProductStatus.Unsold;
 		}
 
@@ -20,37 +19,28 @@ namespace Marketplace.Domain.Sales.ProductAggregate
 
 		public ProductStatus Status { get; private set; }
 
-		public int Quantity { get; private set; }
-
 		public void Archive()
 		{
 			if (this.Status == ProductStatus.Archived)
 				throw new InvalidOperationException();
 
 			this.Status = ProductStatus.Archived;
-			this.Quantity = 0;
 		}
 
-		public void Disarchive(int quantity)
+		public void Disarchive()
 		{
-			if (quantity <= 0)
+			if (this.Status != ProductStatus.Archived)
 				throw new InvalidOperationException();
 
 			this.Status = ProductStatus.Unsold;
-			this.Quantity = quantity;
 		}
 
 		public void Buy(int quantity, string initiatorId)
 		{
 			if (initiatorId == this.SellerId)
 				throw new InvalidOperationException();
-			if (quantity > this.Quantity)
+			if (quantity <= 0)
 				throw new InvalidOperationException();
-
-			this.Quantity -= quantity;
-
-			if (this.Quantity == 0)
-				this.Status = ProductStatus.SoldOut;
 
 			this.AddDomainEvent(new SuccessfulProductPurchaseEvent(initiatorId, this.Id));
 		}
