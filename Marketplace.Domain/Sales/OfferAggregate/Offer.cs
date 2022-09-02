@@ -1,11 +1,12 @@
 ﻿using Marketplace.Domain.Common;
 using System;
 
-namespace Marketplace.Domain.Sales.BuyerAggregate
+namespace Marketplace.Domain.Sales.OfferAggregate
 {
-	public class Offer : Entity
+	public class Offer : AggregateRoot
 	{
-		public Offer(string productId, string sellerId, string message, int quantity)
+		public Offer(OfferId id, string productId, string sellerId, string message, int quantity)
+			: base(id)
 		{
 			this.ProductId = productId;
 			this.SellerId = sellerId;
@@ -25,9 +26,19 @@ namespace Marketplace.Domain.Sales.BuyerAggregate
 
 		public int Quantity { get; private set; }
 
+		public string BuyerId { get; }
+
+		public void DiscardOffer(string initiatorId)
+		{
+			if (initiatorId != this.BuyerId)
+				throw new InvalidOperationException();
+
+			this.Status = OfferStatus.Discarded;
+		}
+
 		public void AcceptOffer(string initiatorId)
 		{
-			this.ValidateInitiator(initiatorId);
+			this.ValidateInitiatorIsNotTheSeller(initiatorId);
 			this.ThrowExceptionIfStatusNotPending();
 
 			this.Status = OfferStatus.Accepted;
@@ -35,14 +46,14 @@ namespace Marketplace.Domain.Sales.BuyerAggregate
 
 		public void RejectOffer(string initiatorId, string reason)
 		{
-			this.ValidateInitiator(initiatorId);
+			this.ValidateInitiatorIsNotTheSeller(initiatorId);
 			this.ThrowExceptionIfStatusNotPending();
 
 			this.RejectMessage = reason;
 			this.Status = OfferStatus.Rejected;
 		}
 
-		private void ValidateInitiator(string initiatorId)
+		private void ValidateInitiatorIsNotTheSeller(string initiatorId)
 		{
 			if (initiatorId != this.SellerId)
 				throw new InvalidOperationException();

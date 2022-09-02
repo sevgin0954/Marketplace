@@ -9,15 +9,18 @@ namespace Marketplace.Domain.Sales.SellerAggregate
 	{
 		private readonly HashSet<string> bannedBuyerIds = new HashSet<string>();
 
-		public void CheckIsBuyerBanned(string buyerId)
+		public Seller(Id id)
+			: base(id) { }
+
+		public void CheckIsBuyerBannedEventCheck(string buyerId)
 		{
 			if (this.bannedBuyerIds.Contains(buyerId))
 			{
-				this.AddDomainEvent(new BuyerIsBannedEvent(buyerId));
+				this.AddDomainEvent(new BuyerIsBannedEvent(buyerId, this.Id.Value));
 			}
 			else
 			{
-				this.AddDomainEvent(new BuyerIsNotBannedEvent(buyerId));
+				this.AddDomainEvent(new BuyerIsNotBannedEvent(buyerId, this.Id.Value));
 			}
 		}
 

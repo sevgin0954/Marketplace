@@ -1,12 +1,15 @@
 ﻿using Marketplace.Domain.Common;
-using Marketplace.Domain.Sales.ProductAggregate.Events;
 using System;
 
 namespace Marketplace.Domain.Sales.ProductAggregate
 {
 	public class Product : AggregateRoot
 	{
-		public Product(decimal price, string sellerId)
+		const string PRODUCT_NOT_IN_SALE_ANYMORE = "Product is not in sale anymore!";
+		const string SELLER_CANT_BUY_HIS_OWN_PRODUCT = "Seller cannot buy his own product";
+
+		public Product(Id id, decimal price, string sellerId)
+			: base(id)
 		{
 			this.Price = price;
 			this.SellerId = sellerId;
@@ -35,26 +38,15 @@ namespace Marketplace.Domain.Sales.ProductAggregate
 			this.Status = ProductStatus.Unsold;
 		}
 
-		public void Buy(int quantity, string initiatorId)
+		public void CheckIsEligibleForBuyEventCheck(string initiatorId)
 		{
 			if (initiatorId == this.SellerId)
-				throw new InvalidOperationException();
-			if (quantity <= 0)
-				throw new InvalidOperationException();
-
-			this.AddDomainEvent(new SuccessfulProductPurchaseEvent(initiatorId, this.Id));
-		}
-
-		public void CanProductBeBoughtCheck(int quantity)
-		{
-			if (this.Status != ProductStatus.Unsold)
 			{
-				this.AddDomainEvent(new ProductCanBeBoughtEvent(this.Id, quantity));
+				this.AddDomainEvent(new );
 			}
-			else
-			{
-				this.AddDomainEvent(new ProductCannotBeBoughtEvent(this.Id));
-			}
+				// result = Result.Fail(SELLER_CANT_BUY_HIS_OWN_PRODUCT);
+			else if (this.Status != ProductStatus.Unsold)
+				// result = Result.Fail(PRODUCT_NOT_IN_SALE_ANYMORE);
 		}
 	}
 }

@@ -1,26 +1,23 @@
-﻿using MediatR;
-using System.Collections.Generic;
-
-namespace Marketplace.Domain.Common
+﻿namespace Marketplace.Domain.Common
 {
-	public abstract class Saga<TData> where TData : class
+	public abstract class Saga<TData>
 	{
-        private readonly DomainEvents domainEvents = new();
+		protected bool isCompleted;
 
-        protected TData Data { get; set; }
+		public Saga(Id id, TData data)
+		{
+			this.Data = data;
+			this.Id = id;
+		}
 
-		protected bool IsCompleted { get; set; }
+		public Id Id { get; }
 
-        public virtual IReadOnlyList<INotification> DomainEvents => domainEvents.Events;
+		protected TData Data { get; }
 
-        protected virtual void AddDomainEvent(INotification newEvent)
-        {
-            this.domainEvents.Add(newEvent);
-        }
+		public bool IsCompleted => this.isCompleted;
 
-        public virtual void ClearEvents()
-        {
-            this.domainEvents.ClearEvents();
-        }
-    }
+		// TODO: Make protected
+		public Result Result { get; set; }
+
+	}
 }

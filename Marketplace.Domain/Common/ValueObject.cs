@@ -3,6 +3,7 @@ using System.Linq;
 
 namespace Marketplace.Domain.Common
 {
+    // TODO: Replace with record struct or record class
 	public abstract class ValueObject
 	{
         protected abstract IEnumerable<object> GetEqualityComponents();

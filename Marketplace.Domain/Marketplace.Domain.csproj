@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Sales\SellerAggregate\Handlers\" />
+    <Folder Include="Sales\SellerAggregate\EventHandlers\" />
   </ItemGroup>
 
   <ItemGroup>

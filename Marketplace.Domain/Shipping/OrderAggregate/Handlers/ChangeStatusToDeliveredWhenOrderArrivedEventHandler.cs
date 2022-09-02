@@ -6,9 +6,9 @@ namespace Marketplace.Domain.Shipping.OrderAggregate.Handlers
 {
 	class ChangeStatusToDeliveredWhenOrderArrivedEventHandler : IHandler<OrderArrivedEvent>
 	{
-		private readonly IRepository<Order> orderRepository;
+		private readonly IAggregateRepository<Order> orderRepository;
 
-		public ChangeStatusToDeliveredWhenOrderArrivedEventHandler(IRepository<Order> orderRepository)
+		public ChangeStatusToDeliveredWhenOrderArrivedEventHandler(IAggregateRepository<Order> orderRepository)
 		{
 			this.orderRepository = orderRepository;
 		}

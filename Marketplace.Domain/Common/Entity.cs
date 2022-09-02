@@ -1,10 +1,13 @@
-﻿using System;
-
-namespace Marketplace.Domain.Common
+﻿namespace Marketplace.Domain.Common
 {
 	public abstract class Entity
 	{
-        public virtual string Id { get; protected set; }
+        public Entity(Id id)
+		{
+            this.Id = id;
+		}
+
+        public virtual Id Id { get; }
 
         public override bool Equals(object obj)
         {

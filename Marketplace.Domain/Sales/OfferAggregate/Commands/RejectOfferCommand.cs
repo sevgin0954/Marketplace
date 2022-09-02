@@ -4,7 +4,7 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Marketplace.Domain.Sales.BuyerAggregate.Commands
+namespace Marketplace.Domain.Sales.OfferAggregate.Commands
 {
 	public class RejectOfferCommand : IRequest<Result>
 	{
@@ -23,9 +23,9 @@ namespace Marketplace.Domain.Sales.BuyerAggregate.Commands
 
 		internal class RejectOfferCommandHandler : IRequestHandler<RejectOfferCommand, Result>
 		{
-			private readonly IRepository<Buyer> buyerRepository;
+			private readonly IAggregateRepository<Buyer> buyerRepository;
 
-			internal RejectOfferCommandHandler(IRepository<Buyer> buyerRepository)
+			internal RejectOfferCommandHandler(IAggregateRepository<Buyer> buyerRepository)
 			{
 				this.buyerRepository = buyerRepository;
 			}

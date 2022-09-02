@@ -4,13 +4,13 @@ namespace Marketplace.Domain.Sales.ProductAggregate.Events
 {
 	public record SuccessfulProductPurchaseEvent : INotification
 	{
-		public SuccessfulProductPurchaseEvent(string buyerId, string productId)
+		public SuccessfulProductPurchaseEvent(string productId, string initiatorId)
 		{
-			this.BuyerId = buyerId;
 			this.ProductId = productId;
+			this.InitiatorId = initiatorId;
 		}
 
-		public string BuyerId { get; }
+		public string InitiatorId { get; }
 
 		public string ProductId { get; }
 	}
