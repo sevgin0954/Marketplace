@@ -1,4 +1,5 @@
 ﻿using Marketplace.Domain.Common;
+using Marketplace.Domain.Sales.ProductAggregate.Events;
 using System;
 
 namespace Marketplace.Domain.Sales.ProductAggregate
@@ -42,11 +43,19 @@ namespace Marketplace.Domain.Sales.ProductAggregate
 		{
 			if (initiatorId == this.SellerId)
 			{
-				this.AddDomainEvent(new );
+				this.AddDomainEvent(
+					new ProductCouldNotBeBoughtEvent(initiatorId, this.Id.Value, SELLER_CANT_BUY_HIS_OWN_PRODUCT));
 			}
-				// result = Result.Fail(SELLER_CANT_BUY_HIS_OWN_PRODUCT);
 			else if (this.Status != ProductStatus.Unsold)
-				// result = Result.Fail(PRODUCT_NOT_IN_SALE_ANYMORE);
+			{
+				this.AddDomainEvent(
+					new ProductCouldNotBeBoughtEvent(initiatorId, this.Id.Value, PRODUCT_NOT_IN_SALE_ANYMORE));
+			}
+			else
+			{
+				this.AddDomainEvent(
+					new ProductCouldBeBoughtEvent(initiatorId, this.Id.Value));
+			}
 		}
 	}
 }

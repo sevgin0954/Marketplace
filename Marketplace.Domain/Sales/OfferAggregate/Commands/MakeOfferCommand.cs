@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace Marketplace.Domain.Sales.OfferAggregate.Commands
 {
-	// TODO: Repeated name in makeoffersaga
 	internal class MakeOfferCommand : IRequest<Result>
 	{
 		public MakeOfferCommand(string buyerId, string productId, string message, int quantity, string sellerId)
@@ -18,21 +17,21 @@ namespace Marketplace.Domain.Sales.OfferAggregate.Commands
 			this.SellerId = sellerId;
 		}
 
-		public string BuyerId { get; set; }
+		public string BuyerId { get; }
 
-		public string ProductId { get; set; }
+		public string ProductId { get; }
 
-		public string Message { get; set; }
+		public string Message { get; }
 
-		public int Quantity { get; set; }
+		public int Quantity { get; }
 
-		public string SellerId { get; set; }
+		public string SellerId { get; }
 
 		internal class MakeOfferCommandHandler : IRequestHandler<MakeOfferCommand, Result>
 		{
-			private readonly IOfferRepository offerRepository;
+			private readonly IRepository<Offer> offerRepository;
 
-			public MakeOfferCommandHandler(IOfferRepository offerRepository)
+			public MakeOfferCommandHandler(IRepository<Offer> offerRepository)
 			{
 				this.offerRepository = offerRepository;
 			}

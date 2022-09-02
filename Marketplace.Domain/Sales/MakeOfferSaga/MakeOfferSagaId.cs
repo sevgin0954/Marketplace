@@ -2,7 +2,8 @@
 
 namespace Marketplace.Domain.Sales.MakeOfferSaga
 {
-	public class MakeOfferSagaId : Id
+	// TODO: Should I make struct???
+	public record MakeOfferSagaId : Id
 	{
 		public MakeOfferSagaId(string buyerId, string productId)
 			: base(buyerId + productId)

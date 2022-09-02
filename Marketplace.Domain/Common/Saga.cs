@@ -2,8 +2,6 @@
 {
 	public abstract class Saga<TData>
 	{
-		protected bool isCompleted;
-
 		public Saga(Id id, TData data)
 		{
 			this.Data = data;
@@ -14,10 +12,9 @@
 
 		protected TData Data { get; }
 
-		public bool IsCompleted => this.isCompleted;
+		public bool IsCompleted { get; protected set; }
 
-		// TODO: Make protected
-		public Result Result { get; set; }
+		public Result Result { get; protected set; }
 
 	}
 }
