@@ -2,7 +2,7 @@
 
 namespace Marketplace.Domain.Sales.ProductAggregate.Events
 {
-	public class ProductCouldBeBoughtEvent : INotification
+	internal class ProductCouldBeBoughtEvent : INotification
 	{
 		public ProductCouldBeBoughtEvent(string buyerId, string productId)
 		{

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Marketplace.Domain.Sales.MakeOfferSaga.EventHandlers
 {
-	public class TransitionProductCouldBeBoughtEventHandler : INotificationHandler<ProductCouldBeBoughtEvent>
+	internal class TransitionProductCouldBeBoughtEventHandler : INotificationHandler<ProductCouldBeBoughtEvent>
 	{
 		private readonly IMakeOfferSagaRepository makeOfferSagaRepository;
 

@@ -2,7 +2,7 @@
 
 namespace Marketplace.Domain.Sales.SellerAggregate.Events
 {
-	public record BuyerIsBannedEvent : INotification
+	internal record BuyerIsBannedEvent : INotification
 	{
 		public BuyerIsBannedEvent(string buyerId, string sellerId)
 		{

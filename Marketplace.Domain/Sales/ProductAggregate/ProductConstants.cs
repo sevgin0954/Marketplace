@@ -1,6 +1,6 @@
 ﻿namespace Marketplace.Domain.Sales.ProductAggregate
 {
-	public static class ProductConstants
+	internal static class ProductConstants
 	{
 		public readonly static int NameMaxLength = 10;
 		public readonly static int DescriptionMaxLength = 300;

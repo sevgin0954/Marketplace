@@ -3,6 +3,7 @@ using System;
 
 namespace Marketplace.Domain.Sales.OfferAggregate
 {
+	// TODO: Should offer be a value object
 	public class Offer : AggregateRoot
 	{
 		public Offer(OfferId id, string productId, string sellerId, string message)

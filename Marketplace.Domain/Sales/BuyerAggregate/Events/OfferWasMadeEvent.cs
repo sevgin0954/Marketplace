@@ -2,7 +2,7 @@
 
 namespace Marketplace.Domain.Sales.BuyerAggregate.Events
 {
-	public class OfferWasMadeEvent : INotification
+	internal class OfferWasMadeEvent : INotification
 	{
 		public OfferWasMadeEvent(string initiatorId, string productId)
 		{

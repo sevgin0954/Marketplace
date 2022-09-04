@@ -2,7 +2,7 @@
 
 namespace Marketplace.Domain.Sales.ProductAggregate.Events
 {
-	public class ProductCouldNotBeBoughtEvent : INotification
+	internal class ProductCouldNotBeBoughtEvent : INotification
 	{
 		public ProductCouldNotBeBoughtEvent(string buyerId, string productId, string reason)
 		{

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Marketplace.Domain.Sales.MakeOfferSaga.EventHandlers
 {
-	public class TransitionWhenBuyerIsBannedEventHandler : INotificationHandler<BuyerIsBannedEvent>
+	internal class TransitionWhenBuyerIsBannedEventHandler : INotificationHandler<BuyerIsBannedEvent>
 	{
 		private readonly IMakeOfferSagaRepository makeOfferSagaRepository;
 

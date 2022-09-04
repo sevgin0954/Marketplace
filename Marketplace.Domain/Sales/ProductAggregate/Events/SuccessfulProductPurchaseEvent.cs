@@ -2,7 +2,7 @@
 
 namespace Marketplace.Domain.Sales.ProductAggregate.Events
 {
-	public record SuccessfulProductPurchaseEvent : INotification
+	internal record SuccessfulProductPurchaseEvent : INotification
 	{
 		public SuccessfulProductPurchaseEvent(string productId, string initiatorId)
 		{
