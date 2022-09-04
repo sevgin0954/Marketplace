@@ -5,13 +5,12 @@ namespace Marketplace.Domain.Sales.OfferAggregate
 {
 	public class Offer : AggregateRoot
 	{
-		public Offer(OfferId id, string productId, string sellerId, string message, int quantity)
+		public Offer(OfferId id, string productId, string sellerId, string message)
 			: base(id)
 		{
 			this.ProductId = productId;
 			this.SellerId = sellerId;
 			this.Message = message;
-			this.Quantity = quantity;
 		}
 
 		public OfferStatus Status { get; private set; } = OfferStatus.Pending;
@@ -23,8 +22,6 @@ namespace Marketplace.Domain.Sales.OfferAggregate
 		public string Message { get; }
 
 		public string RejectMessage { get; private set; }
-
-		public int Quantity { get; private set; }
 
 		public string BuyerId { get; }
 

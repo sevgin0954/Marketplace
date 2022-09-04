@@ -21,7 +21,7 @@ namespace Marketplace.Domain.Sales.MakeOfferSaga
 
 		public void Transition(BuyerIsBannedEvent message)
 		{
-			this.isCompleted = true;
+			this.IsCompleted = true;
 		}
 
 		public async Task TransitionAsync(BuyerIsNotBannedEvent message)
@@ -32,7 +32,7 @@ namespace Marketplace.Domain.Sales.MakeOfferSaga
 
 		public void Transition(ProductCouldNotBeBoughtEvent message)
 		{
-			this.isCompleted = true;
+			this.IsCompleted = true;
 		}
 
 		public async Task TransitionAsync(ProductCouldBeBoughtEvent message)
@@ -45,7 +45,7 @@ namespace Marketplace.Domain.Sales.MakeOfferSaga
 		{
 			if (this.Data.IsBuyerBanChecked && this.Data.IsProductEligableForBuyChecked)
 			{
-				this.isCompleted = true;
+				this.IsCompleted = true;
 
 				var makeOfferCommand = new OfferAggregate.Commands.MakeOfferCommand(
 					this.Data.BuyerId,

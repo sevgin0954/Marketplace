@@ -1,9 +1,8 @@
-﻿using System;
-using Tactical.DDD;
+﻿using Marketplace.Domain.Common;
 
 namespace Marketplace.Domain.Sales.ProductAggregate
 {
-	public record ProductId : EntityId
+	public record ProductId : Id
 	{
 		public ProductId(string id)
 		{

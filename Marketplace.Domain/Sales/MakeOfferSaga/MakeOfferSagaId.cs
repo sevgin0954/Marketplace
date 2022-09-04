@@ -2,7 +2,6 @@
 
 namespace Marketplace.Domain.Sales.MakeOfferSaga
 {
-	// TODO: Should I make struct???
 	public record MakeOfferSagaId : Id
 	{
 		public MakeOfferSagaId(string buyerId, string productId)
