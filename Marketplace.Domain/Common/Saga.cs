@@ -1,4 +1,6 @@
-﻿namespace Marketplace.Domain.Common
+﻿using Marketplace.Domain.SharedKernel;
+
+namespace Marketplace.Domain.Common
 {
 	public abstract class Saga<TData>
 	{

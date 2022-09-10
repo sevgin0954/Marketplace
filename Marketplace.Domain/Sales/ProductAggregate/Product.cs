@@ -1,10 +1,11 @@
 ﻿using Marketplace.Domain.Common;
 using Marketplace.Domain.Sales.ProductAggregate.Events;
+using Marketplace.Domain.SharedKernel;
 using System;
 
 namespace Marketplace.Domain.Sales.ProductAggregate
 {
-	public class Product : AggregateRoot
+	public class Product : AggregateRoot<Id>
 	{
 		const string PRODUCT_NOT_IN_SALE_ANYMORE = "Product is not in sale anymore!";
 		const string SELLER_CANT_BUY_HIS_OWN_PRODUCT = "Seller cannot buy his own product";

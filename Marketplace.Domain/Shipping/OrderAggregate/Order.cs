@@ -1,13 +1,15 @@
 ﻿using Marketplace.Domain.Common;
+using Marketplace.Domain.SharedKernel;
 using System;
 
 namespace Marketplace.Domain.Shipping.OrderAggregate
 {
-	public class Order : AggregateRoot
+	public class Order : AggregateRoot<Id>
 	{
 		private string trackingNumber;
 
-		public Order()
+		public Order(Id id)
+			: base(id)
 		{
 			this.Status = Status.Processing;
 		}

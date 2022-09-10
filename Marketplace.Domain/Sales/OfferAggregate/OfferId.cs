@@ -1,10 +1,18 @@
-﻿using Marketplace.Domain.Common;
+﻿using Marketplace.Domain.SharedKernel;
 
 namespace Marketplace.Domain.Sales.OfferAggregate
 {
-	public class OfferId : Id
+	public record OfferId : Id
 	{
-		public OfferId(string productId, string buyerId)
-			: base(productId + buyerId) { }
+		public OfferId(Id productId, Id buyerId)
+			: base(productId.Value + buyerId.Value)
+		{
+			this.ProductId = productId;
+			this.BuyerId = buyerId;
+		}
+
+		public Id ProductId { get; }
+
+		public Id BuyerId { get; }
 	}
 }

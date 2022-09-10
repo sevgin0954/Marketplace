@@ -1,6 +1,8 @@
-﻿namespace Marketplace.Domain.Common
+﻿using Marketplace.Domain.SharedKernel;
+
+namespace Marketplace.Domain.Common
 {
-	public interface IAggregateRepository<T> : IRepository<T> where T : AggregateRoot
+	public interface IAggregateRepository<T, TId> : IRepository<T> where T : AggregateRoot<TId> where TId : Id
 	{
 	}
 }

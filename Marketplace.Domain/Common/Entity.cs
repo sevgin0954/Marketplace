@@ -1,17 +1,19 @@
-﻿namespace Marketplace.Domain.Common
+﻿using Marketplace.Domain.SharedKernel;
+
+namespace Marketplace.Domain.Common
 {
-	public abstract class Entity
+	public abstract class Entity<TId> where TId : Id
 	{
-        public Entity(Id id)
+        public Entity(TId id)
 		{
             this.Id = id;
 		}
 
-        public virtual Id Id { get; }
+        public virtual TId Id { get; }
 
         public override bool Equals(object obj)
         {
-            var other = obj as Entity;
+            var other = obj as Entity<TId>;
 
             if (ReferenceEquals(other, null))
                 return false;
@@ -25,7 +27,7 @@
             return Id == other.Id;
         }
 
-        public static bool operator ==(Entity a, Entity b)
+        public static bool operator ==(Entity<TId> a, Entity<TId> b)
         {
             if (ReferenceEquals(a, null) && ReferenceEquals(b, null))
                 return true;
@@ -36,7 +38,7 @@
             return a.Equals(b);
         }
 
-        public static bool operator !=(Entity a, Entity b)
+        public static bool operator !=(Entity<TId> a, Entity<TId> b)
         {
             return !(a == b);
         }

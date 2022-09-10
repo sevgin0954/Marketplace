@@ -1,11 +1,12 @@
 ﻿using Marketplace.Domain.Common;
 using Marketplace.Domain.Sales.SellerAggregate.Events;
+using Marketplace.Domain.SharedKernel;
 using System;
 using System.Collections.Generic;
 
 namespace Marketplace.Domain.Sales.SellerAggregate
 {
-	public class Seller : AggregateRoot
+	public class Seller : AggregateRoot<Id>
 	{
 		private readonly HashSet<string> bannedBuyerIds = new HashSet<string>();
 

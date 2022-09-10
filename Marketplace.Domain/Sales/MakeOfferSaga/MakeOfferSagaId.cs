@@ -1,4 +1,4 @@
-﻿using Marketplace.Domain.Common;
+﻿using Marketplace.Domain.SharedKernel;
 
 namespace Marketplace.Domain.Sales.MakeOfferSaga
 {

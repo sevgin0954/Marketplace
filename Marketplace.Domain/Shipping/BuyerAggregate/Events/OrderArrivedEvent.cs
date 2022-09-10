@@ -1,8 +1,8 @@
-﻿using Marketplace.Domain.Common;
+﻿using MediatR;
 
 namespace Marketplace.Domain.Shipping.BuyerAggregate.Events
 {
-	public class OrderArrivedEvent : IDomainEvent
+	public class OrderArrivedEvent : INotification
 	{
 		public OrderArrivedEvent(string orderId, string buyerId)
 		{

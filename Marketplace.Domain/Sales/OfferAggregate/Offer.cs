@@ -1,40 +1,48 @@
 ﻿using Marketplace.Domain.Common;
+using Marketplace.Domain.Common.Constants;
+using Marketplace.Domain.SharedKernel;
 using System;
 
 namespace Marketplace.Domain.Sales.OfferAggregate
 {
-	// TODO: Should offer be a value object
-	public class Offer : AggregateRoot
+	public class Offer : AggregateRoot<OfferId>
 	{
-		public Offer(OfferId id, string productId, string sellerId, string message)
+		const string CANT_DISCARD_NON_PENDING_OFFER = "Can't discard non pending offer!";
+
+		public Offer(OfferId id, Id sellerId, string message)
 			: base(id)
 		{
-			this.ProductId = productId;
 			this.SellerId = sellerId;
 			this.Message = message;
+			this.ProductId = id.ProductId;
+			this.BuyerId = id.BuyerId;
 		}
 
 		public OfferStatus Status { get; private set; } = OfferStatus.Pending;
 
-		public string ProductId { get; }
-
-		public string SellerId { get; }
+		public Id SellerId { get; }
 
 		public string Message { get; }
 
 		public string RejectMessage { get; private set; }
 
-		public string BuyerId { get; }
+		public Id ProductId { get; }
 
-		public void DiscardOffer(string initiatorId)
+		public Id BuyerId { get; }
+
+		public void DiscardOffer(Id initiatorId)
 		{
+			if (initiatorId == null)
+				throw new ArgumentNullException(nameof(initiatorId));
 			if (initiatorId != this.BuyerId)
-				throw new InvalidOperationException();
+				throw new InvalidOperationException(ErrorConstants.BUYER_CANT_BE_THE_INITIATOR);
+			if (this.Status != OfferStatus.Pending)
+				throw new InvalidOperationException(CANT_DISCARD_NON_PENDING_OFFER);
 
 			this.Status = OfferStatus.Discarded;
 		}
 
-		public void AcceptOffer(string initiatorId)
+		public void AcceptOffer(Id initiatorId)
 		{
 			this.ValidateInitiatorIsNotTheSeller(initiatorId);
 			this.ThrowExceptionIfStatusNotPending();
@@ -42,7 +50,7 @@ namespace Marketplace.Domain.Sales.OfferAggregate
 			this.Status = OfferStatus.Accepted;
 		}
 
-		public void RejectOffer(string initiatorId, string reason)
+		public void RejectOffer(Id initiatorId, string reason)
 		{
 			this.ValidateInitiatorIsNotTheSeller(initiatorId);
 			this.ThrowExceptionIfStatusNotPending();
@@ -51,7 +59,7 @@ namespace Marketplace.Domain.Sales.OfferAggregate
 			this.Status = OfferStatus.Rejected;
 		}
 
-		private void ValidateInitiatorIsNotTheSeller(string initiatorId)
+		private void ValidateInitiatorIsNotTheSeller(Id initiatorId)
 		{
 			if (initiatorId != this.SellerId)
 				throw new InvalidOperationException();

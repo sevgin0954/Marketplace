@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Marketplace.Domain.Sales.MakeOfferSaga
 {
-	public class MakeOffer : Saga<MakeOfferSagaData>
+	internal class MakeOffer : Saga<MakeOfferSagaData>
 	{
 		private readonly Mediator mediator;
 

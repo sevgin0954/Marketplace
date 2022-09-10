@@ -1,5 +1,6 @@
 ﻿using Marketplace.Domain.Common;
 using Marketplace.Domain.Common.Constants;
+using Marketplace.Domain.SharedKernel;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
@@ -38,8 +39,12 @@ namespace Marketplace.Domain.Sales.OfferAggregate.Commands
 
 			public async Task<Result> Handle(MakeOfferCommand request, CancellationToken cancellationToken)
 			{
-				var offerId = new OfferId(request.ProductId, request.BuyerId);
-				var offer = new Offer(offerId, request.ProductId, request.SellerId, request.Message, request.Quantity);
+				var productId = new Id(request.ProductId);
+				var buyerId = new Id(request.BuyerId);
+				var offerId = new OfferId(productId, buyerId);
+
+				var sellerId = new Id(request.SellerId);
+				var offer = new Offer(offerId, sellerId, request.Message);
 
 				var rowsChanged = await this.offerRepository.AddAsync(offer);
 				if (rowsChanged == 0)

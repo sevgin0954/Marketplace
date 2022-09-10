@@ -4,21 +4,21 @@ using System.Threading.Tasks;
 
 namespace Marketplace.Domain.Shipping.OrderAggregate.Handlers
 {
-	class ChangeStatusToDeliveredWhenOrderArrivedEventHandler : IHandler<OrderArrivedEvent>
-	{
-		private readonly IAggregateRepository<Order> orderRepository;
+	//class ChangeStatusToDeliveredWhenOrderArrivedEventHandler : IHandler<OrderArrivedEvent>
+	//{
+	//	private readonly IAggregateRepository<Order> orderRepository;
 
-		public ChangeStatusToDeliveredWhenOrderArrivedEventHandler(IAggregateRepository<Order> orderRepository)
-		{
-			this.orderRepository = orderRepository;
-		}
+	//	public ChangeStatusToDeliveredWhenOrderArrivedEventHandler(IAggregateRepository<Order> orderRepository)
+	//	{
+	//		this.orderRepository = orderRepository;
+	//	}
 
-		public async Task HandleAsync(OrderArrivedEvent domainEvent)
-		{
-			var order = await this.orderRepository.GetByIdAsync(domainEvent.OrderId);
-			order.ChangeStatusToDelivered(domainEvent.BuyerId);
+	//	public async Task HandleAsync(OrderArrivedEvent domainEvent)
+	//	{
+	//		var order = await this.orderRepository.GetByIdAsync(domainEvent.OrderId);
+	//		order.ChangeStatusToDelivered(domainEvent.BuyerId);
 
-			await this.orderRepository.SaveChangesAsync();
-		}
-	}
+	//		await this.orderRepository.SaveChangesAsync();
+	//	}
+	//}
 }
