@@ -22,9 +22,16 @@ namespace Marketplace.Tests.Sales
 			return offer;
 		}
 
-		public static Offer Create(Id buyerId)
+		public static Offer CreateWithBuyerId(Id buyerId)
 		{
 			var sellerId = new Id();
+
+			return Create(buyerId, sellerId);
+		}
+
+		public static Offer CreateWithSellerId(Id sellerId)
+		{
+			var buyerId = new Id();
 
 			return Create(buyerId, sellerId);
 		}

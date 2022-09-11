@@ -8,8 +8,6 @@ namespace Marketplace.Tests.Sales.OfferSpecs
 {
 	public class DiscardOfferSpecs
 	{
-		const string CANT_DISCARD_NON_PENDING_OFFER = "Can't discard non pending offer!";
-
 		[Fact]
 		public void Discard_offer_with_null_initiator_id_should_throw_an_exception()
 		{
@@ -29,7 +27,7 @@ namespace Marketplace.Tests.Sales.OfferSpecs
 		{
 			// Arrange
 			var buyerId = new Id();
-			var offer = OfferFactory.Create(buyerId);
+			var offer = OfferFactory.CreateWithBuyerId(buyerId);
 			var initiatorId = new Id();
 
 			// Act
@@ -39,9 +37,11 @@ namespace Marketplace.Tests.Sales.OfferSpecs
 		}
 
 		[Fact]
-		public void Discard_offer_with_state_different_from_pending_should_throw_an_exception()
+		public void Discard_offer_with_status_different_from_pending_should_throw_an_exception()
 		{
 			// Arrange
+			const string EXPECTED_EXCEPTION_MESSSAGE = "Can't discard non pending offer!";
+
 			var buyerId = new Id();
 			var sellerId = new Id();
 			var offer = OfferFactory.Create(buyerId, sellerId);
@@ -51,11 +51,11 @@ namespace Marketplace.Tests.Sales.OfferSpecs
 			// Act
 			// Assert
 			var exception = Assert.Throws<InvalidOperationException>(() => offer.DiscardOffer(buyerId));
-			Assert.Equal(CANT_DISCARD_NON_PENDING_OFFER, exception.Message);
+			Assert.Equal(EXPECTED_EXCEPTION_MESSSAGE, exception.Message);
 		}
 
 		[Fact]
-		public void Discard_offer_should_change_offer_state_to_discarded()
+		public void Discard_offer_should_change_offer_status_to_discarded()
 		{
 			// Arrange
 			var buyerId = new Id();

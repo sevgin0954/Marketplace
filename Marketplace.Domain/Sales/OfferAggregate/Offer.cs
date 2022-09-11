@@ -8,6 +8,8 @@ namespace Marketplace.Domain.Sales.OfferAggregate
 	public class Offer : AggregateRoot<OfferId>
 	{
 		const string CANT_DISCARD_NON_PENDING_OFFER = "Can't discard non pending offer!";
+		const string CANT_ACCEPT_NON_PENDING_OFFER = "Can't accept non pending offer!";
+		const string CANT_REJECT_NON_PENDING_OFFER = "Can't reject non pending offer!";
 
 		public Offer(OfferId id, Id sellerId, string message)
 			: base(id)
@@ -36,39 +38,41 @@ namespace Marketplace.Domain.Sales.OfferAggregate
 				throw new ArgumentNullException(nameof(initiatorId));
 			if (initiatorId != this.BuyerId)
 				throw new InvalidOperationException(ErrorConstants.BUYER_CANT_BE_THE_INITIATOR);
-			if (this.Status != OfferStatus.Pending)
-				throw new InvalidOperationException(CANT_DISCARD_NON_PENDING_OFFER);
+			this.ThrowExceptionIfStatusNotPending(CANT_DISCARD_NON_PENDING_OFFER);
 
 			this.Status = OfferStatus.Discarded;
 		}
 
 		public void AcceptOffer(Id initiatorId)
 		{
-			this.ValidateInitiatorIsNotTheSeller(initiatorId);
-			this.ThrowExceptionIfStatusNotPending();
+			if (initiatorId == null)
+				throw new ArgumentNullException(nameof(initiatorId));
+
+			this.ValidateIfInitiatorIsTheSeller(initiatorId);
+			this.ThrowExceptionIfStatusNotPending(CANT_ACCEPT_NON_PENDING_OFFER);
 
 			this.Status = OfferStatus.Accepted;
 		}
 
 		public void RejectOffer(Id initiatorId, string reason)
 		{
-			this.ValidateInitiatorIsNotTheSeller(initiatorId);
-			this.ThrowExceptionIfStatusNotPending();
+			this.ValidateIfInitiatorIsTheSeller(initiatorId);
+			this.ThrowExceptionIfStatusNotPending(CANT_REJECT_NON_PENDING_OFFER);
 
 			this.RejectMessage = reason;
 			this.Status = OfferStatus.Rejected;
 		}
 
-		private void ValidateInitiatorIsNotTheSeller(Id initiatorId)
+		private void ValidateIfInitiatorIsTheSeller(Id initiatorId)
 		{
 			if (initiatorId != this.SellerId)
-				throw new InvalidOperationException();
+				throw new InvalidOperationException(ErrorConstants.INITIATOR_SHOULD_BE_THE_SELLER);
 		}
 
-		private void ThrowExceptionIfStatusNotPending()
+		private void ThrowExceptionIfStatusNotPending(string message)
 		{
 			if (this.Status != OfferStatus.Pending)
-				throw new InvalidOperationException();
+				throw new InvalidOperationException(message);
 		}
 	}
 }

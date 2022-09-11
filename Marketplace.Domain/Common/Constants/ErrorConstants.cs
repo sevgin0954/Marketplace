@@ -7,5 +7,6 @@ namespace Marketplace.Domain.Common.Constants
 	{
 		public static string NO_RECORD_ALTERED = "No records was altered!";
 		public static string BUYER_CANT_BE_THE_INITIATOR = "Buyer can't be the initiator for this operation!";
+		public static string INITIATOR_SHOULD_BE_THE_SELLER = "The initiator should be the seller!";
 	}
 }
