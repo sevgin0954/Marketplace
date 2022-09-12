@@ -34,10 +34,9 @@ namespace Marketplace.Domain.Sales.OfferAggregate
 
 		public void DiscardOffer(Id initiatorId)
 		{
-			if (initiatorId == null)
-				throw new ArgumentNullException(nameof(initiatorId));
+			ArgumentValidator.NotNullValidator(initiatorId, nameof(initiatorId));
 			if (initiatorId != this.BuyerId)
-				throw new InvalidOperationException(ErrorConstants.BUYER_CANT_BE_THE_INITIATOR);
+				throw new InvalidOperationException(ErrorConstants.INITIATOR_SHOULD_BE_THE_BUYER);
 			this.ThrowExceptionIfStatusNotPending(CANT_DISCARD_NON_PENDING_OFFER);
 
 			this.Status = OfferStatus.Discarded;
@@ -45,10 +44,8 @@ namespace Marketplace.Domain.Sales.OfferAggregate
 
 		public void AcceptOffer(Id initiatorId)
 		{
-			if (initiatorId == null)
-				throw new ArgumentNullException(nameof(initiatorId));
-
-			this.ValidateIfInitiatorIsTheSeller(initiatorId);
+			ArgumentValidator.NotNullValidator(initiatorId, nameof(initiatorId));
+			this.ThrowExceptionIfInitiatorIsNotTheSeller(initiatorId);
 			this.ThrowExceptionIfStatusNotPending(CANT_ACCEPT_NON_PENDING_OFFER);
 
 			this.Status = OfferStatus.Accepted;
@@ -56,14 +53,17 @@ namespace Marketplace.Domain.Sales.OfferAggregate
 
 		public void RejectOffer(Id initiatorId, string reason)
 		{
-			this.ValidateIfInitiatorIsTheSeller(initiatorId);
+			ArgumentValidator.NotNullValidator(initiatorId, nameof(initiatorId));
+			ArgumentValidator.NotNullOrEmpty(reason, nameof(reason));
+
+			this.ThrowExceptionIfInitiatorIsNotTheSeller(initiatorId);
 			this.ThrowExceptionIfStatusNotPending(CANT_REJECT_NON_PENDING_OFFER);
 
 			this.RejectMessage = reason;
 			this.Status = OfferStatus.Rejected;
 		}
 
-		private void ValidateIfInitiatorIsTheSeller(Id initiatorId)
+		private void ThrowExceptionIfInitiatorIsNotTheSeller(Id initiatorId)
 		{
 			if (initiatorId != this.SellerId)
 				throw new InvalidOperationException(ErrorConstants.INITIATOR_SHOULD_BE_THE_SELLER);

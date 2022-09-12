@@ -33,7 +33,7 @@ namespace Marketplace.Tests.Sales.OfferSpecs
 			// Act
 			// Assert
 			var exception = Assert.Throws<InvalidOperationException>(() => offer.DiscardOffer(initiatorId));
-			Assert.Equal(ErrorConstants.BUYER_CANT_BE_THE_INITIATOR, exception.Message);
+			Assert.Equal(ErrorConstants.INITIATOR_SHOULD_BE_THE_BUYER, exception.Message);
 		}
 
 		[Fact]
