@@ -48,11 +48,11 @@ namespace Marketplace.Domain.Sales.OfferAggregate.Commands
 
 				var rowsChanged = await this.offerRepository.AddAsync(offer);
 				if (rowsChanged == 0)
-					return Result.Fail(ErrorConstants.NO_RECORD_ALTERED);
-				else
 				{
-					return Result.Ok();
+					return Result.Fail(ErrorConstants.NO_RECORD_ALTERED);
 				}
+
+				return Result.Ok();
 			}
 		}
 	}
