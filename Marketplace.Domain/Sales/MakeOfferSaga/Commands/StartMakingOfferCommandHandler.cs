@@ -47,7 +47,7 @@ namespace Marketplace.Domain.Sales.MakeOfferSaga.Commands
 				Result result;
 
 				var makeOfferSagaId = new MakeOfferSagaId(notification.BuyerId, notification.ProductId);
-				var makeOfferSaga = await this.makeOfferSagaRepository.GetByIdAsync(makeOfferSagaId.Value);
+				var makeOfferSaga = await this.makeOfferSagaRepository.GetByIdAsync(makeOfferSagaId);
 				if (makeOfferSaga == null || makeOfferSaga.IsCompleted == false)
 				{
 					await this.CreateSaga(

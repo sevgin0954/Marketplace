@@ -1,6 +1,7 @@
 ﻿using Marketplace.Domain.Common;
 using Marketplace.Domain.Common.Constants;
-using Marketplace.Domain.Sales.BuyerAggregate;
+using Marketplace.Domain.Common.Exceptions;
+using Marketplace.Domain.SharedKernel;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,41 +10,52 @@ namespace Marketplace.Domain.Sales.OfferAggregate.Commands
 {
 	public class AcceptOfferCommand : IRequest<Result>
 	{
-		public AcceptOfferCommand(string productId, string sellerId)
+		public AcceptOfferCommand(string productId, string sellerId, string buyerId)
 		{
 			this.ProductId = productId;
 			this.InitiatorId = sellerId;
+			this.BuyerId = buyerId;
 		}
 
 		public string ProductId { get; }
 
 		public string InitiatorId { get; }
 
-		//internal class AcceptOfferCommandHandler : IRequestHandler<AcceptOfferCommand, Result>
-		//{
-		//	private readonly IAggregateRepository<Buyer> buyerRepository;
+		public string BuyerId { get; }
 
-		//	internal AcceptOfferCommandHandler(IAggregateRepository<Buyer> buyerRepository)
-		//	{
-		//		this.buyerRepository = buyerRepository;
-		//	}
+		internal class AcceptOfferCommandHandler : IRequestHandler<AcceptOfferCommand, Result>
+		{
+			private readonly IAggregateRepository<Offer, OfferId> offerRepository;
 
-		//	public async Task<Result> Handle(AcceptOfferCommand request, CancellationToken cancellationToken)
-		//	{
-		//		//Result result = Result.Ok();
+			internal AcceptOfferCommandHandler(IAggregateRepository<Offer, OfferId> offerRepository)
+			{
+				this.offerRepository = offerRepository;
+			}
 
-		//		//var buyer = await this.buyerRepository.GetByIdAsync(request.ProductId);
-		//		//if (buyer == null)
-		//		//	result = Result.Fail(BuyerConstants.BUYER_NOT_FOUND_EXCEPTION);
+			public async Task<Result> Handle(AcceptOfferCommand request, CancellationToken cancellationToken)
+			{
+				var productId = new Id(request.ProductId);
+				var buyerId = new Id(request.BuyerId);
+				var offerId = new OfferId(productId, buyerId);
 
-		//		//buyer.AcceptOffer(request.ProductId, request.InitiatorId);
+				var offer = await this.offerRepository.GetByIdAsync(offerId);
+				if (offer == null)
+				{
+					const string EXCEPTION_MESSAGE = "Offer was not found!";
+					throw new NotFoundException(EXCEPTION_MESSAGE);
+				}
 
-		//		//var changedRowsCount = await this.buyerRepository.SaveChangesAsync();
-		//		//if (changedRowsCount == 0)
-		//		//	result = Result.Fail(ErrorConstants.NO_RECORD_ALTERED);
+				var sellerId = new Id(request.InitiatorId);
+				offer.AcceptOffer(sellerId);
 
-		//		//return result;
-		//	}
-		//}
+				var changedRowsCount = await this.offerRepository.SaveChangesAsync();
+				if (changedRowsCount == 0)
+				{
+					return Result.Fail(ErrorConstants.NO_RECORD_ALTERED);
+				}
+
+				return Result.Ok();
+			}
+		}
 	}
 }

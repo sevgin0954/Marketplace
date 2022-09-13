@@ -1,6 +1,6 @@
-﻿using System.Runtime.CompilerServices;
+﻿using Marketplace.Domain.Common.Constants;
+using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("Marketplace.Tests")]
 namespace Marketplace.Domain.Common.Constants
 {
 	internal static class ErrorConstants

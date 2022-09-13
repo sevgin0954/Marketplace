@@ -17,7 +17,7 @@ namespace Marketplace.Domain.Sales.MakeOfferSaga.EventHandlers
 		public async Task Handle(ProductCouldBeBoughtEvent notification, CancellationToken cancellationToken)
 		{
 			var makeOfferSagaId = new MakeOfferSagaId(notification.BuyerId, notification.ProductId);
-			var makeOfferSaga = await this.makeOfferSagaRepository.GetByIdAsync(makeOfferSagaId.Value);
+			var makeOfferSaga = await this.makeOfferSagaRepository.GetByIdAsync(makeOfferSagaId);
 
 			await makeOfferSaga.TransitionAsync(notification);
 

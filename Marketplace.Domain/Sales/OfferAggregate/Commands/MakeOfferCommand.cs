@@ -30,9 +30,9 @@ namespace Marketplace.Domain.Sales.OfferAggregate.Commands
 
 		internal class MakeOfferCommandHandler : IRequestHandler<MakeOfferCommand, Result>
 		{
-			private readonly IRepository<Offer> offerRepository;
+			private readonly IRepository<Offer, OfferId> offerRepository;
 
-			public MakeOfferCommandHandler(IRepository<Offer> offerRepository)
+			public MakeOfferCommandHandler(IRepository<Offer, OfferId> offerRepository)
 			{
 				this.offerRepository = offerRepository;
 			}
