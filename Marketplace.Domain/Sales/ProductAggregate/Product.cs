@@ -1,4 +1,5 @@
 ﻿using Marketplace.Domain.Common;
+using Marketplace.Domain.Common.Constants;
 using Marketplace.Domain.Sales.ProductAggregate.Events;
 using Marketplace.Domain.SharedKernel;
 using System;
@@ -7,10 +8,9 @@ namespace Marketplace.Domain.Sales.ProductAggregate
 {
 	public class Product : AggregateRoot<Id>
 	{
-		const string PRODUCT_NOT_IN_SALE_ANYMORE = "Product is not in sale anymore!";
-		const string SELLER_CANT_BUY_HIS_OWN_PRODUCT = "Seller cannot buy his own product";
+		private decimal price;
 
-		public Product(Id id, decimal price, string sellerId)
+		public Product(Id id, decimal price, Id sellerId)
 			: base(id)
 		{
 			this.Price = price;
@@ -18,16 +18,31 @@ namespace Marketplace.Domain.Sales.ProductAggregate
 			this.Status = ProductStatus.Unsold;
 		}
 
-		public decimal Price { get; private set; }
+		public decimal Price
+		{
+			get { return this.price; }
+			private set
+			{
+				if (value < 0)
+					throw new InvalidOperationException(ErrorConstants.NUMBER_CANT_BE_NEGATIVE);
 
-		public string SellerId { get; private set; }
+				this.price = value;
+			}
+		}
+
+		public Id SellerId { get; private set; }
 
 		public ProductStatus Status { get; private set; }
 
-		public void Archive()
+		public void Archive(Id initiatorId)
 		{
+			if (initiatorId != this.SellerId)
+				throw new InvalidOperationException(ErrorConstants.INITIATOR_SHOULD_BE_THE_SELLER);
 			if (this.Status == ProductStatus.Archived)
-				throw new InvalidOperationException();
+			{
+				var exceptionMessage = "Can't archive already archived product!";
+				throw new InvalidOperationException(exceptionMessage);
+			}
 
 			this.Status = ProductStatus.Archived;
 		}
@@ -40,22 +55,26 @@ namespace Marketplace.Domain.Sales.ProductAggregate
 			this.Status = ProductStatus.Unsold;
 		}
 
-		public void CheckIsEligibleForBuyEventCheck(string initiatorId)
+		public void CheckIsEligibleForBuyEventCheck(Id initiatorId)
 		{
 			if (initiatorId == this.SellerId)
 			{
+				var exceptionMessage = "Seller cannot buy his own product!";
 				this.AddDomainEvent(
-					new ProductCouldNotBeBoughtEvent(initiatorId, this.Id.Value, SELLER_CANT_BUY_HIS_OWN_PRODUCT));
+					new ProductCouldNotBeBoughtEvent(initiatorId.Value, this.Id.Value, exceptionMessage)
+				);
 			}
 			else if (this.Status != ProductStatus.Unsold)
 			{
+				var exceptionMessage = "Product is not in sale anymore!";
 				this.AddDomainEvent(
-					new ProductCouldNotBeBoughtEvent(initiatorId, this.Id.Value, PRODUCT_NOT_IN_SALE_ANYMORE));
+					new ProductCouldNotBeBoughtEvent(initiatorId.Value, this.Id.Value, exceptionMessage)
+				);
 			}
 			else
 			{
 				this.AddDomainEvent(
-					new ProductCouldBeBoughtEvent(initiatorId, this.Id.Value));
+					new ProductCouldBeBoughtEvent(initiatorId.Value, this.Id.Value));
 			}
 		}
 	}
