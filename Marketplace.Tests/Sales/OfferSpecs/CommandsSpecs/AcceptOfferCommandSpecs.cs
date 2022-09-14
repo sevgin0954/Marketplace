@@ -104,28 +104,33 @@ namespace Marketplace.Tests.Sales.OfferSpecs.CommandsSpecs
 		}
 
 		[Fact]
-		public async Task Accept_offer_command_should_accept_offer()
+		public async Task Accept_offer_command_should_accept_the_correct_offer_offer()
 		{
 			// Arrange
 			var sellerId = new Id();
+			var buyerId = new Id();
+			var productId = new Id();
 
-			var offerRepositoryMock = new Mock<IAggregateRepository<Offer, OfferId>>();
+			var repositoryMock = new Mock<IAggregateRepository<Offer, OfferId>>();
 
 			var offer = OfferFactory.CreateWithSellerId(sellerId);
-			this.SetupMockedRepositoryGetByIdAsync(offerRepositoryMock, offer);
+			this.SetupMockedRepositoryGetByIdAsync(repositoryMock, offer);
 
 			var saveChangesReturnValue = 1;
-			this.SetupMockedRepositorySaveChangesAsync(offerRepositoryMock, saveChangesReturnValue);
+			this.SetupMockedRepositorySaveChangesAsync(repositoryMock, saveChangesReturnValue);
 
-			var commandHandler = new AcceptOfferCommandHandler(offerRepositoryMock.Object);
+			var commandHandler = new AcceptOfferCommandHandler(repositoryMock.Object);
 
-			var command = this.CreateAcceptOfferCommand(sellerId);
+			var command = new AcceptOfferCommand(productId.Value, sellerId.Value, buyerId.Value);
 			var cancelationToken = new CancellationToken();
 
 			// Act
 			await commandHandler.Handle(command, cancelationToken);
 
 			// Assert
+			repositoryMock.Verify(rm => rm.GetByIdAsync(
+				It.Is<OfferId>(o => o.BuyerId == buyerId && o.ProductId == productId))
+			);
 			Assert.Equal(OfferStatus.Accepted, offer.Status);
 		}
 
