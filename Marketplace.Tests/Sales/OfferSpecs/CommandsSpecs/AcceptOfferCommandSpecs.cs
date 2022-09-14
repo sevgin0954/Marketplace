@@ -19,11 +19,11 @@ namespace Marketplace.Tests.Sales.OfferSpecs.CommandsSpecs
 			// Arrange
 			const string ERROR_MESSAGE = "Offer was not found!";
 
-			var offerRepositoryMock = new Mock<IAggregateRepository<Offer, OfferId>>();
+			var repositoryMock = new Mock<IAggregateRepository<Offer, OfferId>>();
 			Offer offer = null;
-			this.SetupMockedRepositoryGetByIdAsync(offerRepositoryMock, offer);
+			this.SetupMockedRepositoryGetByIdAsync(repositoryMock, offer);
 
-			var commandHandler = new AcceptOfferCommandHandler(offerRepositoryMock.Object);
+			var commandHandler = new AcceptOfferCommandHandler(repositoryMock.Object);
 
 			// Act
 			// Assert
@@ -38,11 +38,11 @@ namespace Marketplace.Tests.Sales.OfferSpecs.CommandsSpecs
 			// Arrange
 			const string ERROR_MESSAGE = "Offer was not found!";
 
-			var offerRepositoryMock = new Mock<IAggregateRepository<Offer, OfferId>>();
+			var repositoryMock = new Mock<IAggregateRepository<Offer, OfferId>>();
 			Offer offer = null;
-			this.SetupMockedRepositoryGetByIdAsync(offerRepositoryMock, offer);
+			this.SetupMockedRepositoryGetByIdAsync(repositoryMock, offer);
 
-			var commandHandler = new AcceptOfferCommandHandler(offerRepositoryMock.Object);
+			var commandHandler = new AcceptOfferCommandHandler(repositoryMock.Object);
 
 			// Act
 			// Assert
@@ -57,15 +57,15 @@ namespace Marketplace.Tests.Sales.OfferSpecs.CommandsSpecs
 			// Arrange
 			var sellerId = new Id();
 
-			var offerRepositoryMock = new Mock<IAggregateRepository<Offer, OfferId>>();
+			var repositoryMock = new Mock<IAggregateRepository<Offer, OfferId>>();
 
 			var offer = OfferFactory.CreateWithSellerId(sellerId);
-			this.SetupMockedRepositoryGetByIdAsync(offerRepositoryMock, offer);
+			this.SetupMockedRepositoryGetByIdAsync(repositoryMock, offer);
 
 			var saveChangesReturnValue = 0;
-			this.SetupMockedRepositorySaveChangesAsync(offerRepositoryMock, saveChangesReturnValue);
+			this.SetupMockedRepositorySaveChangesAsync(repositoryMock, saveChangesReturnValue);
 
-			var commandHandler = new AcceptOfferCommandHandler(offerRepositoryMock.Object);
+			var commandHandler = new AcceptOfferCommandHandler(repositoryMock.Object);
 
 			var command = this.CreateAcceptOfferCommand(sellerId);
 			var cancelationToken = new CancellationToken();
@@ -83,15 +83,15 @@ namespace Marketplace.Tests.Sales.OfferSpecs.CommandsSpecs
 			// Arrange
 			var sellerId = new Id();
 
-			var offerRepositoryMock = new Mock<IAggregateRepository<Offer, OfferId>>();
+			var repositoryMock = new Mock<IAggregateRepository<Offer, OfferId>>();
 
 			var offer = OfferFactory.CreateWithSellerId(sellerId);
-			this.SetupMockedRepositoryGetByIdAsync(offerRepositoryMock, offer);
+			this.SetupMockedRepositoryGetByIdAsync(repositoryMock, offer);
 
 			var saveChangesReturnValue = 1;
-			this.SetupMockedRepositorySaveChangesAsync(offerRepositoryMock, saveChangesReturnValue);
+			this.SetupMockedRepositorySaveChangesAsync(repositoryMock, saveChangesReturnValue);
 
-			var commandHandler = new AcceptOfferCommandHandler(offerRepositoryMock.Object);
+			var commandHandler = new AcceptOfferCommandHandler(repositoryMock.Object);
 
 			var command = this.CreateAcceptOfferCommand(sellerId);
 			var cancelationToken = new CancellationToken();
@@ -140,15 +140,15 @@ namespace Marketplace.Tests.Sales.OfferSpecs.CommandsSpecs
 			// Arrange
 			var sellerId = new Id();
 
-			var offerRepositoryMock = new Mock<IAggregateRepository<Offer, OfferId>>();
+			var repositoryMock = new Mock<IAggregateRepository<Offer, OfferId>>();
 
 			var offer = OfferFactory.CreateWithSellerId(sellerId);
-			this.SetupMockedRepositoryGetByIdAsync(offerRepositoryMock, offer);
+			this.SetupMockedRepositoryGetByIdAsync(repositoryMock, offer);
 
 			var saveChangesReturnValue = 1;
-			this.SetupMockedRepositorySaveChangesAsync(offerRepositoryMock, saveChangesReturnValue);
+			this.SetupMockedRepositorySaveChangesAsync(repositoryMock, saveChangesReturnValue);
 
-			var commandHandler = new AcceptOfferCommandHandler(offerRepositoryMock.Object);
+			var commandHandler = new AcceptOfferCommandHandler(repositoryMock.Object);
 
 			var command = this.CreateAcceptOfferCommand(sellerId);
 			var cancelationToken = new CancellationToken();
@@ -157,7 +157,7 @@ namespace Marketplace.Tests.Sales.OfferSpecs.CommandsSpecs
 			await commandHandler.Handle(command, cancelationToken);
 
 			// Assert
-			offerRepositoryMock.Verify(orm => orm.SaveChangesAsync(), Times.Once);
+			repositoryMock.Verify(orm => orm.SaveChangesAsync(), Times.Once);
 		}
 
 		private async Task<Result> CallCommandHandlerHandleMethod(AcceptOfferCommandHandler handler)
