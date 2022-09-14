@@ -50,13 +50,20 @@ namespace Marketplace.Domain.Sales.MakeOfferSaga.Commands
 				var makeOfferSaga = await this.makeOfferSagaRepository.GetByIdAsync(makeOfferSagaId);
 				if (makeOfferSaga == null || makeOfferSaga.IsCompleted == false)
 				{
-					await this.CreateSaga(
+					var saga = this.CreateSaga(
 						notification.BuyerId, 
 						notification.ProductId, 
 						notification.Message, 
 						notification.Quantity, 
 						notification.SellerId
 					);
+
+					await saga.StartSagaAsync();
+
+					var rowsChanged = await this.makeOfferSagaRepository.AddAsync(saga);
+					if (rowsChanged == 0)
+						throw new InvalidOperationException();
+
 					result = Result.Ok();
 				}
 				else
@@ -67,15 +74,13 @@ namespace Marketplace.Domain.Sales.MakeOfferSaga.Commands
 				return result;
 			}
 
-			private async Task CreateSaga(string buyerId, string productId, string message, int quantity, string sellerId)
+			private MakeOffer CreateSaga(string buyerId, string productId, string message, int quantity, string sellerId)
 			{
 				var sagaData = new MakeOfferSagaData(buyerId, productId, message, quantity, sellerId);
 				var sagaId = new MakeOfferSagaId(buyerId, productId);
 				var saga = new MakeOffer(sagaData, sagaId, this.mediator);
 
-				var rowsChanged = await this.makeOfferSagaRepository.AddAsync(saga);
-				if (rowsChanged == 0)
-					throw new InvalidOperationException();
+				return saga;
 			}
 		}
 	}

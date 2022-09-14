@@ -41,8 +41,7 @@ namespace Marketplace.Domain.Sales.OfferAggregate.Commands
 				var offer = await this.offerRepository.GetByIdAsync(offerId);
 				if (offer == null)
 				{
-					const string EXCEPTION_MESSAGE = "Offer was not found!";
-					throw new NotFoundException(EXCEPTION_MESSAGE);
+					throw new NotFoundException(nameof(offer));
 				}
 
 				var sellerId = new Id(request.InitiatorId);

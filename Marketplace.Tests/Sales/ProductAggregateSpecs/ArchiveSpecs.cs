@@ -9,6 +9,19 @@ namespace Marketplace.Tests.Sales.ProductAggregateSpecs
 	public class ArchiveSpecs
 	{
 		[Fact]
+		public void Archive_product_with_null_initiator_id_should_throw_an_exception()
+		{
+			// Arrange
+			var product = ProductFactory.Create();
+
+			Id initiatorId = null;
+
+			// Act
+			// Assert
+			Assert.Throws<ArgumentNullException>(() => product.Archive(initiatorId));
+		}
+
+		[Fact]
 		public void Archive_product_with_initiator_not_the_seller_should_throw_an_exception()
 		{
 			// Arrange

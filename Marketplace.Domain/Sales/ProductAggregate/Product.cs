@@ -36,8 +36,9 @@ namespace Marketplace.Domain.Sales.ProductAggregate
 
 		public void Archive(Id initiatorId)
 		{
-			if (initiatorId != this.SellerId)
-				throw new InvalidOperationException(ErrorConstants.INITIATOR_SHOULD_BE_THE_SELLER);
+			ArgumentValidator.NotNullValidator(initiatorId, nameof(initiatorId));
+			this.ThrowExceptionIfInitiatorNotValid(initiatorId);
+
 			if (this.Status == ProductStatus.Archived)
 			{
 				var exceptionMessage = "Can't archive already archived product!";
@@ -47,8 +48,11 @@ namespace Marketplace.Domain.Sales.ProductAggregate
 			this.Status = ProductStatus.Archived;
 		}
 
-		public void Disarchive()
+		public void Disarchive(Id initiatorId)
 		{
+			ArgumentValidator.NotNullValidator(initiatorId, nameof(initiatorId));
+			this.ThrowExceptionIfInitiatorNotValid(initiatorId);
+
 			if (this.Status != ProductStatus.Archived)
 				throw new InvalidOperationException();
 
@@ -57,6 +61,9 @@ namespace Marketplace.Domain.Sales.ProductAggregate
 
 		public void CheckIsEligibleForBuyEventCheck(Id initiatorId)
 		{
+			ArgumentValidator.NotNullValidator(initiatorId, nameof(initiatorId));
+			this.ThrowExceptionIfInitiatorNotValid(initiatorId);
+
 			if (initiatorId == this.SellerId)
 			{
 				var exceptionMessage = "Seller cannot buy his own product!";
@@ -76,6 +83,12 @@ namespace Marketplace.Domain.Sales.ProductAggregate
 				this.AddDomainEvent(
 					new ProductCouldBeBoughtEvent(initiatorId.Value, this.Id.Value));
 			}
+		}
+
+		private void ThrowExceptionIfInitiatorNotValid(Id initiatorId)
+		{
+			if (initiatorId != this.SellerId)
+				throw new InvalidOperationException(ErrorConstants.INITIATOR_SHOULD_BE_THE_SELLER);
 		}
 	}
 }

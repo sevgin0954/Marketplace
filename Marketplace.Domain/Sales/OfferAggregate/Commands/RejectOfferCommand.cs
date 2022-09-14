@@ -45,8 +45,7 @@ namespace Marketplace.Domain.Sales.OfferAggregate.Commands
 
 				if (offer == null)
 				{
-					const string EXCEPTION_MESSAGE = "The buyer was not found";
-					throw new NotFoundException(EXCEPTION_MESSAGE);
+					throw new NotFoundException(nameof(offer));
 				}
 
 				var initiatorId = new Id(request.InitiatorId);
