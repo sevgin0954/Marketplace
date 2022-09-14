@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Xunit;
 using static Marketplace.Domain.Sales.OfferAggregate.Commands.MakeOfferCommand;
 
-namespace Marketplace.Tests.Sales.OfferSpecs.CommandsSpecs
+namespace Marketplace.Tests.Sales.OfferAggregateSpecs.CommandsSpecs
 {
 	public class MakeOfferCommandSpecs
 	{

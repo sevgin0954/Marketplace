@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Marketplace.Domain.Sales.MakeOfferSaga.EventHandlers
 {
-	internal class TransitionWhenBuyerIsBannedEventHandler : INotificationHandler<BuyerIsBannedEvent>
+	internal class TransitionWhenBuyerIsBannedEventHandler : INotificationHandler<BuyerWasBannedEvent>
 	{
 		private readonly IMakeOfferSagaRepository makeOfferSagaRepository;
 
@@ -15,7 +15,7 @@ namespace Marketplace.Domain.Sales.MakeOfferSaga.EventHandlers
 			this.makeOfferSagaRepository = makeOfferSagaRepository;
 		}
 
-		public async Task Handle(BuyerIsBannedEvent notification, CancellationToken cancellationToken)
+		public async Task Handle(BuyerWasBannedEvent notification, CancellationToken cancellationToken)
 		{
 			var makeOfferSaga = await makeOfferSagaRepository
 				.GetAllNotCompletedByIds(notification.BuyerId, notification.SellerId);

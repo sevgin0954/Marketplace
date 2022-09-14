@@ -19,12 +19,12 @@ namespace Marketplace.Domain.Sales.MakeOfferSaga
 			this.mediator = mediator;
 		}
 
-		public void Transition(BuyerIsBannedEvent message)
+		public void Transition(BuyerWasBannedEvent message)
 		{
 			this.IsCompleted = true;
 		}
 
-		public async Task TransitionAsync(BuyerIsNotBannedEvent message)
+		public async Task TransitionAsync(BuyerWasNotBannedEvent message)
 		{
 			this.Data.IsBuyerBanChecked = true;
 			await this .TryCompleteSagaAsync();

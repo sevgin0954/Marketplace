@@ -4,7 +4,7 @@ using Marketplace.Domain.SharedKernel;
 using System;
 using Xunit;
 
-namespace Marketplace.Tests.Sales.OfferSpecs
+namespace Marketplace.Tests.Sales.OfferAggregateSpecs.OfferSpecs
 {
 	public class DiscardOfferSpecs
 	{
