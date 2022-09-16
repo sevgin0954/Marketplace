@@ -1,8 +1,10 @@
-﻿namespace Marketplace.Domain.Sales.MakeOfferSaga
+﻿using Marketplace.Domain.SharedKernel;
+
+namespace Marketplace.Domain.Sales.MakeOfferSagaNS
 {
 	public class MakeOfferSagaData
 	{
-		public MakeOfferSagaData(string buyerId, string productId, string message, int quantity, string sellerId)
+		public MakeOfferSagaData(Id buyerId, Id productId, Id sellerId, string message, int quantity)
 		{
 			this.BuyerId = buyerId;
 			this.SellerId = sellerId;
@@ -11,11 +13,11 @@
 			this.Quantity = quantity;
 		}
 
-		public string BuyerId { get; }
+		public Id BuyerId { get; }
 
-		public string SellerId { get; }
+		public Id SellerId { get; }
 
-		public string ProductId { get; }
+		public Id ProductId { get; }
 
 		public string Message { get; }
 

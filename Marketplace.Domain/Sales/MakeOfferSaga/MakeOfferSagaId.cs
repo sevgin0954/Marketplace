@@ -1,18 +1,18 @@
 ﻿using Marketplace.Domain.SharedKernel;
 
-namespace Marketplace.Domain.Sales.MakeOfferSaga
+namespace Marketplace.Domain.Sales.MakeOfferSagaNS
 {
 	public record MakeOfferSagaId : Id
 	{
-		public MakeOfferSagaId(string buyerId, string productId)
-			: base(buyerId + productId)
+		public MakeOfferSagaId(Id buyerId, Id productId)
+			: base(buyerId.Value + productId.Value)
 		{
 			this.BuyerId = buyerId;
 			this.ProductId = productId;
 		}
 
-		public string BuyerId { get; }
+		public Id BuyerId { get; }
 
-		public string ProductId { get; }
+		public Id ProductId { get; }
 	}
 }

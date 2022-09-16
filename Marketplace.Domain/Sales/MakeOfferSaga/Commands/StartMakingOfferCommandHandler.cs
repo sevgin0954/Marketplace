@@ -1,10 +1,11 @@
 ﻿using Marketplace.Domain.Common;
+using Marketplace.Domain.SharedKernel;
 using MediatR;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Marketplace.Domain.Sales.MakeOfferSaga.Commands
+namespace Marketplace.Domain.Sales.MakeOfferSagaNS.Commands
 {
 	public class StartMakingOfferCommand : IRequest<Result>
 	{
@@ -31,11 +32,11 @@ namespace Marketplace.Domain.Sales.MakeOfferSaga.Commands
 
 		internal class StartMakingOfferCommandHandler : IRequestHandler<StartMakingOfferCommand, Result>
 		{
-			private readonly ISagaRepository<MakeOffer, MakeOfferSagaData> makeOfferSagaRepository;
+			private readonly ISagaRepository<MakeOfferSaga, MakeOfferSagaData> makeOfferSagaRepository;
 			private readonly Mediator mediator;
 
 			internal StartMakingOfferCommandHandler(
-				ISagaRepository<MakeOffer, MakeOfferSagaData> makeOfferSagaRepository,
+				ISagaRepository<MakeOfferSaga, MakeOfferSagaData> makeOfferSagaRepository,
 				Mediator mediator)
 			{
 				this.makeOfferSagaRepository = makeOfferSagaRepository;
@@ -46,16 +47,20 @@ namespace Marketplace.Domain.Sales.MakeOfferSaga.Commands
 			{
 				Result result;
 
-				var makeOfferSagaId = new MakeOfferSagaId(notification.BuyerId, notification.ProductId);
+				var buyerId = new Id(notification.BuyerId);
+				var productId = new Id(notification.ProductId);
+				var makeOfferSagaId = new MakeOfferSagaId(buyerId, productId);
+
 				var makeOfferSaga = await this.makeOfferSagaRepository.GetByIdAsync(makeOfferSagaId);
-				if (makeOfferSaga == null || makeOfferSaga.IsCompleted == false)
+				if (makeOfferSaga == null || makeOfferSaga.IsCompleted)
 				{
+					var sellerId = new Id(notification.SellerId);
 					var saga = this.CreateSaga(
-						notification.BuyerId, 
-						notification.ProductId, 
+						buyerId,
+						productId,
+						sellerId,
 						notification.Message, 
-						notification.Quantity, 
-						notification.SellerId
+						notification.Quantity
 					);
 
 					await saga.StartSagaAsync();
@@ -74,11 +79,11 @@ namespace Marketplace.Domain.Sales.MakeOfferSaga.Commands
 				return result;
 			}
 
-			private MakeOffer CreateSaga(string buyerId, string productId, string message, int quantity, string sellerId)
+			private MakeOfferSaga CreateSaga(Id buyerId, Id productId, Id sellerId, string message, int quantity)
 			{
-				var sagaData = new MakeOfferSagaData(buyerId, productId, message, quantity, sellerId);
+				var sagaData = new MakeOfferSagaData(buyerId, productId, sellerId, message, quantity);
 				var sagaId = new MakeOfferSagaId(buyerId, productId);
-				var saga = new MakeOffer(sagaData, sagaId, this.mediator);
+				var saga = new MakeOfferSaga(sagaData, sagaId, this.mediator);
 
 				return saga;
 			}

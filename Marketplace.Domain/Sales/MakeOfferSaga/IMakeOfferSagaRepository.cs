@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Marketplace.Domain.Sales.MakeOfferSaga
+namespace Marketplace.Domain.Sales.MakeOfferSagaNS
 {
-	internal interface IMakeOfferSagaRepository : ISagaRepository<MakeOffer, MakeOfferSagaData>
+	internal interface IMakeOfferSagaRepository : ISagaRepository<MakeOfferSaga, MakeOfferSagaData>
 	{
-		Task<ICollection<MakeOffer>> GetAllNotCompletedByIds(string sellerId, string buyerId);
+		Task<ICollection<MakeOfferSaga>> GetAllNotCompletedByIds(string sellerId, string buyerId);
 	}
 }

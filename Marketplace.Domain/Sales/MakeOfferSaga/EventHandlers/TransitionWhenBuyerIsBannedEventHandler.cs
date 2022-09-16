@@ -3,7 +3,7 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Marketplace.Domain.Sales.MakeOfferSaga.EventHandlers
+namespace Marketplace.Domain.Sales.MakeOfferSagaNS.EventHandlers
 {
 	internal class TransitionWhenBuyerIsBannedEventHandler : INotificationHandler<BuyerWasBannedEvent>
 	{

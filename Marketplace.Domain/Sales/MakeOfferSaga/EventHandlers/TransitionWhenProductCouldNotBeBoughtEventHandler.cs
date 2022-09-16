@@ -1,9 +1,10 @@
 ﻿using Marketplace.Domain.Sales.ProductAggregate.Events;
+using Marketplace.Domain.SharedKernel;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Marketplace.Domain.Sales.MakeOfferSaga.EventHandlers
+namespace Marketplace.Domain.Sales.MakeOfferSagaNS.EventHandlers
 {
 	internal class TransitionWhenProductCouldNotBeBoughtEventHandler : INotificationHandler<ProductCouldNotBeBoughtEvent>
 	{
@@ -16,7 +17,10 @@ namespace Marketplace.Domain.Sales.MakeOfferSaga.EventHandlers
 
 		public async Task Handle(ProductCouldNotBeBoughtEvent notification, CancellationToken cancellationToken)
 		{
-			var makeOfferSagaId = new MakeOfferSagaId(notification.BuyerId, notification.ProductId);
+			var buyerId = new Id(notification.BuyerId);
+			var productId = new Id(notification.ProductId);
+			var makeOfferSagaId = new MakeOfferSagaId(buyerId, productId);
+
 			var makeOfferSaga = await this.makeOfferSagaRepository.GetByIdAsync(makeOfferSagaId);
 
 			makeOfferSaga.Transition(notification);

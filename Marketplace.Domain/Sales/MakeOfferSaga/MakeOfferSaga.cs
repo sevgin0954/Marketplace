@@ -4,27 +4,28 @@ using Marketplace.Domain.Sales.ProductAggregate.Events;
 using Marketplace.Domain.Sales.SellerAggregate.Commands;
 using Marketplace.Domain.Sales.SellerAggregate.Events;
 using MediatR;
+using System;
 using System.Threading.Tasks;
 
-namespace Marketplace.Domain.Sales.MakeOfferSaga
+namespace Marketplace.Domain.Sales.MakeOfferSagaNS
 {
-	internal class MakeOffer : Saga<MakeOfferSagaData>
+	internal class MakeOfferSaga : Saga<MakeOfferSagaData>
 	{
-		private readonly Mediator mediator;
+		private readonly IMediator mediator;
 
-		public MakeOffer(
+		public MakeOfferSaga(
 			MakeOfferSagaData data,
 			MakeOfferSagaId id,
-			Mediator mediator)
+			IMediator mediator)
 			: base(id, data)
 		{
 			this.mediator = mediator;
 		}
 
-		public async Task StartSagaAsync()
+		public override async Task OnStartSagaAsync()
 		{
-			await this.mediator.Send(new CheckIsBuyerBannedCommand(this.Data.SellerId, this.Data.BuyerId));
-			await this.mediator.Send(new CheckCanBuyProductCommand(this.Data.ProductId, this.Id.Value));
+			await this.mediator.Send(new CheckIsBuyerBannedCommand(this.Data.SellerId.Value, this.Data.BuyerId.Value));
+			await this.mediator.Send(new CheckCanBuyProductCommand(this.Data.ProductId.Value, this.Id.Value));
 		}
 
 		public void Transition(BuyerWasBannedEvent message)
@@ -56,11 +57,11 @@ namespace Marketplace.Domain.Sales.MakeOfferSaga
 				this.IsCompleted = true;
 
 				var makeOfferCommand = new OfferAggregate.Commands.MakeOfferCommand(
-					this.Data.BuyerId,
-					this.Data.ProductId,
+					this.Data.BuyerId.Value,
+					this.Data.ProductId.Value,
 					this.Data.Message,
 					this.Data.Quantity,
-					this.Data.SellerId
+					this.Data.SellerId.Value
 				);
 
 				this.Result = await this.mediator.Send(makeOfferCommand);

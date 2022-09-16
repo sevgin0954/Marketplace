@@ -17,8 +17,6 @@ namespace Marketplace.Tests.Sales.OfferAggregateSpecs.CommandsSpecs
 		public async Task Accept_offer_command_with_incorrect_product_id_should_throw_an_exception()
 		{
 			// Arrange
-			const string ERROR_MESSAGE = "Offer was not found!";
-
 			var repositoryMock = new Mock<IAggregateRepository<Offer, OfferId>>();
 			Offer offer = null;
 			this.SetupMockedRepositoryGetByIdAsync(repositoryMock, offer);
@@ -29,15 +27,12 @@ namespace Marketplace.Tests.Sales.OfferAggregateSpecs.CommandsSpecs
 			// Assert
 			var exception = await Assert
 				.ThrowsAsync<NotFoundException>(() => this.CallCommandHandlerHandleMethod(commandHandler));
-			Assert.Equal(ERROR_MESSAGE, exception.Message);
 		}
 
 		[Fact]
 		public async Task Accept_offer_command_with_incorrect_buyer_id_should_throw_an_exception()
 		{
 			// Arrange
-			const string ERROR_MESSAGE = "Offer was not found!";
-
 			var repositoryMock = new Mock<IAggregateRepository<Offer, OfferId>>();
 			Offer offer = null;
 			this.SetupMockedRepositoryGetByIdAsync(repositoryMock, offer);
@@ -48,7 +43,6 @@ namespace Marketplace.Tests.Sales.OfferAggregateSpecs.CommandsSpecs
 			// Assert
 			var exception = await Assert
 				.ThrowsAsync<NotFoundException>(() => this.CallCommandHandlerHandleMethod(commandHandler));
-			Assert.Equal(ERROR_MESSAGE, exception.Message);
 		}
 
 		[Fact]
