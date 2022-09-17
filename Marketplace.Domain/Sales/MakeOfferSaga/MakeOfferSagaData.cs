@@ -23,7 +23,7 @@ namespace Marketplace.Domain.Sales.MakeOfferSagaNS
 
 		public int Quantity { get; }
 
-		public bool IsBuyerBanChecked { get; set; }
+		public bool IsBuyerNotBannedChecked { get; set; }
 
 		public bool IsProductEligableForBuyChecked { get; set; }
 	}

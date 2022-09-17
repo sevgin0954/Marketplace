@@ -4,7 +4,6 @@ using Marketplace.Domain.Sales.ProductAggregate.Events;
 using Marketplace.Domain.Sales.SellerAggregate.Commands;
 using Marketplace.Domain.Sales.SellerAggregate.Events;
 using MediatR;
-using System;
 using System.Threading.Tasks;
 
 namespace Marketplace.Domain.Sales.MakeOfferSagaNS
@@ -35,8 +34,8 @@ namespace Marketplace.Domain.Sales.MakeOfferSagaNS
 
 		public async Task TransitionAsync(BuyerWasNotBannedEvent message)
 		{
-			this.Data.IsBuyerBanChecked = true;
-			await this .TryCompleteSagaAsync();
+			this.Data.IsBuyerNotBannedChecked = true;
+			await this.TryCompleteSagaAsync();
 		}
 
 		public void Transition(ProductCouldNotBeBoughtEvent message)
@@ -46,13 +45,13 @@ namespace Marketplace.Domain.Sales.MakeOfferSagaNS
 
 		public async Task TransitionAsync(ProductCouldBeBoughtEvent message)
 		{
-			this.Data.IsBuyerBanChecked = true;
+			this.Data.IsProductEligableForBuyChecked = true;
 			await this.TryCompleteSagaAsync();
 		}
 
 		private async Task TryCompleteSagaAsync()
 		{
-			if (this.Data.IsBuyerBanChecked && this.Data.IsProductEligableForBuyChecked)
+			if (this.Data.IsBuyerNotBannedChecked && this.Data.IsProductEligableForBuyChecked)
 			{
 				this.IsCompleted = true;
 

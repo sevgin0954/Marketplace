@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
@@ -8,9 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-	<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-		<_Parameter1>Marketplace.Tests</_Parameter1>
-	</AssemblyAttribute>
+	<InternalsVisibleTo Include="Marketplace.Tests" />
+	<InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
     <Folder Include="Sales\OfferAggregate\Events\" />
     <Folder Include="Sales\ProductAggregate\EventHandlers\" />
   </ItemGroup>

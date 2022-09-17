@@ -1,12 +1,20 @@
 ﻿using Marketplace.Domain.Sales.MakeOfferSagaNS;
 using Marketplace.Domain.SharedKernel;
 using MediatR;
+using Moq;
 
 namespace Marketplace.Tests.Sales.MakeOfferSagaSpecs
 {
 	internal static class MakeOfferSagaFactory
 	{
-		internal static MakeOfferSaga Create(IMediator mediator)
+		public static MakeOfferSaga Create()
+		{
+			var mediatorMock = new Mock<IMediator>();
+
+			return Create(mediatorMock.Object);
+		}
+
+		public static MakeOfferSaga Create(IMediator mediator)
 		{
 			var buyerId = new Id();
 			var productId = new Id();
