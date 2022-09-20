@@ -1,4 +1,5 @@
-﻿using Marketplace.Domain.Sales.ProductAggregate.Commands;
+﻿using Marketplace.Domain.Sales.BuyerAggregate.Commands;
+using Marketplace.Domain.Sales.ProductAggregate.Commands;
 using Marketplace.Domain.Sales.SellerAggregate.Commands;
 using MediatR;
 using Moq;
@@ -29,6 +30,7 @@ namespace Marketplace.Tests.Sales.MakeOfferSagaSpecs
 		[Fact]
 		public async Task Start_saga_should_send_check_is_buyer_banned_command()
 		{
+			// Arrange
 			var mediatorMock = new Mock<IMediator>();
 			var saga = MakeOfferSagaFactory.Create(mediatorMock.Object);
 
@@ -37,13 +39,15 @@ namespace Marketplace.Tests.Sales.MakeOfferSagaSpecs
 
 			// Assert
 			mediatorMock.Verify(
-				m => m.Send(It.IsAny<CheckIsBuyerBannedCommand>(), 
-				It.IsAny<CancellationToken>()), Times.Once);
+				m => m.Send(
+					It.IsAny<CheckIsBuyerBannedCommand>(), It.IsAny<CancellationToken>()),
+				Times.Once);
 		}
 
 		[Fact]
 		public async Task Start_saga_should_send_check_can_buy_product_command()
 		{
+			// Arrange
 			var mediatorMock = new Mock<IMediator>();
 			var saga = MakeOfferSagaFactory.Create(mediatorMock.Object);
 
@@ -52,8 +56,26 @@ namespace Marketplace.Tests.Sales.MakeOfferSagaSpecs
 
 			// Assert
 			mediatorMock.Verify(
-				m => m.Send(It.IsAny<CheckCanBuyProductCommand>(),
-				It.IsAny<CancellationToken>()), Times.Once);
+				m => m.Send(
+					It.IsAny<CheckCanBuyProductCommand>(), It.IsAny<CancellationToken>()),
+				Times.Once);
+		}
+
+		[Fact]
+		public async Task Start_saga_should_send_start_making_offer_command()
+		{
+			// Arrange
+			var mediatorMock = new Mock<IMediator>();
+			var saga = MakeOfferSagaFactory.Create(mediatorMock.Object);
+
+			// Act
+			await saga.StartSagaAsync();
+
+			// Assert
+			mediatorMock.Verify(
+				m => m.Send(
+						It.IsAny<StartMakingOfferCommand>(), It.IsAny<CancellationToken>()), 
+				Times.Once);
 		}
 	}
 }

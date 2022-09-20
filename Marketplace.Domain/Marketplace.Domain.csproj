@@ -10,7 +10,6 @@
   <ItemGroup>
 	<InternalsVisibleTo Include="Marketplace.Tests" />
 	<InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
-    <Folder Include="Sales\OfferAggregate\Events\" />
     <Folder Include="Sales\ProductAggregate\EventHandlers\" />
   </ItemGroup>
 

@@ -1,7 +1,7 @@
 ﻿using Marketplace.Domain.Sales.OfferAggregate;
 using Marketplace.Domain.SharedKernel;
 
-namespace Marketplace.Tests.Sales
+namespace Marketplace.Tests.Sales.OfferAggregateSpecs
 {
 	public static class OfferFactory
 	{

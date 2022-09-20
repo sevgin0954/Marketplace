@@ -1,4 +1,7 @@
 ﻿using Marketplace.Domain.Common;
+using Marketplace.Domain.Sales.BuyerAggregate.Commands;
+using Marketplace.Domain.Sales.BuyerAggregate.Events;
+using Marketplace.Domain.Sales.OfferAggregate.Commands;
 using Marketplace.Domain.Sales.ProductAggregate.Commands;
 using Marketplace.Domain.Sales.ProductAggregate.Events;
 using Marketplace.Domain.Sales.SellerAggregate.Commands;
@@ -25,46 +28,76 @@ namespace Marketplace.Domain.Sales.MakeOfferSagaNS
 		{
 			await this.mediator.Send(new CheckIsBuyerBannedCommand(this.Data.SellerId.Value, this.Data.BuyerId.Value));
 			await this.mediator.Send(new CheckCanBuyProductCommand(this.Data.ProductId.Value, this.Id.Value));
+			await this.mediator.Send(new StartMakingOfferCommand(this.Data.BuyerId.Value, this.Id.Value));
 		}
 
-		public void Transition(BuyerWasBannedEvent message)
+		public async Task TransitionAsync(BuyerWasBannedEvent message)
 		{
+			ArgumentValidator.NotNullValidator(message, nameof(message));
+
 			this.IsCompleted = true;
+			await this.DiscardAddingOfferToBuyer();
 		}
 
 		public async Task TransitionAsync(BuyerWasNotBannedEvent message)
 		{
+			ArgumentValidator.NotNullValidator(message, nameof(message));
+
 			this.Data.IsBuyerNotBannedChecked = true;
-			await this.TryCompleteSagaAsync();
+			await this.TryFinishAddingOfferToBuyer();
 		}
 
-		public void Transition(ProductCouldNotBeBoughtEvent message)
+		public async Task TransitionAsync(ProductCouldNotBeBoughtEvent message)
 		{
+			ArgumentValidator.NotNullValidator(message, nameof(message));
+
 			this.IsCompleted = true;
+			await this.DiscardAddingOfferToBuyer();
 		}
 
 		public async Task TransitionAsync(ProductCouldBeBoughtEvent message)
 		{
+			ArgumentValidator.NotNullValidator(message, nameof(message));
+
 			this.Data.IsProductEligableForBuyChecked = true;
-			await this.TryCompleteSagaAsync();
+			await this.TryFinishAddingOfferToBuyer();
 		}
 
-		private async Task TryCompleteSagaAsync()
+		public async Task FinishSagaAsync(OfferWasAddedToBuyerEvent message)
 		{
-			if (this.Data.IsBuyerNotBannedChecked && this.Data.IsProductEligableForBuyChecked)
+			ArgumentValidator.NotNullValidator(message, nameof(message));
+
+			this.IsCompleted = true;
+
+			var makeOfferCommand = new MakeOfferCommand(
+				this.Data.BuyerId.Value,
+				this.Data.ProductId.Value,
+				this.Data.Message,
+				this.Data.Quantity,
+				this.Data.SellerId.Value
+			);
+
+			this.Result = await this.mediator.Send(makeOfferCommand);
+		}
+
+		private async Task TryFinishAddingOfferToBuyer()
+		{
+			var isEachCheckPassed = this.Data.IsBuyerNotBannedChecked && this.Data.IsProductEligableForBuyChecked;
+			if (isEachCheckPassed && this.IsCompleted == false)
 			{
-				this.IsCompleted = true;
+				var finishMakingOfferCommand = 
+					new FinishMakingOfferCommand(this.Data.BuyerId.Value, this.Data.ProductId.Value);
 
-				var makeOfferCommand = new OfferAggregate.Commands.MakeOfferCommand(
-					this.Data.BuyerId.Value,
-					this.Data.ProductId.Value,
-					this.Data.Message,
-					this.Data.Quantity,
-					this.Data.SellerId.Value
-				);
-
-				this.Result = await this.mediator.Send(makeOfferCommand);
+				await this.mediator.Send(finishMakingOfferCommand);
 			}
+		}
+
+		private async Task DiscardAddingOfferToBuyer()
+		{
+			var finishMakingOfferCommand = 
+				new DiscardMakingOfferCommand(this.Data.BuyerId.Value, this.Data.ProductId.Value);
+
+			await this.mediator.Send(finishMakingOfferCommand);
 		}
 	}
 }

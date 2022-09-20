@@ -1,7 +1,7 @@
 ﻿using Marketplace.Domain.Sales.ProductAggregate;
 using Marketplace.Domain.SharedKernel;
 
-namespace Marketplace.Tests.Sales
+namespace Marketplace.Tests.Sales.ProductAggregateSpecs
 {
 	public static class ProductFactory
 	{
