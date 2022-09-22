@@ -21,6 +21,7 @@ namespace Marketplace.Domain.Sales.BuyerAggregate
 
 		public void StartMakingOffer(Id productId)
 		{
+			ArgumentValidator.NotNullValidator(productId, nameof(productId));
 			this.ValidateCanAddOffer();
 
 			this.StartedPendingOffersIds.Add(productId.Value);
@@ -28,9 +29,13 @@ namespace Marketplace.Domain.Sales.BuyerAggregate
 
 		public void FinishMakingOffer(Id productId)
 		{
+			ArgumentValidator.NotNullValidator(productId, nameof(productId));
 			this.ValidateCanAddOffer();
 
-			this.StartedPendingOffersIds.Remove(productId.Value);
+			var isOfferRemoved = this.StartedPendingOffersIds.Remove(productId.Value);
+			if (isOfferRemoved)
+				throw new NotFoundException(nameof(productId));
+
 			this.PendingOffersCount++;
 
 			this.AddDomainEvent(new OfferWasAddedToBuyerEvent(this.Id.Value, productId.Value));
@@ -44,8 +49,10 @@ namespace Marketplace.Domain.Sales.BuyerAggregate
 
 		public void DicardMakingOffer(Id productId)
 		{
-			var isRemoved = this.StartedPendingOffersIds.Remove(productId.Value);
-			if (isRemoved == false)
+			ArgumentValidator.NotNullValidator(productId, nameof(productId));
+
+			var isOfferRemoved = this.StartedPendingOffersIds.Remove(productId.Value);
+			if (isOfferRemoved == false)
 				throw new NotFoundException(nameof(productId));
 		}
 	}
