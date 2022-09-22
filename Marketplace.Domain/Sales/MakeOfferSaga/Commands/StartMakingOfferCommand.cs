@@ -9,8 +9,6 @@ namespace Marketplace.Domain.Sales.MakeOfferSagaNS.Commands
 {
 	public class StartMakingOfferCommand : IRequest<Result>
 	{
-		const string OFFER_ALREADY_EXISTS = "Offer was already made to his product!";
-
 		public StartMakingOfferCommand(string buyerId, string productId, string sellerId, string message, int quantity)
 		{
 			this.BuyerId = buyerId;
@@ -33,11 +31,11 @@ namespace Marketplace.Domain.Sales.MakeOfferSagaNS.Commands
 		internal class StartMakingOfferCommandHandler : IRequestHandler<StartMakingOfferCommand, Result>
 		{
 			private readonly ISagaRepository<MakeOfferSaga, MakeOfferSagaData> makeOfferSagaRepository;
-			private readonly Mediator mediator;
+			private readonly IMediator mediator;
 
 			internal StartMakingOfferCommandHandler(
 				ISagaRepository<MakeOfferSaga, MakeOfferSagaData> makeOfferSagaRepository,
-				Mediator mediator)
+				IMediator mediator)
 			{
 				this.makeOfferSagaRepository = makeOfferSagaRepository;
 				this.mediator = mediator;
@@ -45,38 +43,32 @@ namespace Marketplace.Domain.Sales.MakeOfferSagaNS.Commands
 
 			public async Task<Result> Handle(StartMakingOfferCommand notification, CancellationToken cancellationToken)
 			{
-				Result result;
-
 				var buyerId = new Id(notification.BuyerId);
 				var productId = new Id(notification.ProductId);
 				var makeOfferSagaId = new MakeOfferSagaId(buyerId, productId);
 
 				var makeOfferSaga = await this.makeOfferSagaRepository.GetByIdAsync(makeOfferSagaId);
-				if (makeOfferSaga == null || makeOfferSaga.IsCompleted)
-				{
-					var sellerId = new Id(notification.SellerId);
-					var saga = this.CreateSaga(
-						buyerId,
-						productId,
-						sellerId,
-						notification.Message, 
-						notification.Quantity
-					);
 
-					await saga.StartSagaAsync();
+				if (makeOfferSaga != null && makeOfferSaga.IsCompleted == false)
+					return Result.Fail("Offer was already made to his product!");
 
-					var rowsChanged = await this.makeOfferSagaRepository.AddAsync(saga);
-					if (rowsChanged == 0)
-						throw new InvalidOperationException();
+				var sellerId = new Id(notification.SellerId);
+				var saga = this.CreateSaga(
+					buyerId,
+					productId,
+					sellerId,
+					notification.Message,
+					notification.Quantity
+				);
 
-					result = Result.Ok();
-				}
-				else
-				{
-					result = Result.Fail(OFFER_ALREADY_EXISTS);
-				}
+				await saga.StartSagaAsync();
 
-				return result;
+				var rowsChanged = await this.makeOfferSagaRepository.AddAsync(saga);
+				// TODO: Move to validator class
+				if (rowsChanged == 0)
+					throw new InvalidOperationException();
+
+				return Result.Ok();
 			}
 
 			private MakeOfferSaga CreateSaga(Id buyerId, Id productId, Id sellerId, string message, int quantity)

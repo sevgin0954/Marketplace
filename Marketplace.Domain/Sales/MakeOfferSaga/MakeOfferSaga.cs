@@ -7,6 +7,7 @@ using Marketplace.Domain.Sales.ProductAggregate.Events;
 using Marketplace.Domain.Sales.SellerAggregate.Commands;
 using Marketplace.Domain.Sales.SellerAggregate.Events;
 using MediatR;
+using System;
 using System.Threading.Tasks;
 
 namespace Marketplace.Domain.Sales.MakeOfferSagaNS
@@ -66,6 +67,13 @@ namespace Marketplace.Domain.Sales.MakeOfferSagaNS
 		public async Task FinishSagaAsync(OfferWasAddedToBuyerEvent message)
 		{
 			ArgumentValidator.NotNullValidator(message, nameof(message));
+
+			if (this.IsCompleted)
+				throw new InvalidOperationException("Can't finish completed saga!");
+
+			var isEachCheckPassed = this.Data.IsBuyerNotBannedChecked && this.Data.IsProductEligableForBuyChecked;
+			if (isEachCheckPassed == false)
+				throw new InvalidOperationException("Can't finish saga before all transitions are completed!");
 
 			this.IsCompleted = true;
 
