@@ -5,6 +5,7 @@
 		Delivered,
 		Shipped,
 		Processing,
-		Cancelled
+		Cancelled,
+		RequestCanceleByBuyer
 	}
 }

@@ -1,6 +1,6 @@
 ﻿namespace Marketplace.Domain.Shipping.OrderAggregate
 {
-	public enum CanceledOrderBy
+	public enum CanceledOrderInitiator
 	{
 		Buyer,
 		Seller,

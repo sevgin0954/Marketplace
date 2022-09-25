@@ -1,4 +1,5 @@
 ﻿using Marketplace.Domain.Common;
+using Marketplace.Domain.Common.Constants;
 using Marketplace.Domain.SharedKernel;
 using System;
 
@@ -31,40 +32,60 @@ namespace Marketplace.Domain.Shipping.OrderAggregate
 			}
 		}
 
-		public string SellerId { get; private set; }
+		public Id SellerId { get; private set; }
 
-		public string BuyerId { get; private set; }
+		public Id BuyerId { get; private set; }
 
-		public CanceledOrderBy CanceledOrderBy { get; private set; }
+		public CanceledOrderInitiator CanceledOrderInitiator { get; private set; }
 
-		public void CancelDelivery(string initiatorId)
+		public void RequestCancelOrderByBuyer(Id buyerId)
 		{
-			if (initiatorId != this.SellerId || initiatorId != this.BuyerId)
-				throw new InvalidOperationException();
-			if (this.Status == Status.Cancelled || this.Status == Status.Shipped)
-				throw new InvalidOperationException();
+			if (buyerId != this.BuyerId)
+				throw new InvalidOperationException(ErrorConstants.INITIATOR_SHOULD_BE_THE_BUYER);
+			if (this.Status != Status.Processing)
+				throw new InvalidOperationException("Can't cancel non processing order!");
 
-			this.Status = Status.Cancelled;
-			this.CanceledOrderBy = initiatorId == this.SellerId ? CanceledOrderBy.Seller : CanceledOrderBy.Buyer;
+			this.Status = Status.RequestCanceleByBuyer;
 		}
 
-		public void StartShipping(string initiatorId, string trackingNumber)
+		public void ConfirmCancelOrderRequest(Id initiatorId)
 		{
 			if (initiatorId != this.SellerId)
-				throw new InvalidOperationException();
+				throw new InvalidOperationException(ErrorConstants.INITIATOR_SHOULD_BE_THE_SELLER);
+			if (this.Status == Status.RequestCanceleByBuyer)
+				throw new InvalidOperationException("Can't confirm non requested cancel!");
+
+
+			this.Status = Status.Cancelled;
+		}
+
+		public void CancelOrderBySeller(Id sellerId)
+		{
+			if (sellerId != this.BuyerId)
+				throw new InvalidOperationException(ErrorConstants.INITIATOR_SHOULD_BE_THE_BUYER);
+			if (this.Status == Status.Cancelled)
+				throw new InvalidOperationException("Can't cancel an already canceled order!");
+
+			this.Status = Status.Cancelled;
+		}
+
+		public void StartShipping(Id initiatorId, string trackingNumber)
+		{
+			if (initiatorId != this.SellerId)
+				throw new InvalidOperationException(ErrorConstants.INITIATOR_SHOULD_BE_THE_SELLER);
 			if (this.Status != Status.Processing)
-				throw new InvalidOperationException();
+				throw new InvalidOperationException("Can't ship non processing order!");
 
 			this.TrackingNumber = trackingNumber;
 			this.Status = Status.Shipped;
 		}
 
-		public void ChangeStatusToDelivered(string initiatorId)
+		public void ConfirmDelivery(Id initiatorId)
 		{
 			if (initiatorId != this.BuyerId)
-				throw new InvalidOperationException();
+				throw new InvalidOperationException(ErrorConstants.INITIATOR_SHOULD_BE_THE_BUYER);
 			if (this.Status != Status.Shipped)
-				throw new InvalidOperationException();
+				throw new InvalidOperationException("Can't confirm delivery to a non shipped order!");
 
 			this.Status = Status.Delivered;
 		}
