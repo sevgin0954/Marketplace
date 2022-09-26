@@ -10,10 +10,10 @@ namespace Marketplace.Domain.Sales.OfferAggregate.Commands
 {
 	public class AcceptOfferCommand : IRequest<Result>
 	{
-		public AcceptOfferCommand(string productId, string sellerId, string buyerId)
+		public AcceptOfferCommand(string productId, string initiatorId, string buyerId)
 		{
 			this.ProductId = productId;
-			this.InitiatorId = sellerId;
+			this.InitiatorId = initiatorId;
 			this.BuyerId = buyerId;
 		}
 

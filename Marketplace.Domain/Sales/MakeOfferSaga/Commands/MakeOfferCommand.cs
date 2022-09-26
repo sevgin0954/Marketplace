@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Marketplace.Domain.Sales.MakeOfferSagaNS.Commands
 {
-	public class StartMakingOfferCommand : IRequest<Result>
+	public class MakeOfferCommand : IRequest<Result>
 	{
-		public StartMakingOfferCommand(string buyerId, string productId, string sellerId, string message, int quantity)
+		public MakeOfferCommand(string buyerId, string productId, string sellerId, string message, int quantity)
 		{
 			this.BuyerId = buyerId;
 			this.ProductId = productId;
@@ -28,7 +28,7 @@ namespace Marketplace.Domain.Sales.MakeOfferSagaNS.Commands
 
 		public int Quantity { get; }
 
-		internal class StartMakingOfferCommandHandler : IRequestHandler<StartMakingOfferCommand, Result>
+		internal class StartMakingOfferCommandHandler : IRequestHandler<MakeOfferCommand, Result>
 		{
 			private readonly ISagaRepository<MakeOfferSaga, MakeOfferSagaData> makeOfferSagaRepository;
 			private readonly IMediator mediator;
@@ -41,7 +41,7 @@ namespace Marketplace.Domain.Sales.MakeOfferSagaNS.Commands
 				this.mediator = mediator;
 			}
 
-			public async Task<Result> Handle(StartMakingOfferCommand notification, CancellationToken cancellationToken)
+			public async Task<Result> Handle(MakeOfferCommand notification, CancellationToken cancellationToken)
 			{
 				var buyerId = new Id(notification.BuyerId);
 				var productId = new Id(notification.ProductId);

@@ -5,7 +5,7 @@ namespace Marketplace.Tests.Sales.MakeOfferSagaSpecs.Commands
 {
 	internal static class StartMakingOfferCommandFactory
 	{
-		public static StartMakingOfferCommand Create()
+		public static MakeOfferCommand Create()
 		{
 			var buyerId = Guid.NewGuid().ToString();
 			var productId = Guid.NewGuid().ToString();
@@ -13,7 +13,7 @@ namespace Marketplace.Tests.Sales.MakeOfferSagaSpecs.Commands
 			var message = "Default message.";
 			var quantity = 1;
 
-			var notification = new StartMakingOfferCommand(buyerId, productId, sellerId, message, quantity);
+			var notification = new MakeOfferCommand(buyerId, productId, sellerId, message, quantity);
 
 			return notification;
 		}

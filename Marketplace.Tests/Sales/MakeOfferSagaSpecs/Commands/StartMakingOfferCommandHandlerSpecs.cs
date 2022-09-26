@@ -9,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 using BuyerStartMakingOfferCommand = Marketplace.Domain.Sales.BuyerAggregate.Commands.StartMakingOfferCommand;
-using static Marketplace.Domain.Sales.MakeOfferSagaNS.Commands.StartMakingOfferCommand;
+using static Marketplace.Domain.Sales.MakeOfferSagaNS.Commands.MakeOfferCommand;
 using Marketplace.Domain.SharedKernel;
 
 namespace Marketplace.Tests.Sales.MakeOfferSagaSpecs.Commands
