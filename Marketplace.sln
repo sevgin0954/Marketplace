@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Marketplace.Tests", "Market
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Marketplace.API", "Marketplace.API\Marketplace.API.csproj", "{9C1F2049-8AD0-4A64-A5DA-E1594E140127}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Marketplace.Query", "Marketplace.Query\Marketplace.Query.csproj", "{5AF13011-A90D-4BBC-BF9E-425B6B16651E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Marketplace.Persistence", "Marketplace.Persistence\Marketplace.Persistence.csproj", "{30F93DC2-2868-4BA5-BA16-7E825D615FAD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{9C1F2049-8AD0-4A64-A5DA-E1594E140127}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C1F2049-8AD0-4A64-A5DA-E1594E140127}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C1F2049-8AD0-4A64-A5DA-E1594E140127}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5AF13011-A90D-4BBC-BF9E-425B6B16651E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AF13011-A90D-4BBC-BF9E-425B6B16651E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AF13011-A90D-4BBC-BF9E-425B6B16651E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AF13011-A90D-4BBC-BF9E-425B6B16651E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30F93DC2-2868-4BA5-BA16-7E825D615FAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30F93DC2-2868-4BA5-BA16-7E825D615FAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30F93DC2-2868-4BA5-BA16-7E825D615FAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30F93DC2-2868-4BA5-BA16-7E825D615FAD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

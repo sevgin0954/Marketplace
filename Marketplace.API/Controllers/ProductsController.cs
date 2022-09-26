@@ -1,22 +1,39 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Marketplace.Query.Products;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Marketplace.API.Controllers
 {
     [ApiController]
+    [Route("api/products")]
     public class ProductsController : ControllerBase
     {
-        public ProductsController()
-        {
+        private readonly Mediator mediator;
 
+        public ProductsController(Mediator mediator)
+        {
+            this.mediator = mediator;
         }
 
-        public JsonResult GetProducts()
+        [HttpGet]
+        public async Task<ActionResult<ProductDto>> GetProducts()
         {
-            var products = // getProducts();
+            var products = await this.mediator.Send(new GetProductsQuery());
 
-            return new JsonResult({
-                products
-            });
+            return Ok(products);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ProductDto>> GetProduct(string id)
+        {
+            var product = await this.mediator.Send(new GetProductQuery(id));
+
+            if (product == null)
+            {
+                return NotFound(product);
+            }
+
+            return Ok(product);
         }
     }
 }
