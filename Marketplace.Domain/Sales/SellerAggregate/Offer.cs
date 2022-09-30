@@ -1,6 +1,6 @@
-﻿using Marketplace.Domain.Common;
+﻿using Marketplace.Domain.SharedKernel;
 
 namespace Marketplace.Domain.Sales.SellerAggregate
 {
-	internal record Offer(string BuyerId, string ProductId, int Quantity) : ValueObject;
+	internal record Offer(Id BuyerId, Id ProductId, int Quantity);
 }

@@ -1,9 +1,8 @@
-﻿using Marketplace.Domain.Common;
-using System;
+﻿using System;
 
 namespace Marketplace.Domain.SharedKernel
 {
-	public record Id : ValueObject
+	public record Id
 	{
 		public Id()
 		{

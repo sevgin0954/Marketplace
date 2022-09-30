@@ -8,9 +8,7 @@ namespace Marketplace.Domain.Sales.ProductAggregate
 {
 	public class Product : AggregateRoot<Id>
 	{
-		private decimal price;
-
-		public Product(Id id, decimal price, Id sellerId)
+		public Product(Id id, Price price, Id sellerId)
 			: base(id)
 		{
 			this.Price = price;
@@ -18,17 +16,7 @@ namespace Marketplace.Domain.Sales.ProductAggregate
 			this.Status = ProductStatus.Unsold;
 		}
 
-		public decimal Price
-		{
-			get { return this.price; }
-			private set
-			{
-				if (value < 0)
-					throw new InvalidOperationException(ErrorConstants.NUMBER_CANT_BE_NEGATIVE);
-
-				this.price = value;
-			}
-		}
+		public Price Price { get; set; }
 
 		public Id SellerId { get; private set; }
 

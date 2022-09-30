@@ -25,7 +25,7 @@ namespace Marketplace.Domain.Sales.MakeOfferSagaNS.EventHandlers
 
 			await makeOfferSaga.TransitionAsync(notification);
 
-			await this.makeOfferSagaRepository.SaveChangesAsync();
+			await this.makeOfferSagaRepository.SaveChangesAsync(cancellationToken);
 		}
 	}
 }

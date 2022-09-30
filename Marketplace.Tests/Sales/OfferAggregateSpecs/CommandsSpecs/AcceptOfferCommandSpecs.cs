@@ -151,7 +151,7 @@ namespace Marketplace.Tests.Sales.OfferAggregateSpecs.CommandsSpecs
 			await commandHandler.Handle(command, cancelationToken);
 
 			// Assert
-			repositoryMock.Verify(orm => orm.SaveChangesAsync(), Times.Once);
+			repositoryMock.Verify(orm => orm.SaveChangesAsync(new CancellationToken()), Times.Once);
 		}
 
 		private async Task<Result> CallCommandHandlerHandleMethod(AcceptOfferCommandHandler handler)
@@ -174,7 +174,7 @@ namespace Marketplace.Tests.Sales.OfferAggregateSpecs.CommandsSpecs
 			Mock<IAggregateRepository<Offer, OfferId>> mock, 
 			int returnValue)
 		{
-			mock.Setup(orm => orm.SaveChangesAsync())
+			mock.Setup(orm => orm.SaveChangesAsync(new CancellationToken()))
 				.Returns(Task.FromResult(returnValue));
 		}
 

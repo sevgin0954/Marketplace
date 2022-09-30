@@ -8,9 +8,9 @@ namespace Marketplace.API.Controllers
     [Route("api/products")]
     public class ProductsController : ControllerBase
     {
-        private readonly Mediator mediator;
+        private readonly IMediator mediator;
 
-        public ProductsController(Mediator mediator)
+        public ProductsController(IMediator mediator)
         {
             this.mediator = mediator;
         }

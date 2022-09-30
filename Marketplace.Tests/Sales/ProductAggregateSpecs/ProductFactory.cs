@@ -15,7 +15,7 @@ namespace Marketplace.Tests.Sales.ProductAggregateSpecs
 		public static Product Create(Id sellerId)
 		{
 			var productId = new Id();
-			var price = 1m;
+			var price = new Price(1, Currency.ADP);
 
 			return new Product(productId, price, sellerId);
 		}

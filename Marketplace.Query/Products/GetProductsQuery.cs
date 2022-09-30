@@ -1,4 +1,7 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using Marketplace.Persistence.Sales;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Marketplace.Query.Products
 {
@@ -6,9 +9,21 @@ namespace Marketplace.Query.Products
     {
         internal class GetProductsQueryHandler : IRequestHandler<GetProductsQuery, IList<ProductDto>>
         {
-            public async Task<IList<ProductDto>> Handle(GetProductsQuery request, CancellationToken cancellationToken)
+			private readonly SalesDbContext dbContext;
+			private readonly IMapper mapper;
+
+			public GetProductsQueryHandler(SalesDbContext dbContext, IMapper mapper)
+			{
+				this.dbContext = dbContext;
+				this.mapper = mapper;
+			}
+
+			public async Task<IList<ProductDto>> Handle(GetProductsQuery request, CancellationToken cancellationToken)
             {
-                throw new NotImplementedException();
+				var products = await this.dbContext.Products.ToListAsync(cancellationToken);
+				var dtos = this.mapper.Map<IList<ProductDto>>(products);
+
+				return dtos;
             }
         }
     }

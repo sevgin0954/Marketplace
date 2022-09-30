@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Marketplace.Domain.Common
@@ -9,7 +10,7 @@ namespace Marketplace.Domain.Common
 	public interface IRepository<T, TId> where TId : Id
 	{
 		// TODO: Change to void Add()
-		Task<int> AddAsync(T element);
+		Task<int> AddAsync(T element, CancellationToken cancellationToken = default);
 
 		Task<T> GetByIdAsync(TId id);
 
@@ -17,6 +18,6 @@ namespace Marketplace.Domain.Common
 
 		Task<IList<T>> FindAsync(Expression<Func<T, bool>> predicate);
 
-		Task<int> SaveChangesAsync();
+		Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 	}
 }

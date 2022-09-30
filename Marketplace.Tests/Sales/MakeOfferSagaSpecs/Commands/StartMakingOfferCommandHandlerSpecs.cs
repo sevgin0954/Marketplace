@@ -29,7 +29,7 @@ namespace Marketplace.Tests.Sales.MakeOfferSagaSpecs.Commands
 			await this.Handle(handler);
 
 			// Assert
-			repositoryMock.Verify(r => r.AddAsync(It.Is<MakeOfferSaga>(s => s.IsCompleted == false)));
+			repositoryMock.Verify(r => r.AddAsync(It.Is<MakeOfferSaga>(s => s.IsCompleted == false), new CancellationToken()));
 		}
 
 		[Fact]
@@ -105,7 +105,7 @@ namespace Marketplace.Tests.Sales.MakeOfferSagaSpecs.Commands
 			await this.Handle(handler);
 
 			// Assert
-			repositoryMock.Verify(r => r.AddAsync(It.Is<MakeOfferSaga>(s => s.IsCompleted == false)));
+			repositoryMock.Verify(r => r.AddAsync(It.Is<MakeOfferSaga>(s => s.IsCompleted == false), new CancellationToken()));
 		}
 
 		private Mock<ISagaRepository<MakeOfferSaga, MakeOfferSagaData>> GetDefaultSetupedRepositoryMock()
@@ -129,7 +129,9 @@ namespace Marketplace.Tests.Sales.MakeOfferSagaSpecs.Commands
 			Mock<ISagaRepository<MakeOfferSaga, MakeOfferSagaData>> repositoryMock,
 			int returnedValue)
 		{
-			repositoryMock.Setup(r => r.AddAsync(It.IsAny<MakeOfferSaga>())).Returns(Task.FromResult(returnedValue));
+			repositoryMock
+				.Setup(r => r.AddAsync(It.IsAny<MakeOfferSaga>(), new CancellationToken()))
+				.Returns(Task.FromResult(returnedValue));
 		}
 
 		private async Task<Result> Handle(StartMakingOfferCommandHandler handler)

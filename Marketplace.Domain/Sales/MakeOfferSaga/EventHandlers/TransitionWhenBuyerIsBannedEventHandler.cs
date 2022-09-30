@@ -23,7 +23,7 @@ namespace Marketplace.Domain.Sales.MakeOfferSagaNS.EventHandlers
 			foreach (var currentMakeOfferSaga in makeOfferSaga)
 			{
 				await currentMakeOfferSaga.TransitionAsync(notification);
-				await this.makeOfferSagaRepository.SaveChangesAsync();
+				await this.makeOfferSagaRepository.SaveChangesAsync(cancellationToken);
 			}
 		}
 	}

@@ -47,7 +47,7 @@ namespace Marketplace.Domain.Sales.OfferAggregate.Commands
 				var sellerId = new Id(request.InitiatorId);
 				offer.AcceptOffer(sellerId);
 
-				var changedRowsCount = await this.offerRepository.SaveChangesAsync();
+				var changedRowsCount = await this.offerRepository.SaveChangesAsync(cancellationToken);
 				if (changedRowsCount == 0)
 				{
 					return Result.Fail(ErrorConstants.NO_RECORD_ALTERED);

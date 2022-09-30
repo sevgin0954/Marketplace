@@ -46,7 +46,7 @@ namespace Marketplace.Domain.Sales.OfferAggregate.Commands
 				var sellerId = new Id(request.SellerId);
 				var offer = new Offer(offerId, sellerId, request.Message);
 
-				var rowsChanged = await this.offerRepository.AddAsync(offer);
+				var rowsChanged = await this.offerRepository.AddAsync(offer, cancellationToken);
 				if (rowsChanged == 0)
 				{
 					return Result.Fail(ErrorConstants.NO_RECORD_ALTERED);

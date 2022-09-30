@@ -27,7 +27,8 @@ namespace Marketplace.Domain.Sales.MakeOfferSaga.EventHandlers
 
 			await saga.FinishSagaAsync(notification);
 
-			await this.sagaRepository.SaveChangesAsync();
+			// TODO: Validate savechanges result
+			await this.sagaRepository.SaveChangesAsync(cancellationToken);
 		}
 	}
 }

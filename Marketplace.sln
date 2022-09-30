@@ -7,11 +7,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Marketplace.Domain", "Marke
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Marketplace.Tests", "Marketplace.Tests\Marketplace.Tests.csproj", "{BF60D567-B3A0-49C6-A985-EEC312DCF1B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Marketplace.API", "Marketplace.API\Marketplace.API.csproj", "{9C1F2049-8AD0-4A64-A5DA-E1594E140127}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Marketplace.API", "Marketplace.API\Marketplace.API.csproj", "{9C1F2049-8AD0-4A64-A5DA-E1594E140127}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Marketplace.Query", "Marketplace.Query\Marketplace.Query.csproj", "{5AF13011-A90D-4BBC-BF9E-425B6B16651E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Marketplace.Query", "Marketplace.Query\Marketplace.Query.csproj", "{5AF13011-A90D-4BBC-BF9E-425B6B16651E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Marketplace.Persistence", "Marketplace.Persistence\Marketplace.Persistence.csproj", "{30F93DC2-2868-4BA5-BA16-7E825D615FAD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Marketplace.Persistence", "Marketplace.Persistence\Marketplace.Persistence.csproj", "{30F93DC2-2868-4BA5-BA16-7E825D615FAD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FE064077-1BE0-4E40-8D06-D63343D6653A}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
