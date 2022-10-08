@@ -16,9 +16,9 @@ namespace Marketplace.Domain.Sales.ProductAggregate
 			this.Status = ProductStatus.Unsold;
 		}
 
-		public Price Price { get; set; }
-
 		public Id SellerId { get; private set; }
+
+		public Price Price { get; set; }
 
 		public ProductStatus Status { get; private set; }
 

@@ -18,9 +18,10 @@ namespace Marketplace.Domain.Sales.OfferAggregate
 			this.Message = message;
 			this.ProductId = id.ProductId;
 			this.BuyerId = id.BuyerId;
+			this.Status = OfferStatus.Pending;
 		}
 
-		public OfferStatus Status { get; private set; } = OfferStatus.Pending;
+		public OfferStatus Status { get; private set; }
 
 		public Id SellerId { get; }
 

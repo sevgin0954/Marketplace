@@ -9,8 +9,7 @@ namespace Marketplace.Domain.Common
 {
 	public interface IRepository<T, TId> where TId : Id
 	{
-		// TODO: Change to void Add()
-		Task<int> AddAsync(T element, CancellationToken cancellationToken = default);
+		void Add(T element);
 
 		Task<T> GetByIdAsync(TId id);
 

@@ -63,7 +63,8 @@ namespace Marketplace.Domain.Sales.MakeOfferSagaNS.Commands
 
 				await saga.StartSagaAsync();
 
-				var rowsChanged = await this.makeOfferSagaRepository.AddAsync(saga, cancellationToken);
+				this.makeOfferSagaRepository.Add(saga);
+				var rowsChanged = await this.makeOfferSagaRepository.SaveChangesAsync(cancellationToken);
 				// TODO: Move to validator class
 				if (rowsChanged == 0)
 					throw new InvalidOperationException();

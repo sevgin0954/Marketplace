@@ -6,13 +6,15 @@ using Microsoft.Extensions.Logging;
 
 namespace Marketplace.Persistence
 {
-    public abstract class MarketplaceBaseDbContext : DbContext
+    public abstract class MarketplaceDbContext : DbContext
     {
         private readonly string connectionString;
         private readonly bool isLoggingEnabled;
         private readonly IMediator mediator;
 
-        public MarketplaceBaseDbContext(
+        protected MarketplaceDbContext() { }
+
+        public MarketplaceDbContext(
             string connectionString, 
             bool isLoggingEnabled,
             IMediator mediator)
@@ -22,7 +24,7 @@ namespace Marketplace.Persistence
             this.mediator = mediator;
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        protected sealed override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(this.connectionString);
 

@@ -20,8 +20,8 @@ namespace Marketplace.Query.Products
 
 			public async Task<IList<ProductDto>> Handle(GetProductsQuery request, CancellationToken cancellationToken)
             {
-				var products = await this.dbContext.Products.ToListAsync(cancellationToken);
-				var dtos = this.mapper.Map<IList<ProductDto>>(products);
+				var productEntities = await this.dbContext.Products.ToListAsync(cancellationToken);
+				var dtos = this.mapper.Map<IList<ProductDto>>(productEntities);
 
 				return dtos;
             }

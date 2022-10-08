@@ -22,7 +22,7 @@ namespace Marketplace.Tests.Sales.OfferAggregateSpecs.CommandsSpecs
 			var command = this.CreateCommand(buyerId, productId);
 
 			var repositoryMock = new Mock<IRepository<Offer, OfferId>>();
-			repositoryMock.Setup(rm => rm.AddAsync(It.IsAny<Offer>(), new CancellationToken())).Verifiable();
+			repositoryMock.Setup(rm => rm.Add(It.IsAny<Offer>())).Verifiable();
 
 			var commandHandler = new MakeOfferCommandHandler(repositoryMock.Object);
 
@@ -33,7 +33,7 @@ namespace Marketplace.Tests.Sales.OfferAggregateSpecs.CommandsSpecs
 
 			// Assert
 			repositoryMock.Verify(
-				rm => rm.AddAsync(It.Is<Offer>(o => o.Id == expectedOfferId), new CancellationToken()), 
+				rm => rm.Add(It.Is<Offer>(o => o.Id == expectedOfferId)), 
 				Times.Once);
 		}
 
@@ -45,7 +45,7 @@ namespace Marketplace.Tests.Sales.OfferAggregateSpecs.CommandsSpecs
 			var command = this.CreateCommandWithBuyerId(buyerId);
 
 			var repositoryMock = new Mock<IRepository<Offer, OfferId>>();
-			repositoryMock.Setup(rm => rm.AddAsync(It.IsAny<Offer>(), new CancellationToken())).Verifiable();
+			repositoryMock.Setup(rm => rm.Add(It.IsAny<Offer>())).Verifiable();
 
 			var commandHandler = new MakeOfferCommandHandler(repositoryMock.Object);
 
@@ -54,7 +54,7 @@ namespace Marketplace.Tests.Sales.OfferAggregateSpecs.CommandsSpecs
 
 			// Assert
 			repositoryMock.Verify(
-				rm => rm.AddAsync(It.Is<Offer>(o => o.BuyerId.Value == buyerId), new CancellationToken()),
+				rm => rm.Add(It.Is<Offer>(o => o.BuyerId.Value == buyerId)),
 				Times.Once);
 		}
 
@@ -66,7 +66,7 @@ namespace Marketplace.Tests.Sales.OfferAggregateSpecs.CommandsSpecs
 			var command = this.CreateCommandWithProductId(productId);
 
 			var repositoryMock = new Mock<IRepository<Offer, OfferId>>();
-			repositoryMock.Setup(rm => rm.AddAsync(It.IsAny<Offer>(), new CancellationToken())).Verifiable();
+			repositoryMock.Setup(rm => rm.Add(It.IsAny<Offer>())).Verifiable();
 
 			var commandHandler = new MakeOfferCommandHandler(repositoryMock.Object);
 
@@ -75,7 +75,7 @@ namespace Marketplace.Tests.Sales.OfferAggregateSpecs.CommandsSpecs
 
 			// Assert
 			repositoryMock.Verify(
-				rm => rm.AddAsync(It.Is<Offer>(o => o.ProductId.Value == productId), new CancellationToken()),
+				rm => rm.Add(It.Is<Offer>(o => o.ProductId.Value == productId)),
 				Times.Once);
 		}
 
@@ -114,7 +114,7 @@ namespace Marketplace.Tests.Sales.OfferAggregateSpecs.CommandsSpecs
 			var result = await this.CallCommandHandler(commandHandler, command);
 
 			// Assert
-			Assert.False(result.IsSuccess);
+			Assert.True(result.IsSuccess);
 		}
 
 		private MakeOfferCommand CreateCommand()
