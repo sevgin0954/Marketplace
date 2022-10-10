@@ -42,6 +42,14 @@ namespace Marketplace.Persistence.Sales
 					.Property(p => p.PriceCurrency)
 					.IsRequired();
 			});
+			modelBuilder.Entity<ProductEntity>().HasData(new ProductEntity
+			{
+				Id = "1",
+				Price = 1,
+				PriceCurrency = "BGN",
+				SellerId = "1",
+				Status = "IN Sale"
+			});
 
 			modelBuilder.Entity<SellerEntity>(seller =>
 			{
@@ -51,6 +59,10 @@ namespace Marketplace.Persistence.Sales
 				seller
 					.HasMany(s => s.BannedBuyers)
 					.WithMany(b => b.SellersWhereBuyerIsBanned);
+			});
+			modelBuilder.Entity<SellerEntity>().HasData(new SellerEntity()
+			{
+				Id = "1"
 			});
 
 			modelBuilder.Entity<OfferEntity>(offer =>
@@ -88,6 +100,16 @@ namespace Marketplace.Persistence.Sales
 					.HasForeignKey(o => o.BuyerId)
 					.IsRequired(false);
 			});
+			modelBuilder.Entity<OfferEntity>().HasData(new OfferEntity()
+			{
+				Id = "1",
+				Status = "Pending",
+				BuyerId = "1",
+				Message = "message",
+				ProductId = "1",
+				RejectMessage = "Reject message",
+				SellerId = "1"
+			});
 
 			modelBuilder.Entity<BuyerEntity>(buyer =>
 			{
@@ -100,6 +122,11 @@ namespace Marketplace.Persistence.Sales
 				buyer
 					.Property(b => b.PendingOffersCount)
 					.IsRequired();
+			});
+			modelBuilder.Entity<BuyerEntity>().HasData(new BuyerEntity()
+			{
+				Id = "1",
+				PendingOffersCount = 1
 			});
 		}
 	}

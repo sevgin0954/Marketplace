@@ -79,8 +79,7 @@ namespace Marketplace.Persistence.Migrations
                 name: "OfferEntity",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SellerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -113,7 +112,7 @@ namespace Marketplace.Persistence.Migrations
                 columns: table => new
                 {
                     BuyersWithStartedOffersId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    StartedPendingOffersId = table.Column<int>(type: "int", nullable: false)
+                    StartedPendingOffersId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -131,6 +130,26 @@ namespace Marketplace.Persistence.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "Buyers",
+                columns: new[] { "Id", "PendingOffersCount" },
+                values: new object[] { "1", 1 });
+
+            migrationBuilder.InsertData(
+                table: "Sellers",
+                column: "Id",
+                value: "1");
+
+            migrationBuilder.InsertData(
+                table: "Products",
+                columns: new[] { "Id", "Price", "PriceCurrency", "SellerId", "Status" },
+                values: new object[] { "1", 1m, "BGN", "1", "IN Sale" });
+
+            migrationBuilder.InsertData(
+                table: "OfferEntity",
+                columns: new[] { "Id", "BuyerId", "Message", "ProductId", "RejectMessage", "SellerId", "Status" },
+                values: new object[] { "1", "1", "message", "1", "Reject message", "1", "Pending" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_BuyerEntityOfferEntity_StartedPendingOffersId",

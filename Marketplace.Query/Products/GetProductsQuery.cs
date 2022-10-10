@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Marketplace.Persistence.Sales;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -20,10 +21,11 @@ namespace Marketplace.Query.Products
 
 			public async Task<IList<ProductDto>> Handle(GetProductsQuery request, CancellationToken cancellationToken)
             {
-				var productEntities = await this.dbContext.Products.ToListAsync(cancellationToken);
-				var dtos = this.mapper.Map<IList<ProductDto>>(productEntities);
+				var productDtos = await this.dbContext.Products
+					.ProjectTo<ProductDto>(this.mapper.ConfigurationProvider)
+					.ToListAsync(cancellationToken);
 
-				return dtos;
+				return productDtos;
             }
         }
     }

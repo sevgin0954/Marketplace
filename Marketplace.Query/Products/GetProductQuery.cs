@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Marketplace.Persistence.Sales;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Marketplace.Query.Products
 {
@@ -26,13 +28,12 @@ namespace Marketplace.Query.Products
 
             public async Task<ProductDto> Handle(GetProductQuery request, CancellationToken cancellationToken)
             {
-                var product = await this.dbContext.Products.FindAsync(request.ProductId, cancellationToken);
-                if (product == null)
-                    throw new KeyNotFoundException(nameof(product));
+                var productDto = await this.dbContext.Products
+                    .Where(p => p.Id == request.ProductId)
+                    .ProjectTo<ProductDto>(this.mapper.ConfigurationProvider)
+                    .FirstAsync(cancellationToken);
 
-                var dto = this.mapper.Map<ProductDto>(product);
-
-                return dto;
+                return productDto;
             }
         }
     }

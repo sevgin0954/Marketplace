@@ -1,4 +1,6 @@
+using Marketplace.Persistence;
 using Marketplace.Persistence.Sales;
+using Marketplace.Query;
 using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,7 +13,7 @@ builder.Services.AddControllers(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMediatR(typeof(Program), typeof(Marketplace.Query.PriceDto));
-builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddAutoMapper(typeof(Program), typeof(MarketplaceDbContext), typeof(PriceDto));
 
 var configuration = new ConfigurationBuilder()
 	.SetBasePath(Directory.GetCurrentDirectory())

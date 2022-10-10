@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Marketplace.Persistence.Migrations
 {
     [DbContext(typeof(SalesDbContext))]
-    [Migration("20221007200734_InitialMigration")]
+    [Migration("20221010115621_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,8 +28,8 @@ namespace Marketplace.Persistence.Migrations
                     b.Property<string>("BuyersWithStartedOffersId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("StartedPendingOffersId")
-                        .HasColumnType("int");
+                    b.Property<string>("StartedPendingOffersId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("BuyersWithStartedOffersId", "StartedPendingOffersId");
 
@@ -64,15 +64,19 @@ namespace Marketplace.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Buyers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1",
+                            PendingOffersCount = 1
+                        });
                 });
 
             modelBuilder.Entity("Marketplace.Persistence.Sales.OfferEntity", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("BuyerId")
                         .HasColumnType("nvarchar(450)");
@@ -103,6 +107,18 @@ namespace Marketplace.Persistence.Migrations
                     b.HasIndex("SellerId");
 
                     b.ToTable("OfferEntity");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1",
+                            BuyerId = "1",
+                            Message = "message",
+                            ProductId = "1",
+                            RejectMessage = "Reject message",
+                            SellerId = "1",
+                            Status = "Pending"
+                        });
                 });
 
             modelBuilder.Entity("Marketplace.Persistence.Sales.ProductEntity", b =>
@@ -129,6 +145,16 @@ namespace Marketplace.Persistence.Migrations
                     b.HasIndex("SellerId");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1",
+                            Price = 1m,
+                            PriceCurrency = "BGN",
+                            SellerId = "1",
+                            Status = "IN Sale"
+                        });
                 });
 
             modelBuilder.Entity("Marketplace.Persistence.Sales.SellerEntity", b =>
@@ -139,6 +165,12 @@ namespace Marketplace.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Sellers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1"
+                        });
                 });
 
             modelBuilder.Entity("BuyerEntityOfferEntity", b =>
