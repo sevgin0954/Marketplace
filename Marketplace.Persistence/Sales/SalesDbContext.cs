@@ -10,11 +10,11 @@ namespace Marketplace.Persistence.Sales
 		public SalesDbContext(string connectionString, bool isLoggingEnabled, IMediator mediator)
 			: base(connectionString, isLoggingEnabled, mediator) { }
 
-		public DbSet<ProductEntity> Products { get; set; }
+		public DbSet<ProductEntity> Products => Set<ProductEntity>();
 
-		public DbSet<SellerEntity> Sellers { get; set; }
+		public DbSet<SellerEntity> Sellers => Set<SellerEntity>();
 
-		public DbSet<BuyerEntity> Buyers { get; set; }
+		public DbSet<BuyerEntity> Buyers => Set<BuyerEntity>();
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{

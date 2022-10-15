@@ -8,10 +8,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Marketplace.Persistence.Migrations
+namespace Marketplace.Persistence.Migrations.SalesDb
 {
     [DbContext(typeof(SalesDbContext))]
-    [Migration("20221010115621_InitialMigration")]
+    [Migration("20221013155305_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

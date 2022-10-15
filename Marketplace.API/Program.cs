@@ -1,4 +1,5 @@
 using Marketplace.Persistence;
+using Marketplace.Persistence.Browsing;
 using Marketplace.Persistence.Sales;
 using Marketplace.Query;
 using MediatR;
@@ -12,7 +13,7 @@ builder.Services.AddControllers(options =>
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddMediatR(typeof(Program), typeof(Marketplace.Query.PriceDto));
+builder.Services.AddMediatR(typeof(Program), typeof(PriceDto));
 builder.Services.AddAutoMapper(typeof(Program), typeof(MarketplaceDbContext), typeof(PriceDto));
 
 var configuration = new ConfigurationBuilder()
@@ -20,9 +21,15 @@ var configuration = new ConfigurationBuilder()
 	.AddJsonFile("appsettings.json")
 	.Build();
 
-var connectionString = configuration["ConnectionStrings:Marketplace"];
 var isLoggingEnabled = true;
-builder.Services.AddTransient(s => new SalesDbContext(connectionString, isLoggingEnabled, s.GetRequiredService<IMediator>()));
+
+var salesConnectionString = configuration.GetConnectionString("Sales");
+builder.Services
+    .AddTransient(s => new SalesDbContext(salesConnectionString, isLoggingEnabled, s.GetRequiredService<IMediator>()));
+
+var browsingConnectionString = configuration.GetConnectionString("Browsing");
+builder.Services
+    .AddTransient(s => new BrowsingDbContext(browsingConnectionString, isLoggingEnabled, s.GetRequiredService<IMediator>()));
 
 var app = builder.Build();
 

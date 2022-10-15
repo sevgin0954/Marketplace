@@ -1,4 +1,5 @@
-﻿using Marketplace.Query.Products;
+﻿using Marketplace.API.Models.ProductModels;
+using Marketplace.Query.Products;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,12 +17,18 @@ namespace Marketplace.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ProductDto>> GetProducts()
+        public async Task<ActionResult<ProductDto>> GetProducts([FromQuery]ProductSearchBindingModel searchModel)
         {
-            var products = await this.mediator.Send(new GetProductsQuery());
+            var isAnyKeywordExist = searchModel.KeyWords != null && searchModel.KeyWords.Count > 0;
+			if (isAnyKeywordExist)
+            {
+                var filteredProducts = await this.mediator.Send(new GetFilteredProductQuery(searchModel.KeyWords!));
+				return this.Ok(filteredProducts);
+            }
 
-            return Ok(products);
-        }
+			var products = await this.mediator.Send(new GetAllProductsQuery());
+			return this.Ok(products);
+		}
 
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductDto>> GetProduct(string id)

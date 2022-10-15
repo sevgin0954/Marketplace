@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Marketplace.Persistence.Migrations
+namespace Marketplace.Persistence.Migrations.SalesDb
 {
     public partial class InitialMigration : Migration
     {

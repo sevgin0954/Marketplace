@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Marketplace.Query.Products
 {
-    public class GetProductsQuery : IRequest<IList<ProductDto>>
+    public class GetAllProductsQuery : IRequest<IList<ProductDto>>
     {
-        internal class GetProductsQueryHandler : IRequestHandler<GetProductsQuery, IList<ProductDto>>
+        internal class GetProductsQueryHandler : IRequestHandler<GetAllProductsQuery, IList<ProductDto>>
         {
 			private readonly SalesDbContext dbContext;
 			private readonly IMapper mapper;
@@ -19,7 +19,7 @@ namespace Marketplace.Query.Products
 				this.mapper = mapper;
 			}
 
-			public async Task<IList<ProductDto>> Handle(GetProductsQuery request, CancellationToken cancellationToken)
+			public async Task<IList<ProductDto>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
             {
 				var productDtos = await this.dbContext.Products
 					.ProjectTo<ProductDto>(this.mapper.ConfigurationProvider)

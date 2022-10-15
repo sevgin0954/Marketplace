@@ -17,5 +17,12 @@ namespace Marketplace.Domain.Common
 			if (string.IsNullOrWhiteSpace(str))
 				throw new ArgumentException(EXCEPTION_MESSAGE);
 		}
+
+		public static void StringInRange(string str, int minLength, int maxLength, string argumentName)
+		{
+			var isStringLengthValid = str.Length >= minLength && str.Length <= maxLength;
+			if (isStringLengthValid)
+				throw new ArgumentException("", nameof(argumentName));
+		}
 	}
 }
