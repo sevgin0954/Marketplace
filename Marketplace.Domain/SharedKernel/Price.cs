@@ -3,7 +3,7 @@ using System;
 
 namespace Marketplace.Domain.SharedKernel
 {
-	public record Price
+	public class Price
 	{
 		private decimal value;
 
@@ -35,6 +35,69 @@ namespace Marketplace.Domain.SharedKernel
 		public Price SetCurrency(Currency currency)
 		{
 			return new Price(this.Value, currency);
+		}
+
+
+		public override bool Equals(object? obj)
+		{
+			if (obj == null)
+				return false;
+			if (obj is Price == false)
+				return false;
+
+			var castedObj = obj as Price;
+			if (castedObj!.Value != this.value || castedObj.Currency != this.Currency)
+				return false;
+
+			return true;
+		}
+
+		public override int GetHashCode()
+		{
+			return Tuple.Create(this.value, this.Currency).GetHashCode();
+		}
+
+		public static bool operator ==(Price? left, Price? right)
+		{
+			if (left == null || right == null)
+				return false;
+
+			return left.Equals(right);
+		}
+
+		public static bool operator !=(Price? left, Price? right)
+		{
+			return !(left == right);
+		}
+
+		public static Price operator +(Price? left, Price? right)
+		{
+			if (left == null || right == null)
+				throw new InvalidOperationException("Can't add price with null value!");
+			ThrowExceptionIfCurrenciesNotEqual(left, right);
+
+			var substractedValue = left.value + right.value;
+			var price = new Price(substractedValue, left.Currency);
+
+			return price;
+		}
+
+		public static Price operator -(Price? left, Price? right)
+		{
+			if (left == null || right == null)
+				throw new InvalidOperationException("Can't substract price with null value!");
+			ThrowExceptionIfCurrenciesNotEqual(left, right);
+
+			var substractedValue = left.value - right.value;
+			var price = new Price(substractedValue, left.Currency);
+
+			return price;
+		}
+
+		private static void ThrowExceptionIfCurrenciesNotEqual(Price left, Price right)
+		{
+			if (left.Currency != right.Currency)
+				throw new InvalidOperationException("Can't make operations on prices with different currencies!");
 		}
 	}
 }

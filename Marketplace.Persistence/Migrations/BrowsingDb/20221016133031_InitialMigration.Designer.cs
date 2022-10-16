@@ -8,10 +8,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Marketplace.Persistence.Migrations
+namespace Marketplace.Persistence.Migrations.BrowsingDb
 {
     [DbContext(typeof(BrowsingDbContext))]
-    [Migration("20221013155242_InitialMigration")]
+    [Migration("20221016133031_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,15 +30,25 @@ namespace Marketplace.Persistence.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1500)
+                        .HasColumnType("nvarchar(1500)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1",
+                            Description = "Description",
+                            Name = "Name"
+                        });
                 });
 #pragma warning restore 612, 618
         }

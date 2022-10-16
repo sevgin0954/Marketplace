@@ -8,10 +8,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Marketplace.Persistence.Migrations.SalesDb
+namespace Marketplace.Persistence.Migrations
 {
     [DbContext(typeof(SalesDbContext))]
-    [Migration("20221013155305_InitialMigration")]
+    [Migration("20221016132908_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -83,20 +83,23 @@ namespace Marketplace.Persistence.Migrations.SalesDb
 
                     b.Property<string>("Message")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(800)
+                        .HasColumnType("nvarchar(800)");
 
                     b.Property<string>("ProductId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("RejectMessage")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(800)
+                        .HasColumnType("nvarchar(800)");
 
                     b.Property<string>("SellerId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
 
@@ -131,7 +134,8 @@ namespace Marketplace.Persistence.Migrations.SalesDb
 
                     b.Property<string>("PriceCurrency")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
 
                     b.Property<string>("SellerId")
                         .HasColumnType("nvarchar(450)");

@@ -24,11 +24,8 @@ namespace Marketplace.Domain.Browsing.ProductAggregate
 
 				var trimedName = value.Trim();
 
-				ArgumentValidator.StringInRange(
-					trimedName, 
-					ProductConstants.MIN_NAME_LENGTH, 
-					ProductConstants.MAX_NAME_LENGTH, 
-					nameof(this.Name));
+				ArgumentValidator.MaxLength(trimedName, ProductConstants.MAX_NAME_LENGTH, nameof(this.Name));
+				ArgumentValidator.MinLength(trimedName, ProductConstants.MIN_NAME_LENGTH, nameof(this.Name));
 
 				this.name = trimedName;
 			}
@@ -44,11 +41,8 @@ namespace Marketplace.Domain.Browsing.ProductAggregate
 
 				var trimedDescription = value.Trim();
 
-				ArgumentValidator.StringInRange(
-					trimedDescription, 
-					ProductConstants.MIN_DESCRIPTION_LENGTH, 
-					ProductConstants.MAX_DESCRIPTION_LENGTH, 
-					nameof(this.Description));
+				ArgumentValidator.MaxLength(trimedDescription, ProductConstants.MAX_DESCRIPTION_LENGTH, nameof(this.Description));
+				ArgumentValidator.MinLength(trimedDescription, ProductConstants.MIN_DESCRIPTION_LENGTH, nameof(this.Description));
 
 				if (trimedDescription.Length > 0)
 					this.description = trimedDescription;

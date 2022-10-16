@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Marketplace.Persistence.Migrations.SalesDb
+namespace Marketplace.Persistence.Migrations
 {
     public partial class InitialMigration : Migration
     {
@@ -62,7 +62,7 @@ namespace Marketplace.Persistence.Migrations.SalesDb
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     SellerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    PriceCurrency = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PriceCurrency = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -80,10 +80,10 @@ namespace Marketplace.Persistence.Migrations.SalesDb
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     SellerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RejectMessage = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Message = table.Column<string>(type: "nvarchar(800)", maxLength: 800, nullable: false),
+                    RejectMessage = table.Column<string>(type: "nvarchar(800)", maxLength: 800, nullable: true),
                     ProductId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     BuyerId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },

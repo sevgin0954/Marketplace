@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Marketplace.Persistence.Migrations
+namespace Marketplace.Persistence.Migrations.BrowsingDb
 {
     [DbContext(typeof(BrowsingDbContext))]
     partial class BrowsingDbContextModelSnapshot : ModelSnapshot
@@ -28,11 +28,13 @@ namespace Marketplace.Persistence.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1500)
+                        .HasColumnType("nvarchar(1500)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 

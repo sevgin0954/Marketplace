@@ -7,9 +7,8 @@ namespace Marketplace.Domain.Sales.OfferAggregate
 {
 	public class Offer : AggregateRoot<OfferId>
 	{
-		const string CANT_DISCARD_NON_PENDING_OFFER = "Can't discard non pending offer!";
-		const string CANT_ACCEPT_NON_PENDING_OFFER = "Can't accept non pending offer!";
-		const string CANT_REJECT_NON_PENDING_OFFER = "Can't reject non pending offer!";
+		private string message;
+		private string rejectMessage;
 
 		public Offer(OfferId id, Id sellerId, string message)
 			: base(id)
@@ -25,9 +24,29 @@ namespace Marketplace.Domain.Sales.OfferAggregate
 
 		public Id SellerId { get; }
 
-		public string Message { get; }
+		public string Message
+		{
+			get { return this.message; }
+			init
+			{
+				ArgumentValidator.NotNullValidator(value, nameof(RejectMessage));
+				ArgumentValidator.MaxLength(value, OfferConstants.MESSAGE_MAX_LENGTH, nameof(this.Message));
 
-		public string RejectMessage { get; private set; }
+				this.message = value;
+			}
+		}
+
+		public string RejectMessage
+		{
+			get { return this.rejectMessage; }
+			set
+			{
+				ArgumentValidator.NotNullValidator(value, nameof(RejectMessage));
+				ArgumentValidator.MaxLength(value, OfferConstants.MESSAGE_MAX_LENGTH, nameof(this.Message));
+
+				this.rejectMessage = value;
+			}
+		}
 
 		public Id ProductId { get; }
 
@@ -38,7 +57,7 @@ namespace Marketplace.Domain.Sales.OfferAggregate
 			ArgumentValidator.NotNullValidator(initiatorId, nameof(initiatorId));
 			if (initiatorId != this.BuyerId)
 				throw new InvalidOperationException(ErrorConstants.INITIATOR_SHOULD_BE_THE_BUYER);
-			this.ThrowExceptionIfStatusNotPending(CANT_DISCARD_NON_PENDING_OFFER);
+			this.ThrowExceptionIfStatusNotPending(OfferConstants.CANT_DISCARD_NON_PENDING_OFFER);
 
 			this.Status = OfferStatus.Discarded;
 		}
@@ -47,7 +66,7 @@ namespace Marketplace.Domain.Sales.OfferAggregate
 		{
 			ArgumentValidator.NotNullValidator(initiatorId, nameof(initiatorId));
 			this.ThrowExceptionIfInitiatorIsNotTheSeller(initiatorId);
-			this.ThrowExceptionIfStatusNotPending(CANT_ACCEPT_NON_PENDING_OFFER);
+			this.ThrowExceptionIfStatusNotPending(OfferConstants.CANT_ACCEPT_NON_PENDING_OFFER);
 
 			this.Status = OfferStatus.Accepted;
 		}
@@ -58,7 +77,7 @@ namespace Marketplace.Domain.Sales.OfferAggregate
 			ArgumentValidator.NotNullOrEmpty(reason, nameof(reason));
 
 			this.ThrowExceptionIfInitiatorIsNotTheSeller(initiatorId);
-			this.ThrowExceptionIfStatusNotPending(CANT_REJECT_NON_PENDING_OFFER);
+			this.ThrowExceptionIfStatusNotPending(OfferConstants.CANT_REJECT_NON_PENDING_OFFER);
 
 			this.RejectMessage = reason;
 			this.Status = OfferStatus.Rejected;

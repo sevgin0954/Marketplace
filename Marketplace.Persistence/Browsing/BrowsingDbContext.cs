@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Marketplace.Domain.Browsing.ProductAggregate;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Marketplace.Persistence.Browsing
@@ -20,10 +21,12 @@ namespace Marketplace.Persistence.Browsing
 
 				product
 					.Property(p => p.Name)
+					.HasMaxLength(ProductConstants.MAX_NAME_LENGTH)
 					.IsRequired();
 
 				product
 					.Property(p => p.Description)
+					.HasMaxLength(ProductConstants.MAX_DESCRIPTION_LENGTH)
 					.IsRequired();
 			});
 			modelBuilder.Entity<ProductEntity>().HasData(new ProductEntity

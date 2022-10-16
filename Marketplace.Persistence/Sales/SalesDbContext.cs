@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using Marketplace.Domain.Sales.OfferAggregate;
+using Marketplace.Domain.SharedKernel;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Marketplace.Persistence.Sales
@@ -20,6 +22,8 @@ namespace Marketplace.Persistence.Sales
 		{
 			modelBuilder.Entity<ProductEntity>(product =>
 			{
+				const int CURRENCY_LENGTH = 3;
+
 				product
 					.HasKey(p => p.Id);
 
@@ -40,13 +44,14 @@ namespace Marketplace.Persistence.Sales
 
 				product
 					.Property(p => p.PriceCurrency)
-					.IsRequired();
+					.IsRequired()
+					.HasMaxLength(CURRENCY_LENGTH);
 			});
 			modelBuilder.Entity<ProductEntity>().HasData(new ProductEntity
 			{
 				Id = "1",
 				Price = 1,
-				PriceCurrency = "BGN",
+				PriceCurrency = Enum.GetName(Currency.BGN)!,
 				SellerId = "1",
 				Status = "IN Sale"
 			});
@@ -67,11 +72,14 @@ namespace Marketplace.Persistence.Sales
 
 			modelBuilder.Entity<OfferEntity>(offer =>
 			{
+				const int STATUS_MAX_LENGTH = 20;
+
 				offer
 					.HasKey(o => o.Id);
 
 				offer
 					.Property(o => o.Status)
+					.HasMaxLength(STATUS_MAX_LENGTH)
 					.IsRequired();
 
 				offer
@@ -82,10 +90,12 @@ namespace Marketplace.Persistence.Sales
 
 				offer
 					.Property(o => o.Message)
+					.HasMaxLength(OfferConstants.MESSAGE_MAX_LENGTH)
 					.IsRequired();
 
 				offer
 					.Property(o => o.RejectMessage)
+					.HasMaxLength(OfferConstants.REJECT_MESSAGE_MAX_LENGTH)
 					.IsRequired(false);
 
 				offer

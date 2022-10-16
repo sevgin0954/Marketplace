@@ -18,11 +18,22 @@ namespace Marketplace.Domain.Common
 				throw new ArgumentException(EXCEPTION_MESSAGE);
 		}
 
-		public static void StringInRange(string str, int minLength, int maxLength, string argumentName)
+		public static void MaxLength(string str, int maxLength, string argumentName)
 		{
-			var isStringLengthValid = str.Length >= minLength && str.Length <= maxLength;
-			if (isStringLengthValid)
-				throw new ArgumentException("", nameof(argumentName));
+			if (str.Length > maxLength)
+			{
+				var exceptionMessage = $"The string should be less than {maxLength} characters long!";
+				throw new ArgumentOutOfRangeException(argumentName, exceptionMessage);
+			}
+		}
+
+		public static void MinLength(string str, int minLength, string argumentName)
+		{
+			if (str.Length > minLength)
+			{
+				var exceptionMessage = $"The string should be at least {minLength} characters long!";
+				throw new ArgumentOutOfRangeException(argumentName, exceptionMessage);
+			}
 		}
 	}
 }
