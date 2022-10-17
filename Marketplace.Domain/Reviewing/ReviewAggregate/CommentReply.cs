@@ -4,7 +4,7 @@ using System;
 
 namespace Marketplace.Domain.Reviewing.ReviewAggregate
 {
-	public record CommentReply
+	internal record CommentReply
 	{
 		public CommentReply(Id authorId, CommentDescription description)
 		{
