@@ -11,13 +11,17 @@ namespace Marketplace.Domain.Sales.ProductAggregate
 		public Product(Id id, Price price, Id sellerId)
 			: base(id)
 		{
+			ArgumentValidator.NotNullValidator(price, nameof(price));
+			ArgumentValidator.NotNullValidator(sellerId, nameof(sellerId));
+
 			this.Price = price;
 			this.SellerId = sellerId;
 			this.Status = ProductStatus.Unsold;
 		}
 
-		public Id SellerId { get; private set; }
+		public Id SellerId { get; }
 
+		// TODO: Add constrain: only the seller should be able to change the price!
 		public Price Price { get; set; }
 
 		public ProductStatus Status { get; private set; }

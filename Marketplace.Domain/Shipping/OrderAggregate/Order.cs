@@ -7,17 +7,19 @@ namespace Marketplace.Domain.Shipping.OrderAggregate
 {
 	public class Order : AggregateRoot<Id>
 	{
-		private string trackingNumber;
+		private string? trackingNumber;
 
-		public Order(Id id)
+		public Order(Id id, Id sellerId, Id buyerId)
 			: base(id)
 		{
 			this.Status = Status.Processing;
+			this.SellerId = sellerId;
+			this.BuyerId = buyerId;
 		}
 
 		public Status Status { get; private set; }
 
-		public string TrackingNumber
+		public string? TrackingNumber
 		{
 			get
 			{
@@ -25,16 +27,16 @@ namespace Marketplace.Domain.Shipping.OrderAggregate
 			}
 			set
 			{
-				if (value.Length > OrderConstants.TrackingNumberMaxLength)
-					throw new InvalidOperationException();
+				ArgumentValidator.NotNullOrEmpty(value!, nameof(this.TrackingNumber));
+				ArgumentValidator.MaxLength(value!, OrderConstants.TrackingNumberMaxLength, nameof(this.trackingNumber));
 
 				this.trackingNumber = value;
 			}
 		}
 
-		public Id SellerId { get; private set; }
+		public Id SellerId { get; }
 
-		public Id BuyerId { get; private set; }
+		public Id BuyerId { get; }
 
 		public CanceledOrderInitiator CanceledOrderInitiator { get; private set; }
 

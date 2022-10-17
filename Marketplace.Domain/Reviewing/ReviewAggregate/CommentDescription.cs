@@ -3,11 +3,8 @@ using System;
 
 namespace Marketplace.Domain.Reviewing.ReviewAggregate
 {
-	public record CommentDescription
+	public record CommentDescription : ValueObject
 	{
-		private const int TEXT_MIN_LENGTH = 20;
-		private const int TEXT_MAX_LENGTH = 1000;
-
 		private readonly string text = null!;
 
 		public CommentDescription(string text)
@@ -26,8 +23,8 @@ namespace Marketplace.Domain.Reviewing.ReviewAggregate
 
 				var trimedValue = value.Trim();
 
-				ArgumentValidator.MinLength(trimedValue, TEXT_MIN_LENGTH, argumentName);
-				ArgumentValidator.MaxLength(trimedValue, TEXT_MAX_LENGTH, argumentName);
+				ArgumentValidator.MinLength(trimedValue, ReviewConstants.DESCRIPTION_MIN_LENGTH, argumentName);
+				ArgumentValidator.MaxLength(trimedValue, ReviewConstants.DESCRIPTION_MAX_LENGTH, argumentName);
 
 				this.text = trimedValue;
 			}

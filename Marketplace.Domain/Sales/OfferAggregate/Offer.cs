@@ -7,8 +7,8 @@ namespace Marketplace.Domain.Sales.OfferAggregate
 {
 	public class Offer : AggregateRoot<OfferId>
 	{
-		private string message;
-		private string rejectMessage;
+		private string message = null!;
+		private string? rejectMessage;
 
 		public Offer(OfferId id, Id sellerId, string message)
 			: base(id)
@@ -36,13 +36,13 @@ namespace Marketplace.Domain.Sales.OfferAggregate
 			}
 		}
 
-		public string RejectMessage
+		public string? RejectMessage
 		{
 			get { return this.rejectMessage; }
-			set
+			private set
 			{
-				ArgumentValidator.NotNullValidator(value, nameof(RejectMessage));
-				ArgumentValidator.MaxLength(value, OfferConstants.MESSAGE_MAX_LENGTH, nameof(this.Message));
+				ArgumentValidator.NotNullValidator(value!, nameof(RejectMessage));
+				ArgumentValidator.MaxLength(value!, OfferConstants.MESSAGE_MAX_LENGTH, nameof(this.Message));
 
 				this.rejectMessage = value;
 			}

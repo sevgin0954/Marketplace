@@ -3,7 +3,7 @@ using System;
 
 namespace Marketplace.Domain.Reviewing.ReviewAggregate
 {
-	internal record CommentEdit
+	internal record CommentEdit : ValueObject
 	{
 		public CommentEdit(CommentDescription description)
 		{

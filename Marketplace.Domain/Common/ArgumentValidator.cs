@@ -35,5 +35,14 @@ namespace Marketplace.Domain.Common
 				throw new ArgumentOutOfRangeException(argumentName, exceptionMessage);
 			}
 		}
+
+		public static void MinValue(int value, int minValue, string argumentName)
+		{
+			if (value < minValue)
+			{
+				var exceptionMessage = $"The value should not be less than {minValue}";
+				throw new ArgumentOutOfRangeException(argumentName, exceptionMessage);
+			}
+		}
 	}
 }

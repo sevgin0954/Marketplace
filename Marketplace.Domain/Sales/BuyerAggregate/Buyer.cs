@@ -13,6 +13,7 @@ namespace Marketplace.Domain.Sales.BuyerAggregate
 			: base(id)
 		{
 			this.PendingOffersCount = pendingOffersCount;
+			this.StartedPendingOffersIds = new List<string>();
 		}
 
 		public IList<string> StartedPendingOffersIds { get; private set; }

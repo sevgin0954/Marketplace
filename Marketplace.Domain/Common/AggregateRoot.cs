@@ -1,8 +1,7 @@
 ﻿using Marketplace.Domain.SharedKernel;
 using MediatR;
 using System.Collections.Generic;
-// TODO: Implement base value object
-// TODO: Remove IREADONLYCOLLECTIONS FROM AGGREGATES, THEY ARE ONLY FOR WRITING
+
 namespace Marketplace.Domain.Common
 {
 	public abstract class AggregateRoot<TId> : Entity<TId> where TId : Id

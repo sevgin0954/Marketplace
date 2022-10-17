@@ -5,8 +5,8 @@ namespace Marketplace.Domain.Browsing.ProductAggregate
 {
 	public class Product : AggregateRoot<Id>
 	{
-		private string name;
-		private string description;
+		private string name = null!;
+		private string description = null!;
 
 		public Product(Id id, string name, string description)
 			: base(id)

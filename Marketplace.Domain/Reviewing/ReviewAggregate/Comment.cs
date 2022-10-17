@@ -7,10 +7,8 @@ namespace Marketplace.Domain.Reviewing.ReviewAggregate
 {
 	internal class Comment : Entity<Id>
 	{
-		private const int MAX_NUMBER_EDITS = 3;
-
-		private readonly IDictionary<Id, CommentReply> authorIdAndReplies;
-		private readonly IList<CommentEdit> edits;
+		private readonly IDictionary<Id, CommentReply> authorIdAndReplies = new Dictionary<Id, CommentReply>();
+		private readonly IList<CommentEdit> edits = new List<CommentEdit>();
 
 		public Comment(Id id, Id authorId, string title, CommentDescription description)
 			: base(id)
@@ -47,8 +45,8 @@ namespace Marketplace.Domain.Reviewing.ReviewAggregate
 		{
 			if (initiatorId == this.AuthorId)
 				throw new InvalidOperationException("Only the author can edit the comment!");
-			if (this.edits.Count >= MAX_NUMBER_EDITS)
-				throw new InvalidOperationException($"User can't edit his comment more than {MAX_NUMBER_EDITS} times!");
+			if (this.edits.Count >= ReviewConstants.MAX_NUMBER_EDITS)
+				throw new InvalidOperationException($"User can't edit his comment more than {ReviewConstants.MAX_NUMBER_EDITS} times!");
 
 			this.edits.Add(edit);
 		}
