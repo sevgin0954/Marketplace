@@ -1,14 +1,13 @@
 ﻿using Marketplace.API.Models.ProductModels;
-using Marketplace.Query.Products;
+using Marketplace.Query.ProductQueries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Marketplace.API.Controllers
 {
-    [ApiController]
-    [Route("api/products")]
-    public class ProductsController : ControllerBase
-    {
+    [Route("products")]
+    public class ProductsController : BaseController
+	{
         private readonly IMediator mediator;
 
         public ProductsController(IMediator mediator)

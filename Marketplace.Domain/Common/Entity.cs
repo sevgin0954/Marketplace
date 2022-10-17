@@ -11,7 +11,7 @@ namespace Marketplace.Domain.Common
 
         public virtual TId Id { get; }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             var other = obj as Entity<TId>;
 
@@ -27,7 +27,7 @@ namespace Marketplace.Domain.Common
             return Id == other.Id;
         }
 
-        public static bool operator ==(Entity<TId> a, Entity<TId> b)
+        public static bool operator ==(Entity<TId>? a, Entity<TId>? b)
         {
             if (ReferenceEquals(a, null) && ReferenceEquals(b, null))
                 return true;
@@ -38,7 +38,7 @@ namespace Marketplace.Domain.Common
             return a.Equals(b);
         }
 
-        public static bool operator !=(Entity<TId> a, Entity<TId> b)
+        public static bool operator !=(Entity<TId>? a, Entity<TId>? b)
         {
             return !(a == b);
         }

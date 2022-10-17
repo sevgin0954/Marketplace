@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Marketplace.Persistence.Sales;
 
-namespace Marketplace.Query.Products
+namespace Marketplace.Query.ProductQueries
 {
 	public class ProductMappingProfiles : Profile
 	{

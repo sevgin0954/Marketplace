@@ -21,4 +21,8 @@
     <ProjectReference Include="..\Marketplace.Query\Marketplace.Query.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\CommentModels\" />
+  </ItemGroup>
+
 </Project>

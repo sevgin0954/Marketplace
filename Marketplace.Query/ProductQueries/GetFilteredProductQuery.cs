@@ -4,7 +4,7 @@ using Marketplace.Persistence.Browsing;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Marketplace.Query.Products
+namespace Marketplace.Query.ProductQueries
 {
 	public class GetFilteredProductQuery : IRequest<IList<ProductDto>>
 	{

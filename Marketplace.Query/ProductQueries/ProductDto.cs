@@ -1,4 +1,4 @@
-﻿namespace Marketplace.Query.Products
+﻿namespace Marketplace.Query.ProductQueries
 {
     public class ProductDto
     {

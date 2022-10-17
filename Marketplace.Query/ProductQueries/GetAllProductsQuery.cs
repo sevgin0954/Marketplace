@@ -4,7 +4,7 @@ using Marketplace.Persistence.Sales;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Marketplace.Query.Products
+namespace Marketplace.Query.ProductQueries
 {
     public class GetAllProductsQuery : IRequest<IList<ProductDto>>
     {
