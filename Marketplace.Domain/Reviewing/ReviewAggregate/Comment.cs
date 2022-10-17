@@ -15,6 +15,10 @@ namespace Marketplace.Domain.Reviewing.ReviewAggregate
 		public Comment(Id id, Id authorId, string title, CommentDescription description)
 			: base(id)
 		{
+			ArgumentValidator.NotNullValidator(authorId, nameof(authorId));
+			ArgumentValidator.NotNullOrEmpty(title, nameof(title));
+			ArgumentValidator.NotNullValidator(description, nameof(description));
+
 			this.AuthorId = authorId;
 			this.Title = title;
 			this.Description = description;

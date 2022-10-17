@@ -5,6 +5,7 @@ namespace Marketplace.Domain.Reviewing.ReviewAggregate
 	public record ReviewId : Id
 	{
 		public ReviewId(Id productId, Id authorId)
+			: base(productId.Value + authorId.Value)
 		{
 			this.ProductId = productId;
 			this.AuthorId = authorId;

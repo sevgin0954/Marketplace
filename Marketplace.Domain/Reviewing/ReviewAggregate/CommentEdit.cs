@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Marketplace.Domain.Common;
+using System;
 
 namespace Marketplace.Domain.Reviewing.ReviewAggregate
 {
@@ -6,6 +7,8 @@ namespace Marketplace.Domain.Reviewing.ReviewAggregate
 	{
 		public CommentEdit(CommentDescription description)
 		{
+			ArgumentValidator.NotNullValidator(description, nameof(description));
+
 			this.Description = description;
 			this.CreatedAt = DateTime.Now;
 		}

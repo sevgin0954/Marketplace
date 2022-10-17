@@ -8,7 +8,7 @@ namespace Marketplace.Domain.Reviewing.ReviewAggregate
 		private const int TEXT_MIN_LENGTH = 20;
 		private const int TEXT_MAX_LENGTH = 1000;
 
-		private readonly string text;
+		private readonly string text = null!;
 
 		public CommentDescription(string text)
 		{

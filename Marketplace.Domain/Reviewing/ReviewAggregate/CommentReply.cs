@@ -1,4 +1,5 @@
-﻿using Marketplace.Domain.SharedKernel;
+﻿using Marketplace.Domain.Common;
+using Marketplace.Domain.SharedKernel;
 using System;
 
 namespace Marketplace.Domain.Reviewing.ReviewAggregate
@@ -7,6 +8,9 @@ namespace Marketplace.Domain.Reviewing.ReviewAggregate
 	{
 		public CommentReply(Id authorId, CommentDescription description)
 		{
+			ArgumentValidator.NotNullValidator(authorId, nameof(authorId));
+			ArgumentValidator.NotNullValidator(description, nameof(description));
+
 			this.AuthorId = authorId;
 			this.Description = description;
 			this.CreatedAt = DateTime.UtcNow;
