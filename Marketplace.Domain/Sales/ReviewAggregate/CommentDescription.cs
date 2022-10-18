@@ -1,7 +1,7 @@
 ﻿using Marketplace.Domain.Common;
 using System;
 
-namespace Marketplace.Domain.Reviewing.ReviewAggregate
+namespace Marketplace.Domain.Sales.ReviewAggregate
 {
 	public record CommentDescription : ValueObject
 	{

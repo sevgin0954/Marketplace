@@ -1,6 +1,6 @@
 ﻿using Marketplace.Domain.SharedKernel;
 
-namespace Marketplace.Domain.Reviewing.ReviewAggregate
+namespace Marketplace.Domain.Sales.ReviewAggregate
 {
 	public record ReviewId : Id
 	{

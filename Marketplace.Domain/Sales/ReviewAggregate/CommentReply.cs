@@ -2,7 +2,7 @@
 using Marketplace.Domain.SharedKernel;
 using System;
 
-namespace Marketplace.Domain.Reviewing.ReviewAggregate
+namespace Marketplace.Domain.Sales.ReviewAggregate
 {
 	internal record CommentReply
 	{

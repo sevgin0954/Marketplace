@@ -1,4 +1,4 @@
-﻿namespace Marketplace.Domain.Reviewing.ReviewAggregate
+﻿namespace Marketplace.Domain.Sales.ReviewAggregate
 {
 	public static class ReviewConstants
 	{

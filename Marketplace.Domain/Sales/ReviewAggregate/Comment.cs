@@ -3,7 +3,7 @@ using Marketplace.Domain.SharedKernel;
 using System;
 using System.Collections.Generic;
 
-namespace Marketplace.Domain.Reviewing.ReviewAggregate
+namespace Marketplace.Domain.Sales.ReviewAggregate
 {
 	internal class Comment : Entity<Id>
 	{
