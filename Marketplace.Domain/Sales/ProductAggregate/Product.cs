@@ -8,10 +8,11 @@ namespace Marketplace.Domain.Sales.ProductAggregate
 {
 	public class Product : AggregateRoot<Id>
 	{
+		private Price price = null!;
+
 		public Product(Id id, Price price, Id sellerId)
 			: base(id)
 		{
-			ArgumentValidator.NotNullValidator(price, nameof(price));
 			ArgumentValidator.NotNullValidator(sellerId, nameof(sellerId));
 
 			this.Price = price;
@@ -21,8 +22,16 @@ namespace Marketplace.Domain.Sales.ProductAggregate
 
 		public Id SellerId { get; }
 
-		// TODO: Add constrain: only the seller should be able to change the price!
-		public Price Price { get; set; }
+		public Price Price
+		{
+			get { return this.price; }
+			private set
+			{
+				ArgumentValidator.NotNullValidator(value, nameof(price));
+
+				this.price = value;
+			}
+		}
 
 		public ProductStatus Status { get; private set; }
 
@@ -49,6 +58,14 @@ namespace Marketplace.Domain.Sales.ProductAggregate
 				throw new InvalidOperationException();
 
 			this.Status = ProductStatus.Unsold;
+		}
+
+		public void ChangePrice(Id initiatorId, Price price)
+		{
+			if (initiatorId != this.SellerId)
+				throw new InvalidOperationException(ErrorConstants.INITIATOR_SHOULD_BE_THE_SELLER);
+
+			this.price = price;
 		}
 
 		public void CheckIsEligibleForBuyEventCheck(Id initiatorId)

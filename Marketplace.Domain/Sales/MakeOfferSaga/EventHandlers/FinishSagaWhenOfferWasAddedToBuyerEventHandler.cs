@@ -1,4 +1,6 @@
-﻿using Marketplace.Domain.Sales.BuyerAggregate.Events;
+﻿using Marketplace.Domain.Common.Constants;
+using Marketplace.Domain.Common.Exceptions;
+using Marketplace.Domain.Sales.BuyerAggregate.Events;
 using Marketplace.Domain.Sales.MakeOfferSagaNS;
 using Marketplace.Domain.SharedKernel;
 using MediatR;
@@ -27,8 +29,11 @@ namespace Marketplace.Domain.Sales.MakeOfferSaga.EventHandlers
 
 			await saga.FinishSagaAsync(notification);
 
-			// TODO: Validate savechanges result
-			await this.sagaRepository.SaveChangesAsync(cancellationToken);
+			var rowsChanged = await this.sagaRepository.SaveChangesAsync(cancellationToken);
+			if (rowsChanged == 0)
+			{
+				throw new NotPersistentException(saga.GetType().Name);
+			}
 		}
 	}
 }

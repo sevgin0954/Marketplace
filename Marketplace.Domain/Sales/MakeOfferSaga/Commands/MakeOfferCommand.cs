@@ -1,4 +1,5 @@
 ﻿using Marketplace.Domain.Common;
+using Marketplace.Domain.Common.Constants;
 using Marketplace.Domain.SharedKernel;
 using MediatR;
 using System;
@@ -65,9 +66,10 @@ namespace Marketplace.Domain.Sales.MakeOfferSagaNS.Commands
 
 				this.makeOfferSagaRepository.Add(saga);
 				var rowsChanged = await this.makeOfferSagaRepository.SaveChangesAsync(cancellationToken);
-				// TODO: Move to validator class
 				if (rowsChanged == 0)
-					throw new InvalidOperationException();
+				{
+					return Result.Fail(ErrorConstants.NO_RECORD_ALTERED);
+				}
 
 				return Result.Ok();
 			}

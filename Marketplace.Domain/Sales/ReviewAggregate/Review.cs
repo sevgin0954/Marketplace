@@ -20,8 +20,6 @@ namespace Marketplace.Domain.Sales.ReviewAggregate
 
         private Comment? Comment { get; set; }
 
-        // TODO: public Pictures...
-
         public int LikesCount { get; }
 
         public void AddComment(Id initiatorId, string title, CommentDescription description)
