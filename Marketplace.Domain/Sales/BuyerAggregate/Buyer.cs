@@ -20,12 +20,17 @@ namespace Marketplace.Domain.Sales.BuyerAggregate
 		internal void StartMakingOffer(Id productId)
 		{
 			ArgumentValidator.NotNullValidator(productId, nameof(productId));
+
+			var isOfferStarted = this.startedOffersProductsIds.Contains(productId.Value);
+			if (isOfferStarted)
+				throw new InvalidOperationException("Maximum pending offers limit is reached!");
+
 			this.ValidateCanAddOffer();
 
 			this.startedOffersProductsIds.Add(productId.Value);
 		}
 
-		protected void FinishMakingOffer(Id productId)
+		internal void FinishMakingOffer(Id productId)
 		{
 			ArgumentValidator.NotNullValidator(productId, nameof(productId));
 			this.ValidateCanAddOffer();
@@ -43,7 +48,7 @@ namespace Marketplace.Domain.Sales.BuyerAggregate
 				throw new InvalidOperationException("Maximum pending offers limit is reached!");
 		}
 
-		protected void DicardMakingOffer(Id productId)
+		internal void DicardMakingOffer(Id productId)
 		{
 			ArgumentValidator.NotNullValidator(productId, nameof(productId));
 
