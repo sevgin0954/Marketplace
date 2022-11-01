@@ -109,9 +109,9 @@ namespace Marketplace.Tests.Sales.MakeOfferSagaSpecs.Commands
 			repositoryMock.Verify(r => r.SaveChangesAsync(It.IsAny<CancellationToken>()));
 		}
 
-		private Mock<ISagaRepository<MakeOfferSaga, MakeOfferSagaData>> GetDefaultSetupedRepositoryMock()
+		private Mock<ISagaDataRepository<MakeOfferSaga, MakeOfferSagaData>> GetDefaultSetupedRepositoryMock()
 		{
-			var repositoryMock = new Mock<ISagaRepository<MakeOfferSaga, MakeOfferSagaData>>();
+			var repositoryMock = new Mock<ISagaDataRepository<MakeOfferSaga, MakeOfferSagaData>>();
 
 			var returnedValue = 1;
 			repositoryMock
@@ -122,7 +122,7 @@ namespace Marketplace.Tests.Sales.MakeOfferSagaSpecs.Commands
 		}
 
 		private void SetupRepositoryGetByIdAsyncMock(
-			Mock<ISagaRepository<MakeOfferSaga, MakeOfferSagaData>> repositoryMock, 
+			Mock<ISagaDataRepository<MakeOfferSaga, MakeOfferSagaData>> repositoryMock, 
 			MakeOfferSaga returnedSaga)
 		{
 			repositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<Id>())).Returns(Task.FromResult(returnedSaga));

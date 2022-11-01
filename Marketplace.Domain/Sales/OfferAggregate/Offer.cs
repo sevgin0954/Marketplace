@@ -29,7 +29,7 @@ namespace Marketplace.Domain.Sales.OfferAggregate
 			get { return this.message; }
 			init
 			{
-				ArgumentValidator.NotNullValidator(value, nameof(RejectMessage));
+				ArgumentValidator.NotNullValidator(value, nameof(this.RejectMessage));
 				ArgumentValidator.MaxLength(value, OfferConstants.MESSAGE_MAX_LENGTH, nameof(this.Message));
 
 				this.message = value;

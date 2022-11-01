@@ -1,14 +1,16 @@
-﻿using Marketplace.Domain.SharedKernel;
+﻿using Marketplace.Domain.Common;
+using Marketplace.Domain.SharedKernel;
 
 namespace Marketplace.Domain.Sales.MakeOfferSagaNS
 {
-	public class MakeOfferSagaData
+	public class MakeOfferSagaData : SagaData
 	{
-		public MakeOfferSagaData(Id buyerId, Id productId, Id sellerId, string message, int quantity)
+		public MakeOfferSagaData(MakeOfferSagaId sagaId, Id sellerId, string message, int quantity)
+			: base(sagaId)
 		{
-			this.BuyerId = buyerId;
+			this.BuyerId = sagaId.BuyerId;
 			this.SellerId = sellerId;
-			this.ProductId = productId;
+			this.ProductId = sagaId.ProductId;
 			this.Message = message;
 			this.Quantity = quantity;
 		}

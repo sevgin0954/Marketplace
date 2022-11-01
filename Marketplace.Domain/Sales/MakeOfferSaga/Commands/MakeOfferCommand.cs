@@ -2,7 +2,6 @@
 using Marketplace.Domain.Common.Constants;
 using Marketplace.Domain.SharedKernel;
 using MediatR;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,8 +9,14 @@ namespace Marketplace.Domain.Sales.MakeOfferSagaNS.Commands
 {
 	public class MakeOfferCommand : IRequest<Result>
 	{
-		public MakeOfferCommand(string buyerId, string productId, string sellerId, string message, int quantity)
+		public MakeOfferCommand(
+			string buyerId,
+			string productId,
+			string sellerId,
+			string message,
+			int quantity)
 		{
+			// TODO: Validate ids existence
 			this.BuyerId = buyerId;
 			this.ProductId = productId;
 			this.SellerId = sellerId;
@@ -29,58 +34,40 @@ namespace Marketplace.Domain.Sales.MakeOfferSagaNS.Commands
 
 		public int Quantity { get; }
 
-		internal class StartMakingOfferCommandHandler : IRequestHandler<MakeOfferCommand, Result>
+		internal class MakeOfferCommandHandler : IRequestHandler<MakeOfferCommand, Result>
 		{
-			private readonly ISagaRepository<MakeOfferSaga, MakeOfferSagaData> makeOfferSagaRepository;
+			private readonly ISagaDataRepository<MakeOfferSagaData, MakeOfferSagaId> sagaDataRepository;
 			private readonly IMediator mediator;
 
-			internal StartMakingOfferCommandHandler(
-				ISagaRepository<MakeOfferSaga, MakeOfferSagaData> makeOfferSagaRepository,
+			public MakeOfferCommandHandler(
+				ISagaDataRepository<MakeOfferSagaData, MakeOfferSagaId> sagaDataRepository,
 				IMediator mediator)
 			{
-				this.makeOfferSagaRepository = makeOfferSagaRepository;
+				this.sagaDataRepository = sagaDataRepository;
 				this.mediator = mediator;
 			}
 
-			public async Task<Result> Handle(MakeOfferCommand notification, CancellationToken cancellationToken)
+			public async Task<Result> Handle(MakeOfferCommand request, CancellationToken cancellationToken)
 			{
-				var buyerId = new Id(notification.BuyerId);
-				var productId = new Id(notification.ProductId);
-				var makeOfferSagaId = new MakeOfferSagaId(buyerId, productId);
+				var buyerId = new Id(request.BuyerId);
+				var productId = new Id(request.ProductId);
+				var sagaId = new MakeOfferSagaId(buyerId, productId);
 
-				var makeOfferSaga = await this.makeOfferSagaRepository.GetByIdAsync(makeOfferSagaId);
+				var sagaData = await this.sagaDataRepository.GetByIdAsync(sagaId);
+				if (sagaData != null)
+					return Result.Fail("Pending offer exists for this product from this buyer!");
 
-				if (makeOfferSaga != null && makeOfferSaga.IsCompleted == false)
-					return Result.Fail("Offer was already made to his product!");
-
-				var sellerId = new Id(notification.SellerId);
-				var saga = this.CreateSaga(
-					buyerId,
-					productId,
-					sellerId,
-					notification.Message,
-					notification.Quantity
-				);
+				var sellerId = new Id(request.SellerId);
+				sagaData = new MakeOfferSagaData(sagaId, sellerId, request.Message, request.Quantity);
+				var saga = new MakeOfferSaga(sagaData, this.mediator);
 
 				await saga.StartSagaAsync();
 
-				this.makeOfferSagaRepository.Add(saga);
-				var rowsChanged = await this.makeOfferSagaRepository.SaveChangesAsync(cancellationToken);
+				var rowsChanged = await this.sagaDataRepository.SaveChangesAsync();
 				if (rowsChanged == 0)
-				{
 					return Result.Fail(ErrorConstants.NO_RECORD_ALTERED);
-				}
 
 				return Result.Ok();
-			}
-
-			private MakeOfferSaga CreateSaga(Id buyerId, Id productId, Id sellerId, string message, int quantity)
-			{
-				var sagaData = new MakeOfferSagaData(buyerId, productId, sellerId, message, quantity);
-				var sagaId = new MakeOfferSagaId(buyerId, productId);
-				var saga = new MakeOfferSaga(sagaData, sagaId, this.mediator);
-
-				return saga;
 			}
 		}
 	}

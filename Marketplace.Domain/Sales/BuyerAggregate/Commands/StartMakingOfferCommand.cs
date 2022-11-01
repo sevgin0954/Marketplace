@@ -9,13 +9,16 @@ namespace Marketplace.Domain.Sales.BuyerAggregate.Commands
 {
 	internal class StartMakingOfferCommand : IRequest<Result>
 	{
-		public StartMakingOfferCommand(string buyerId, string productId)
+		public StartMakingOfferCommand(
+			string buyerId, 
+			string productId)
 		{
 			this.BuyerId = buyerId;
 			this.ProductId = productId;
 		}
 
 		public string BuyerId { get; }
+
 		public string ProductId { get; }
 
 		internal class StartMakingOfferCommandHandler : IRequestHandler<StartMakingOfferCommand, Result>
@@ -36,6 +39,11 @@ namespace Marketplace.Domain.Sales.BuyerAggregate.Commands
 
 				var productId = new Id(request.ProductId);
 				buyer.StartMakingOffer(productId);
+
+				// TODO: Move to generic base class
+				var alteredRows = await this.buyerRepository.SaveChangesAsync();
+				if (alteredRows <= 0)
+					throw new NotPersistentException(nameof(buyer));
 
 				return Result.Ok();
 			}
