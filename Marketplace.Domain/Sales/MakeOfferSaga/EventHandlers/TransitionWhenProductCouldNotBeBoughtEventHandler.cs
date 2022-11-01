@@ -1,4 +1,5 @@
-﻿using Marketplace.Domain.Sales.ProductAggregate.Events;
+﻿using Marketplace.Domain.Common;
+using Marketplace.Domain.Sales.ProductAggregate.Events;
 using Marketplace.Domain.SharedKernel;
 using MediatR;
 using System.Threading;
@@ -8,24 +9,30 @@ namespace Marketplace.Domain.Sales.MakeOfferSagaNS.EventHandlers
 {
 	internal class TransitionWhenProductCouldNotBeBoughtEventHandler : INotificationHandler<ProductCouldNotBeBoughtEvent>
 	{
-		private readonly IMakeOfferSagaRepository makeOfferSagaRepository;
+		private readonly ISagaDataRepository<MakeOfferSagaData, MakeOfferSagaId> sagaDataRepository;
+		private readonly IMediator mediator;
 
-		public TransitionWhenProductCouldNotBeBoughtEventHandler(IMakeOfferSagaRepository makeOfferSagaRepository)
+		public TransitionWhenProductCouldNotBeBoughtEventHandler(
+			ISagaDataRepository<MakeOfferSagaData, MakeOfferSagaId> sagaDataRepository,
+			IMediator mediator)
 		{
-			this.makeOfferSagaRepository = makeOfferSagaRepository;
+			this.sagaDataRepository = sagaDataRepository;
+			this.mediator = mediator;
 		}
 
 		public async Task Handle(ProductCouldNotBeBoughtEvent notification, CancellationToken cancellationToken)
 		{
 			var buyerId = new Id(notification.BuyerId);
 			var productId = new Id(notification.ProductId);
-			var makeOfferSagaId = new MakeOfferSagaId(buyerId, productId);
+			var sagaId = new MakeOfferSagaId(buyerId, productId);
 
-			var makeOfferSaga = await this.makeOfferSagaRepository.GetByIdAsync(makeOfferSagaId);
+			var sagaData = await this.sagaDataRepository.GetByIdAsync(sagaId);
 
-			await makeOfferSaga.TransitionAsync(notification);
+			var saga = new MakeOfferSaga(sagaData, this.mediator);
+			await saga.TransitionAsync(notification);
 
-			await this.makeOfferSagaRepository.SaveChangesAsync(cancellationToken);
+			await this.sagaDataRepository.SaveChangesAsync(cancellationToken);
+			// TODO
 		}
 	}
 }

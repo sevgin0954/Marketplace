@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Marketplace.Domain.Sales.MakeOfferSagaNS.EventHandlers
 {
-	internal class TransitionWhenBuyerIsBannedEventHandler : INotificationHandler<BuyerWasBannedEvent>
+	internal class TransitionWhenBuyerWasNotBannedEvent : INotificationHandler<BuyerWasNotBannedEvent>
 	{
 		private readonly ISagaDataRepository<MakeOfferSagaData, MakeOfferSagaId> sagaDataRepository;
 		private readonly IMediator mediator;
 
-		public TransitionWhenBuyerIsBannedEventHandler(
+		public TransitionWhenBuyerWasNotBannedEvent(
 			ISagaDataRepository<MakeOfferSagaData, MakeOfferSagaId> sagaDataRepository,
 			IMediator mediator)
 		{
@@ -19,15 +19,15 @@ namespace Marketplace.Domain.Sales.MakeOfferSagaNS.EventHandlers
 			this.mediator = mediator;
 		}
 
-		public async Task Handle(BuyerWasBannedEvent notification, CancellationToken cancellationToken)
+		public async Task Handle(BuyerWasNotBannedEvent notification, CancellationToken cancellationToken)
 		{
 			var sagaDatas = await this.sagaDataRepository
 				.FindAsync(sd => sd.SellerId.Value == notification.SellerId && sd.BuyerId.Value == notification.BuyerId);
 
 			foreach (var currentSagaData in sagaDatas)
 			{
-				var saga = new MakeOfferSaga(currentSagaData, this.mediator);
-				await saga.TransitionAsync(notification);
+				var currentSaga = new MakeOfferSaga(currentSagaData, this.mediator);
+				await currentSaga.TransitionAsync(notification);
 				await this.sagaDataRepository.SaveChangesAsync(cancellationToken);
 				// TODO
 			}
