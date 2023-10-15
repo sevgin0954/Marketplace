@@ -2,7 +2,7 @@
 
 namespace Marketplace.API.Attributes
 {
-    public class MaxStringLengthInCollectionAttribute : BaseCollectionValidationAttribute
+    public class MaxStringLengthInCollectionAttribute : BaseCollectionElementsValidationAttribute
     {
         private readonly int maxLength;
 

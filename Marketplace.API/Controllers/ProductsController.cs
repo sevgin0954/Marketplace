@@ -1,4 +1,6 @@
-﻿using Marketplace.API.Models.ProductModels;
+﻿using AutoMapper;
+using Marketplace.API.Models.ProductModels;
+using Marketplace.Domain.SharedKernel.Commands;
 using Marketplace.Query.ProductQueries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -9,14 +11,16 @@ namespace Marketplace.API.Controllers
     public class ProductsController : BaseController
 	{
         private readonly IMediator mediator;
+        private readonly IMapper mapper;
 
-        public ProductsController(IMediator mediator)
+        public ProductsController(IMediator mediator, IMapper mapper)
         {
             this.mediator = mediator;
+            this.mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<ActionResult<ProductDto>> GetProducts([FromQuery]ProductSearchBindingModel searchModel)
+        public async Task<ActionResult<ProductDto>> GetProducts(ProductSearchBindingModel searchModel)
         {
             var isAnyKeywordExist = searchModel.KeyWords != null && searchModel.KeyWords.Count > 0;
 			if (isAnyKeywordExist)
@@ -36,10 +40,25 @@ namespace Marketplace.API.Controllers
 
             if (product == null)
             {
-                return NotFound(product);
+                return NotFound();
             }
 
             return Ok(product);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<string>> CreateNewProduct(CreateProductBindingModel model)
+        {
+            var createProductCommand = this.mapper.Map<CreateProductCommand>(model);
+            var product = await this.mediator.Send(createProductCommand);
+
+            if (product.IsFailure)
+            {
+                return BadRequest();
+            }
+
+            // TODO: Return created product
+            return Ok();
         }
     }
 }

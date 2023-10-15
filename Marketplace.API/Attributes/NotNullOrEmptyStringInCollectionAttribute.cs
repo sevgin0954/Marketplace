@@ -1,6 +1,6 @@
 ﻿namespace Marketplace.API.Attributes
 {
-    public class NotNullOrEmptyStringInCollectionAttribute : BaseCollectionValidationAttribute
+    public class NotNullOrEmptyStringInCollectionAttribute : BaseCollectionElementsValidationAttribute
     {
         protected override Predicate<object> IsValidPredicate => obj => string.IsNullOrEmpty(obj as string);
 

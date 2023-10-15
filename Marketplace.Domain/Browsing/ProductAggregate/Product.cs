@@ -1,5 +1,6 @@
 ﻿using Marketplace.Domain.Common;
 using Marketplace.Domain.SharedKernel;
+using Marketplace.Shared;
 
 namespace Marketplace.Domain.Browsing.ProductAggregate
 {
@@ -13,6 +14,7 @@ namespace Marketplace.Domain.Browsing.ProductAggregate
 		{
 			this.Name = name;
 			this.Description = description;
+			this.ViewCount = 1;
 		}
 
 		public string Name
@@ -47,6 +49,13 @@ namespace Marketplace.Domain.Browsing.ProductAggregate
 				if (trimedDescription.Length > 0)
 					this.description = trimedDescription;
 			}
+		}
+
+		public int ViewCount { get; private set; }
+
+		public void RegisterView()
+		{
+			this.ViewCount++;
 		}
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using Marketplace.Domain.Common;
 using Marketplace.Domain.SharedKernel;
+using Marketplace.Shared;
 
 namespace Marketplace.Domain.Sales.SellerAggregate
 {

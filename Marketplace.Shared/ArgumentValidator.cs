@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Marketplace.Domain.Common
+namespace Marketplace.Shared
 {
-	internal static class ArgumentValidator
+	public static class ArgumentValidator
 	{
 		public static void NotNullValidator(object obj, string argumentName)
 		{

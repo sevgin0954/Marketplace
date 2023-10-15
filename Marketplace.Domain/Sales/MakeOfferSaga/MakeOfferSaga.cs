@@ -5,6 +5,7 @@ using Marketplace.Domain.Sales.ProductAggregate.Commands;
 using Marketplace.Domain.Sales.ProductAggregate.Events;
 using Marketplace.Domain.Sales.SellerAggregate.Commands;
 using Marketplace.Domain.Sales.SellerAggregate.Events;
+using Marketplace.Shared;
 using MediatR;
 using System;
 using System.Threading.Tasks;

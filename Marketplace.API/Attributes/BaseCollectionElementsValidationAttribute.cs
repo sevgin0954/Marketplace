@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Marketplace.API.Attributes
 {
-    public abstract class BaseCollectionValidationAttribute : ValidationAttribute
+    public abstract class BaseCollectionElementsValidationAttribute : ValidationAttribute
     {
         protected abstract Type ElementsType { get; }
 
