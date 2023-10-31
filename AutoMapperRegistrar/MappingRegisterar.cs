@@ -5,17 +5,19 @@ namespace AutoMapperRegistrar
 {
 	public class MappingRegisterar
 	{
+		const string EMPTY_OR_NULL_EXCEPTION_MESSAGE = "Null or empty ";
+
 		private readonly IProfileExpression configurationExpression;
 
-		public MappingRegisterar(IProfileExpression configurationExpression)
+		public MappingRegisterar(IProfileExpression profileExpression)
 		{
-			this.configurationExpression = configurationExpression;
+			this.configurationExpression = profileExpression;
 		}
 
 		public void RegisterMappings(ICollection<MappingType> mappings)
 		{
 			if (mappings == null || mappings.Count == 0)
-				throw new ArgumentException($"Null or empty {nameof(mappings)}");
+				throw new ArgumentException(EMPTY_OR_NULL_EXCEPTION_MESSAGE + nameof(mappings));
 
 			foreach (var currentMapping in mappings)
 			{
@@ -26,7 +28,7 @@ namespace AutoMapperRegistrar
 		public void RegisterCustomMappings(ICollection<ICustomMappings> customMappings)
 		{
 			if (customMappings == null || customMappings.Count == 0)
-				return;
+				throw new ArgumentException(EMPTY_OR_NULL_EXCEPTION_MESSAGE + nameof(customMappings));
 
 			foreach (var currentMapping in customMappings)
 			{
