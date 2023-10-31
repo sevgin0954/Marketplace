@@ -1,9 +1,7 @@
 ﻿using Marketplace.Domain.Sales.SellerAggregate;
 using Marketplace.Domain.Sales.SellerAggregate.Events;
 using Marketplace.Domain.SharedKernel;
-using MediatR;
 using System;
-using System.Collections.Generic;
 using Xunit;
 
 namespace Marketplace.Tests.Sales.SellerAggregateSpecs
