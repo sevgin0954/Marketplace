@@ -9,12 +9,13 @@ namespace Marketplace.Domain.Browsing.ProductAggregate
 		private string name = null!;
 		private string description = null!;
 
-		public Product(Id id, string name, string description)
+		public Product(Id id, string name, string description, Id sellerId)
 			: base(id)
 		{
 			this.Name = name;
 			this.Description = description;
 			this.ViewCount = 1;
+			this.SellerId = sellerId;
 		}
 
 		public string Name
@@ -50,6 +51,8 @@ namespace Marketplace.Domain.Browsing.ProductAggregate
 					this.description = trimedDescription;
 			}
 		}
+
+		public Id SellerId { get; } 
 
 		public int ViewCount { get; private set; }
 

@@ -41,10 +41,13 @@ namespace Marketplace.API
 			var config = new MapperConfigurationExpression();
 			var mappingRegisterar = new MappingRegisterar(config);
 
-			mappingRegisterar.RegisterMappings(mappingTypesFrom);
-			mappingRegisterar.RegisterMappings(mappingTypesTo);
+			if (mappingTypesFrom != null && mappingTypesTo.Count > 0)
+				mappingRegisterar.RegisterMappings(mappingTypesFrom);
 
-			if (customMappingTypes.Count > 0) 
+			if (mappingTypesTo != null && mappingTypesTo.Count > 0)
+				mappingRegisterar.RegisterMappings(mappingTypesTo);
+
+			if (customMappingTypes != null && customMappingTypes.Count > 0) 
 				mappingRegisterar.RegisterCustomMappings(customMappingTypes);
 		}
 

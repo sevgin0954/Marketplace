@@ -35,7 +35,8 @@ namespace Marketplace.Domain.SharedKernel.Commands
             public async Task<Result> Handle(CreateProductCommand request, CancellationToken cancellationToken)
             {
 				var browsingProductId = new Id();
-				var browsingProduct = new BrowsingContext.Product(browsingProductId, request.Name, request.Description);
+				var browsingProduct = new BrowsingContext.Product(
+                    browsingProductId, request.Name, request.Description, request.SellerId);
 
                 var salesContextId = new Id();
 				var salesProduct = new SalesContext.Product(salesContextId, request.Price, request.SellerId);
