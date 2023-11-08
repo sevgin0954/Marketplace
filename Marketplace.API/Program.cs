@@ -2,6 +2,7 @@ using AutoMapper;
 using AutoMapperRegistrar;
 using Marketplace.Persistence;
 using Marketplace.Persistence.Browsing;
+using Marketplace.Persistence.IdentityAndAccess;
 using Marketplace.Persistence.Sales;
 using Marketplace.Query;
 using MediatR;
@@ -13,7 +14,7 @@ namespace Marketplace.API
 	{
 		public static void Main(string[] args)
 		{
-			AddMappingsIfPresent();
+			// AddMappingsIfPresent();
 
 			var builder = WebApplication.CreateBuilder(args);
 
@@ -66,6 +67,10 @@ namespace Marketplace.API
 			builder.Services.AddAutoMapper(typeof(Program), typeof(MarketplaceDbContext), typeof(PriceDto));
 
 			var isLoggingEnabled = true;
+
+			var identityAndBrowsingConnectionString = configuration.GetConnectionString("IdentityAndAccess");
+			builder.Services
+				.AddTransient(s => new IdentityAndAccessDbContext(identityAndBrowsingConnectionString, isLoggingEnabled, s.GetRequiredService<IMediator>()));
 
 			var salesConnectionString = configuration.GetConnectionString("Sales");
 			builder.Services
