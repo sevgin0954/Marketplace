@@ -50,15 +50,14 @@ namespace Marketplace.API.Controllers
         public async Task<ActionResult<string>> CreateNewProduct(CreateProductBindingModel model)
         {
             var createProductCommand = this.mapper.Map<CreateProductCommand>(model);
-            var product = await this.mediator.Send(createProductCommand);
+            var result = await this.mediator.Send(createProductCommand);
 
-            if (product.IsFailure)
+            if (result.IsFailure)
             {
                 return BadRequest();
             }
 
-            // TODO: Return created product
-            return Ok();
+            return Ok(result.ResultObject);
         }
     }
 }

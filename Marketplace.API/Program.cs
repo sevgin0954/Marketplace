@@ -49,6 +49,8 @@ namespace Marketplace.API
 
 			if (customMappingTypes != null && customMappingTypes.Count > 0) 
 				mappingRegisterar.RegisterCustomMappings(customMappingTypes);
+
+			config.AddProfile<AutoMapperProfile>();
 		}
 
 		private static void AddServices(WebApplicationBuilder builder, IConfigurationRoot configuration)

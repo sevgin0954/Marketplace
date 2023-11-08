@@ -4,7 +4,7 @@ namespace Marketplace.Domain.Common
 {
 	public struct Result
 	{
-		public Result(bool isFailure, string errorMessage)
+		public Result(bool isFailure, string? errorMessage = null)
 		{
 			if (isFailure && string.IsNullOrWhiteSpace(errorMessage))
 				throw new InvalidOperationException();
@@ -17,16 +17,21 @@ namespace Marketplace.Domain.Common
 
 		public bool IsSuccess => !this.IsFailure;
 
-		public string ErrorMessage { get; }
+		public string? ErrorMessage { get; }
+
+		public object? ResultObject { get; private set; } = null;
 
 		public static Result Ok()
 		{
-			return new Result(false, string.Empty);
+			return new Result(false, null);
 		}
 
-		public static Result Fail(string errorMessage)
+		public static Result Fail(string errorMessage, object? resultObject = null)
 		{
-			return new Result(true, errorMessage);
+			var result = new Result(true, errorMessage);
+			result.ResultObject = result;
+
+			return result;
 		}
 	}
 }

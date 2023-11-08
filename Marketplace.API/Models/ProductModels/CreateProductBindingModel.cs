@@ -1,17 +1,26 @@
-﻿using AutoMapperRegistrar.Interfaces;
+﻿using AutoMapper;
+using AutoMapperRegistrar.Interfaces;
+using Marketplace.Domain.SharedKernel.Commands;
 
 namespace Marketplace.API.Models.ProductModels
 {
-	public class CreateProductBindingModel
+	public class CreateProductBindingModel : IMappableTo<CreateProductCommand>, ICustomMappings
 	{
-		public string Name { get; set; } = string.Empty;
+		public string Name { get; set; }
 
-		public string Description { get; set; } = string.Empty;
+		public string Description { get; set; }
 
 		public decimal Price { get; set; }
 
-		public string Currency = string.Empty;
+		public string Currency { get; set; }
 
-		public string SellerId { get; set; } = string.Empty;
+		public string UserId { get; set; }
+
+		public void CreateMappings(IProfileExpression configuration)
+		{
+			configuration.CreateMap<CreateProductCommand, CreateProductBindingModel>()
+				.ForMember(dest => dest.Currency, config => config.MapFrom(src => src.Price.Currency.ToString()))
+				.ForMember(dest => dest.UserId, config => config.MapFrom(src => src.SellerId));
+		}
 	}
 }
