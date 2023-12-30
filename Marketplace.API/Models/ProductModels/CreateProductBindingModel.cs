@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapperRegistrar.Interfaces;
+using Marketplace.Domain.SharedKernel;
 using Marketplace.Domain.SharedKernel.Commands;
 
 namespace Marketplace.API.Models.ProductModels
@@ -18,9 +19,9 @@ namespace Marketplace.API.Models.ProductModels
 
 		public void CreateMappings(IProfileExpression configuration)
 		{
-			configuration.CreateMap<CreateProductCommand, CreateProductBindingModel>()
-				.ForMember(dest => dest.Currency, config => config.MapFrom(src => src.Price.Currency.ToString()))
-				.ForMember(dest => dest.UserId, config => config.MapFrom(src => src.SellerId));
+			configuration.CreateMap<CreateProductBindingModel, CreateProductCommand>()
+				.ForMember(dest => dest.SellerId, opt => opt.MapFrom(src => new Id(src.UserId)))
+				.ForMember(dest => dest.Price, opt => opt.MapFrom(src => new Price(src.Price, Enum.Parse<Currency>(src.Currency))));
 		}
 	}
 }

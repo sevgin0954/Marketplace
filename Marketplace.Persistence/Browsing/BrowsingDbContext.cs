@@ -28,6 +28,14 @@ namespace Marketplace.Persistence.Browsing
 					.Property(p => p.Description)
 					.HasMaxLength(ProductConstants.MAX_DESCRIPTION_LENGTH)
 					.IsRequired();
+
+				product
+					.Property(p => p.ViewCount)
+					.HasDefaultValue(0);
+
+				product
+					.Property(p => p.SellerId)
+					.IsRequired();
 			});
 			modelBuilder.Entity<ProductEntity>().HasData(new ProductEntity
 			{

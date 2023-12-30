@@ -21,6 +21,7 @@
     <ProjectReference Include="..\AutoMapperRegistrar\AutoMapperRegistrar.csproj" />
     <ProjectReference Include="..\Marketplace.Query\Marketplace.Query.csproj" />
     <ProjectReference Include="..\Marketplace.Shared\Marketplace.Shared.csproj" />
+    <ProjectReference Include="..\ServiceLayerRegistrar\ServiceLayerRegistrar.csproj" />
   </ItemGroup>
 
   <ItemGroup>

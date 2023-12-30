@@ -8,6 +8,6 @@
 
 		public IList<SellerEntity> SellersWhereBuyerIsBanned { get; set; }
 
-		public IList<OfferEntity> StartedPendingOffers { get; set; }
+		public IList<string> StartedOffersProductsIds { get; set; }
 	}
 }

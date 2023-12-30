@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Marketplace.API.Models.ProductModels;
+using Marketplace.Domain.Common;
+using Marketplace.Domain.Sales.MakeOfferSagaNS;
 using Marketplace.Domain.SharedKernel.Commands;
 using Marketplace.Query.ProductQueries;
 using MediatR;
@@ -14,7 +16,7 @@ namespace Marketplace.API.Controllers
         private readonly IMapper mapper;
 
         public ProductsController(IMediator mediator, IMapper mapper)
-        {
+		{
             this.mediator = mediator;
             this.mapper = mapper;
         }
@@ -23,15 +25,15 @@ namespace Marketplace.API.Controllers
         public async Task<ActionResult<ProductDto>> GetProducts(ProductSearchBindingModel searchModel)
         {
             var isAnyKeywordExist = searchModel.KeyWords != null && searchModel.KeyWords.Count > 0;
-			if (isAnyKeywordExist)
+            if (isAnyKeywordExist)
             {
                 var filteredProducts = await this.mediator.Send(new GetFilteredProductQuery(searchModel.KeyWords!));
-				return this.Ok(filteredProducts);
+                return this.Ok(filteredProducts);
             }
 
-			var products = await this.mediator.Send(new GetAllProductsQuery());
-			return this.Ok(products);
-		}
+            var products = await this.mediator.Send(new GetAllProductsQuery());
+            return this.Ok(products);
+        }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductDto>> GetProduct(string id)

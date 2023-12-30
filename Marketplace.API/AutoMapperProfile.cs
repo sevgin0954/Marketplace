@@ -8,10 +8,10 @@ namespace Marketplace.API
 		public AutoMapperProfile()
 		{
 			this.CreateMap<Id, string>()
-				.ForMember(dest => dest, config => config.MapFrom(src => src.Value));
+			.ConvertUsing(i => i.Value);
 
 			this.CreateMap<Price, decimal>()
-				.ForMember(dest => dest, config => config.MapFrom(src => src.Value));
+				.ConvertUsing(p => p.Value);
 		}
 	}
 }

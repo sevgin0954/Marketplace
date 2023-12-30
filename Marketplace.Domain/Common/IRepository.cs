@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 
 namespace Marketplace.Domain.Common
 {
-	public interface IRepository<T, TId> where TId : Id
+	public interface IRepository<T, TId> 
+		where T : class
+		where TId : Id
 	{
 		void Add(T aggregate);
 

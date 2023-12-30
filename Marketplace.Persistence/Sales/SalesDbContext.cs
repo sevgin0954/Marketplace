@@ -70,64 +70,13 @@ namespace Marketplace.Persistence.Sales
 				Id = "1"
 			});
 
-			modelBuilder.Entity<OfferEntity>(offer =>
-			{
-				const int STATUS_MAX_LENGTH = 20;
-
-				offer
-					.HasKey(o => o.Id);
-
-				offer
-					.Property(o => o.Status)
-					.HasMaxLength(STATUS_MAX_LENGTH)
-					.IsRequired();
-
-				offer
-					.HasOne(o => o.Seller)
-					.WithMany(s => s.Offers)
-					.HasForeignKey(o => o.SellerId)
-					.IsRequired(false); ;
-
-				offer
-					.Property(o => o.Message)
-					.HasMaxLength(OfferConstants.MESSAGE_MAX_LENGTH)
-					.IsRequired();
-
-				offer
-					.Property(o => o.RejectMessage)
-					.HasMaxLength(OfferConstants.REJECT_MESSAGE_MAX_LENGTH)
-					.IsRequired(false);
-
-				offer
-					.HasOne(o => o.Product)
-					.WithMany()
-					.HasForeignKey(o => o.ProductId)
-					.IsRequired(false);
-
-				offer
-					.HasOne(o => o.Buyer)
-					.WithMany()
-					.HasForeignKey(o => o.BuyerId)
-					.IsRequired(false);
-			});
-			modelBuilder.Entity<OfferEntity>().HasData(new OfferEntity()
-			{
-				Id = "1",
-				Status = "Pending",
-				BuyerId = "1",
-				Message = "message",
-				ProductId = "1",
-				RejectMessage = "Reject message",
-				SellerId = "1"
-			});
-
 			modelBuilder.Entity<BuyerEntity>(buyer =>
 			{
 				buyer.HasKey(b => b.Id);
 
-				buyer
-					.HasMany(b => b.StartedPendingOffers)
-					.WithMany(o => o.BuyersWithStartedOffers);
+				//buyer
+				//	.HasMany(b => b.StartedPendingOffers)
+				//	.WithMany(o => o.BuyersWithStartedOffers);
 
 				buyer
 					.Property(b => b.PendingOffersCount)

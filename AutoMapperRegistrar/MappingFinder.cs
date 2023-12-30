@@ -49,7 +49,7 @@ namespace AutoMapperRegistrar
 		{
 			var typesWithCustomMappings = 
 				 GetTypesDerivedFrom(assembly, typeof(ICustomMappings))
-				.Select(t => (ICustomMappings)t)
+				.Select(t => Activator.CreateInstance(t) as ICustomMappings)
 				.ToList();
 
 			return typesWithCustomMappings;

@@ -1,21 +1,24 @@
 using AutoMapper;
 using AutoMapperRegistrar;
+using Marketplace.Domain.Common;
+using Marketplace.Domain.Sales.MakeOfferSagaNS;
+using Marketplace.Domain.SharedKernel;
 using Marketplace.Persistence;
 using Marketplace.Persistence.Browsing;
 using Marketplace.Persistence.IdentityAndAccess;
+using Marketplace.Persistence.SagaData;
 using Marketplace.Persistence.Sales;
-using Marketplace.Query;
 using MediatR;
+using ServiceLayerRegistrar;
+using ServiceLayerRegistrar.GenericTypes;
 using System.Reflection;
 
 namespace Marketplace.API
 {
-	public class Program
+    public class Program
 	{
 		public static void Main(string[] args)
 		{
-			// AddMappingsIfPresent();
-
 			var builder = WebApplication.CreateBuilder(args);
 
 			var configuration = new ConfigurationBuilder()
@@ -23,7 +26,11 @@ namespace Marketplace.API
 				.AddJsonFile("appsettings.json")
 				.Build();
 
-			AddServices(builder, configuration);
+			var mappingConfigExpression = new MapperConfigurationExpression();
+			var mappingConfig = new MapperConfiguration(mappingConfigExpression);
+
+			AddMappings(mappingConfigExpression);
+			AddServices(builder, configuration, mappingConfig);
 
 			var app = builder.Build();
 
@@ -32,15 +39,14 @@ namespace Marketplace.API
 			app.Run();
 		}
 
-		private static void AddMappingsIfPresent()
+		private static void AddMappings(MapperConfigurationExpression configExpression)
 		{
 			var assembly = Assembly.GetExecutingAssembly();
 			var mappingTypesFrom = MappingFinder.GetTypesWithMapFrom(assembly);
 			var mappingTypesTo = MappingFinder.GetTypesWithMapTo(assembly);
 			var customMappingTypes = MappingFinder.GetTypesWitCustomMapping(assembly);
 
-			var config = new MapperConfigurationExpression();
-			var mappingRegisterar = new MappingRegisterar(config);
+			var mappingRegisterar = new MappingRegisterar(configExpression);
 
 			if (mappingTypesFrom != null && mappingTypesTo.Count > 0)
 				mappingRegisterar.RegisterMappings(mappingTypesFrom);
@@ -51,10 +57,13 @@ namespace Marketplace.API
 			if (customMappingTypes != null && customMappingTypes.Count > 0) 
 				mappingRegisterar.RegisterCustomMappings(customMappingTypes);
 
-			config.AddProfile<AutoMapperProfile>();
+			configExpression.AddProfile<AutoMapperProfile>();
 		}
 
-		private static void AddServices(WebApplicationBuilder builder, IConfigurationRoot configuration)
+		private static void AddServices(
+			WebApplicationBuilder builder, 
+			IConfigurationRoot configuration,
+			MapperConfiguration mapperConfiguration)
 		{
 			builder.Services.AddControllers(options =>
 			{
@@ -63,8 +72,10 @@ namespace Marketplace.API
 
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
-			builder.Services.AddMediatR(typeof(Program), typeof(PriceDto));
-			builder.Services.AddAutoMapper(typeof(Program), typeof(MarketplaceDbContext), typeof(PriceDto));
+			builder.Services.AddMediatR(typeof(Program), typeof(Result));
+
+			var mapper = mapperConfiguration.CreateMapper();
+			builder.Services.AddSingleton(mapper);
 
 			var isLoggingEnabled = true;
 
@@ -79,6 +90,20 @@ namespace Marketplace.API
 			var browsingConnectionString = configuration.GetConnectionString("Browsing");
 			builder.Services
 				.AddTransient(s => new BrowsingDbContext(browsingConnectionString, isLoggingEnabled, s.GetRequiredService<IMediator>()));
+
+			var sagaDataConnectionString = configuration.GetConnectionString("SagaData");
+			builder.Services
+				.AddTransient(s => new SagaDataDbContext(sagaDataConnectionString, isLoggingEnabled, s.GetRequiredService<IMediator>()));
+
+			var serviceRegistrar = new ServiceCollectionRegistrar(builder.Services);
+
+			var persistenceAssembly = typeof(MarketplaceDbContext).Assembly;
+
+			var iSagaDataRepositoryType = typeof(ISagaDataRepository<,>);
+			serviceRegistrar.AddScopedServices(persistenceAssembly, iSagaDataRepositoryType);
+
+			//var iAggregateRepositoryType = typeof(IAggregateRepository<,>);
+			//serviceRegistrar.AddScopedServices(persistenceAssembly, iAggregateRepositoryType);
 		}
 
 		private static void AddMiddlewares(WebApplication app)
