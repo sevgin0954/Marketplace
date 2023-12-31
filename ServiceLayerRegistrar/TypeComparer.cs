@@ -11,8 +11,8 @@ namespace ServiceLayerRegistrar
 			if (interface1.IsGenericType != interface2.IsGenericType)
 				return false;
 
-			var isInterface1OpenGenericType = IsInterfaceOpenGeneric(interface1);
-			var isInterface2OpenGenericType = IsInterfaceOpenGeneric(interface2);
+			var isInterface1OpenGenericType = IsTypeOpenGeneric(interface1);
+			var isInterface2OpenGenericType = IsTypeOpenGeneric(interface2);
 			if (isInterface1OpenGenericType || isInterface2OpenGenericType)
 			{
 				return interface1.Name == interface2.Name;
@@ -81,12 +81,12 @@ namespace ServiceLayerRegistrar
 			return isMatch;
 		}
 
-		private static bool IsInterfaceOpenGeneric(Type type)
+		public static bool IsTypeOpenGeneric(Type type)
 		{
 			if (type.IsGenericType == false || type.GetGenericArguments().Length == 0)
 				return false;
 
-			if (type.GetGenericArguments().Length != type.GenericTypeArguments.Length)
+			if (type.GetGenericArguments().Length == type.GenericTypeArguments.Length)
 				return false;
 
 			return true;

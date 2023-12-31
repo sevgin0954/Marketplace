@@ -99,6 +99,9 @@ namespace Marketplace.API
 
 			var persistenceAssembly = typeof(MarketplaceDbContext).Assembly;
 
+			var iRepositoryType = typeof(IRepository<Any,Id>);
+			serviceRegistrar.AddScopedServices(persistenceAssembly, iRepositoryType);
+
 			var iSagaDataRepositoryType = typeof(ISagaDataRepository<,>);
 			serviceRegistrar.AddScopedServices(persistenceAssembly, iSagaDataRepositoryType);
 

@@ -30,14 +30,59 @@ namespace ServiceLayerRegistrar
                 foreach (var currentInterface in interfacesMatchingCustomInterface)
                 {
                     var classToRegister = this.GetClosestMatchingClassForInterface(assemblyTypeFinder, currentInterface);
-					this.services.AddScoped(currentInterface, classToRegister);
+					this.AddScopedService(currentInterface, classToRegister);
 				}
 			}
             else
             {
 				var classToRegister = this.GetClosestMatchingClassForInterface(assemblyTypeFinder, interfaceType);
-				this.services.AddScoped(interfaceType, classToRegister);
+				this.AddScopedService(interfaceType, classToRegister);
 			}
+        }
+
+        private void AddScopedService(Type interfaceType, Type classType)
+        {
+            var isInterfaceOpenGenericType = TypeComparer.IsTypeOpenGeneric(interfaceType);
+            var isClassOpenGenericType = TypeComparer.IsTypeOpenGeneric(classType);
+
+            if (isInterfaceOpenGenericType == true && isClassOpenGenericType == false)
+            {
+                var classGenericArguments = this.ConverGenericTypesToConcreteIfAny(classType.GenericTypeArguments);
+				interfaceType = interfaceType.MakeGenericType(classGenericArguments);
+            }
+            else if (isClassOpenGenericType == true && isInterfaceOpenGenericType == false)
+            {
+				var interfaceGenericArguments = 
+                    this.ConverGenericTypesToConcreteIfAny(interfaceType.GenericTypeArguments);
+				classType = classType.MakeGenericType(interfaceGenericArguments);
+			}
+            else
+            {
+				this.services.AddScoped(interfaceType, classType);
+			}
+		}
+
+        private Type[] ConverGenericTypesToConcreteIfAny(Type[] types)
+        {
+            var convertedTypes = new List<Type>();
+
+            foreach (var currentType in types)
+            {
+                if (currentType.IsGenericParameter)
+                {
+                    var currentBaseType = currentType.BaseType;
+                    if (currentType == null)
+                        throw new Exception();
+
+                    convertedTypes.Add(currentBaseType);
+                }
+                else
+                {
+                    convertedTypes.Add(currentType);
+                }
+            }
+
+            return convertedTypes.ToArray();
         }
 
         private Type GetClosestMatchingClassForInterface(AssemblyTypeFinder assemblyTypeFinder, Type interfaceType)

@@ -26,6 +26,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoMapperRegistrar.Tests",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceLayerRegistrar", "ServiceLayerRegistrar\ServiceLayerRegistrar.csproj", "{1738B5AB-C622-4318-ABC9-FE6B5824F0B1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceLayerRegistrar.Tests", "ServiceLayerRegistrar.Tests\ServiceLayerRegistrar.Tests.csproj", "{7FF3C5EF-1881-4407-8A88-6351384E88E1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -68,6 +70,10 @@ Global
 		{1738B5AB-C622-4318-ABC9-FE6B5824F0B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1738B5AB-C622-4318-ABC9-FE6B5824F0B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1738B5AB-C622-4318-ABC9-FE6B5824F0B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FF3C5EF-1881-4407-8A88-6351384E88E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FF3C5EF-1881-4407-8A88-6351384E88E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FF3C5EF-1881-4407-8A88-6351384E88E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FF3C5EF-1881-4407-8A88-6351384E88E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
