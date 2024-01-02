@@ -9,7 +9,8 @@ namespace ServiceLayerRegistrar.Tests.TypeComparerSpecs
 		[Theory]
 		[InlineData(typeof(string), null)]
 		[InlineData(null, typeof(string))]
-		public void Compare_types_when_one_type_is_null_should_throw_an_exception(Type type1, Type type2)
+		[InlineData(null, null)]
+		public void Compare_types_when_type_is_null_should_throw_an_exception(Type type1, Type type2)
 		{
 			// Arrange
 			// Act
