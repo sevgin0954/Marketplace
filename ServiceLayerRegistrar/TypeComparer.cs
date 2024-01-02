@@ -1,4 +1,4 @@
-﻿using ServiceLayerRegistrar.GenericTypes;
+﻿using ServiceLayerRegistrar.GenericConstraints;
 using System;
 using System.Reflection;
 
@@ -6,24 +6,33 @@ namespace ServiceLayerRegistrar
 {
 	internal static class TypeComparer
 	{
-		public static bool CompareInterfaces(Type interface1, Type interface2)
+		public static bool CompareTypes(Type type1, Type type2)
 		{
-			if (interface1.IsGenericType != interface2.IsGenericType)
+			ArgumentValidator.ThrowExceptionIfNull(new object[] { type1, type2 }, nameof(type1), nameof(type2));
+
+			if (type1.IsGenericType != type2.IsGenericType)
 				return false;
 
-			var isInterface1OpenGenericType = IsTypeOpenGeneric(interface1);
-			var isInterface2OpenGenericType = IsTypeOpenGeneric(interface2);
-			if (isInterface1OpenGenericType || isInterface2OpenGenericType)
+			if (type1.AssemblyQualifiedName != type2.AssemblyQualifiedName)
+				return false;
+
+			var areTypesGeneric = type1.IsGenericType;
+			if (areTypesGeneric)
 			{
-				return interface1.Name == interface2.Name;
+				if (type1.IsGenericTypeDefinition != type2.IsGenericTypeDefinition)
+					return false;
+
+				var areGenericTypesClosed = type1.IsGenericTypeDefinition == false;
+				if (areGenericTypesClosed)
+				{
+					return CompareGenericTypeArguments(type1.GenericTypeArguments, type2.GenericTypeArguments);
+				}
 			}
-			else
-			{
-				return IsGenericTypeArgumentsMatch(interface1.GenericTypeArguments, interface2.GenericTypeArguments);
-			}
+
+			return true;
 		}
 
-		private static bool IsGenericTypeArgumentsMatch(Type[] interface1Arguments, Type[] interface2Arguments)
+		private static bool CompareGenericTypeArguments(Type[] interface1Arguments, Type[] interface2Arguments)
 		{
 			if (interface1Arguments.Length != interface2Arguments.Length)
 				return false;
@@ -79,17 +88,6 @@ namespace ServiceLayerRegistrar
 			}
 
 			return isMatch;
-		}
-
-		public static bool IsTypeOpenGeneric(Type type)
-		{
-			if (type.IsGenericType == false || type.GetGenericArguments().Length == 0)
-				return false;
-
-			if (type.GetGenericArguments().Length == type.GenericTypeArguments.Length)
-				return false;
-
-			return true;
 		}
 	}
 }

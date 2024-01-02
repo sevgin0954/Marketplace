@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ServiceLayerRegistrar.GenericTypes
+namespace ServiceLayerRegistrar.GenericConstraints
 {
 	public class NonSpecificClass : BaseGenericType
 	{

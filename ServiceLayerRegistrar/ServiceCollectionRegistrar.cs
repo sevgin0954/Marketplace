@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using ServiceLayerRegistrar.GenericTypes;
+using ServiceLayerRegistrar.GenericConstraints;
 using ServiceLayerRegistrar.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -42,10 +42,10 @@ namespace ServiceLayerRegistrar
 
         private void AddScopedService(Type interfaceType, Type classType)
         {
-            var isInterfaceOpenGenericType = TypeComparer.IsTypeOpenGeneric(interfaceType);
-            var isClassOpenGenericType = TypeComparer.IsTypeOpenGeneric(classType);
+            var isInterfaceOpenGenericType = interfaceType.IsGenericTypeDefinition;
+            var isClassOpenGenericType = classType.IsGenericTypeDefinition;
 
-            if (isInterfaceOpenGenericType == true && isClassOpenGenericType == false)
+			if (isInterfaceOpenGenericType == true && isClassOpenGenericType == false)
             {
                 var classGenericArguments = this.ConverGenericTypesToConcreteIfAny(classType.GenericTypeArguments);
 				interfaceType = interfaceType.MakeGenericType(classGenericArguments);
@@ -166,7 +166,7 @@ namespace ServiceLayerRegistrar
         {
             foreach (var currentInterface in interfacesToSearch)
             {
-                var isInterfaceMatch = TypeComparer.CompareInterfaces(currentInterface, searchInterface);
+                var isInterfaceMatch = TypeComparer.CompareTypes(currentInterface, searchInterface);
                 if (isInterfaceMatch == true)
                 {
                     return isInterfaceMatch;

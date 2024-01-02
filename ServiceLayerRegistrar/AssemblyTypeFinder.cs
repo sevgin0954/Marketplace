@@ -22,7 +22,7 @@ namespace ServiceLayerRegistrar
 				.ToList();
 
 			var matchingInterfaces = allInterfaces
-				.Where(i => TypeComparer.CompareInterfaces(i, customInterface))
+				.Where(i => TypeComparer.CompareTypes(i, customInterface))
 				.Distinct()
 				.ToList();
 
@@ -34,7 +34,7 @@ namespace ServiceLayerRegistrar
 			var filterClassesFunc = new Func<Type, bool>(
 				t => t.IsClass &&
 				t.GetInterface(interfaceType.Name) != null &&
-				t.GetInterfaces().Any(i => TypeComparer.CompareInterfaces(i, interfaceType)) &&
+				t.GetInterfaces().Any(i => TypeComparer.CompareTypes(i, interfaceType)) &&
 				t.IsAbstract == false
 			);
 			var classesImplementingInteface = TypeFilterer.FilterTypesFromAssembly(this.assembly, filterClassesFunc);
