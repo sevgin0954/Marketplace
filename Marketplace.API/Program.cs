@@ -10,7 +10,7 @@ using Marketplace.Persistence.SagaData;
 using Marketplace.Persistence.Sales;
 using MediatR;
 using ServiceLayerRegistrar;
-using ServiceLayerRegistrar.GenericConstraints;
+using ServiceLayerRegistrar.CustomGenericConstraints;
 using System.Reflection;
 
 namespace Marketplace.API

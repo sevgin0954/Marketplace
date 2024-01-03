@@ -1,4 +1,4 @@
-﻿using ServiceLayerRegistrar.GenericConstraints;
+﻿using ServiceLayerRegistrar.CustomGenericConstraints;
 using System;
 using System.Reflection;
 
@@ -10,38 +10,35 @@ namespace ServiceLayerRegistrar
 		{
 			ArgumentValidator.ThrowExceptionIfNull(new object[] { type1, type2 }, nameof(type1), nameof(type2));
 
-			if (type1.IsGenericType != type2.IsGenericType)
+			if (type1.Name != type2.Name)
 				return false;
-
-			if (type1.AssemblyQualifiedName != type2.AssemblyQualifiedName)
+			if (type1.Namespace != type2.Namespace)
 				return false;
 
 			var areTypesGeneric = type1.IsGenericType;
 			if (areTypesGeneric)
 			{
-				if (type1.IsGenericTypeDefinition != type2.IsGenericTypeDefinition)
-					return false;
-
-				var areGenericTypesClosed = type1.IsGenericTypeDefinition == false;
-				if (areGenericTypesClosed)
+				var isType1Closed = type1.IsGenericTypeDefinition == false;
+				var isType2Closed = type2.IsGenericTypeDefinition == false;
+				if (isType1Closed || isType2Closed)
 				{
-					return CompareGenericTypeArguments(type1.GenericTypeArguments, type2.GenericTypeArguments);
+					return MatchGenericTypeArgumentsAndParameters(type1.GetGenericArguments(), type2.GetGenericArguments());
 				}
 			}
 
-			return true;
+			return type1.Equals(type2);
 		}
 
-		private static bool CompareGenericTypeArguments(Type[] interface1Arguments, Type[] interface2Arguments)
+		private static bool MatchGenericTypeArgumentsAndParameters(Type[] interface1types, Type[] interface2Types)
 		{
-			if (interface1Arguments.Length != interface2Arguments.Length)
+			if (interface1types.Length != interface2Types.Length)
 				return false;
 
 			var isAllGenericTypesMatch = true;
 
-			for (var i = 0; i < interface1Arguments.Length; i++)
+			for (var i = 0; i < interface1types.Length; i++)
 			{
-				if (CompareGenericTypeArguments(interface1Arguments[i], interface2Arguments[i]) == false)
+				if (MatchGenericArgumentOrType(interface1types[i], interface2Types[i]) == false)
 				{
 					isAllGenericTypesMatch = false;
 					break;
@@ -51,40 +48,31 @@ namespace ServiceLayerRegistrar
 			return isAllGenericTypesMatch;
 		}
 
-		public static bool CompareGenericTypeArguments(Type type1, Type type2)
+		private static bool MatchGenericArgumentOrType(Type type1, Type type2)
 		{
-			var isType1CustomGenericType = typeof(BaseGenericType).IsAssignableFrom(type1);
-			var isType2CustomGenericType = typeof(BaseGenericType).IsAssignableFrom(type2);
+			var isType1CustomGenericType = typeof(BaseGenericConstraint).IsAssignableFrom(type1);
+			var isType2CustomGenericType = typeof(BaseGenericConstraint).IsAssignableFrom(type2);
 
 			var isMatch = false;
 
 			var assembly = Assembly.GetExecutingAssembly();
 			if (isType1CustomGenericType && isType2CustomGenericType)
 			{
-				throw new ArgumentException("Both types are custom types!");
+				throw new ArgumentException("Both generic types or parameters are custom generic constraints!");
 			}
 			else if (isType1CustomGenericType)
 			{
-				var type1Instance = assembly.CreateInstance(type1.FullName) as BaseGenericType;
+				var type1Instance = assembly.CreateInstance(type1.FullName) as BaseGenericConstraint;
 				isMatch = type1Instance.IsMatch(type2);
 			}
 			else if (isType2CustomGenericType)
 			{
-				var type2Instance = assembly.CreateInstance(type2.FullName) as BaseGenericType;
+				var type2Instance = assembly.CreateInstance(type2.FullName) as BaseGenericConstraint;
 				isMatch = type2Instance.IsMatch(type1);
 			}
 			else
 			{
-				if (type1.IsGenericParameter)
-				{
-					type1 = type1.BaseType;
-				}
-				if (type2.IsGenericParameter)
-				{
-					type2 = type2.BaseType;
-				}
-
-				isMatch = type1 == type2;
+				isMatch = type1.Equals(type2);
 			}
 
 			return isMatch;

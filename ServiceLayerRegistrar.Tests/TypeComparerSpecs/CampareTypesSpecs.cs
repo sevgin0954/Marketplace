@@ -1,4 +1,5 @@
-﻿using ServiceLayerRegistrar.Tests.TypeComparerSpecs.TestClasses;
+﻿using ServiceLayerRegistrar.CustomGenericConstraints;
+using ServiceLayerRegistrar.Tests.TypeComparerSpecs.TestClasses;
 using System;
 using Xunit;
 
@@ -103,7 +104,7 @@ namespace ServiceLayerRegistrar.Tests.TypeComparerSpecs
 		}
 
 		[Fact]
-		public void Compare_open_generic_type_with_closed_type_should_return_false()
+		public void Compare_same_types_but_one_is_open_and_other_closed_should_return_true()
 		{
 			// Arrange
 			var openGenericType = typeof(TestGenericClass1<,>);
@@ -114,6 +115,34 @@ namespace ServiceLayerRegistrar.Tests.TypeComparerSpecs
 
 			// Assert
 			Assert.False(result);
+		}
+
+		[Fact]
+		public void Compare_equal_types_with_different_references_should_return_true()
+		{
+			// Arrange
+			var type1 = new TestGenericClass1<TestGenericParameter1, TestGenericParameter2>().GetType();
+			var type2 = new TestGenericClass1<TestGenericParameter1, TestGenericParameter2>().GetType();
+
+			// Act
+			var result = TypeComparer.CompareTypes(type1, type2);
+
+			// Assert
+			Assert.True(result);
+		}
+
+		[Fact]
+		public void Compare_open_generic_equal_to_closed_generic_type_with_custom_constraint_should_return_correct_result()
+		{
+			// Arrange
+			var type1 = typeof(TestGenericClass1<NonSpecifiedClass, TestGenericParameter2>);
+			var type2 = typeof(TestGenericClass1<,>);
+
+			// Act
+			var result = TypeComparer.CompareTypes(type1, type2);
+
+			// Assert
+			Assert.True(result);
 		}
 	}
 }

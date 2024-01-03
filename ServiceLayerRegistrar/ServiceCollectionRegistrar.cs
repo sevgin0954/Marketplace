@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using ServiceLayerRegistrar.GenericConstraints;
+using ServiceLayerRegistrar.CustomGenericConstraints;
 using ServiceLayerRegistrar.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -22,7 +22,7 @@ namespace ServiceLayerRegistrar
             var assemblyTypeFinder = new AssemblyTypeFinder(classesAssembly);
 
             var interfaceGenericArguments = interfaceType.GenericTypeArguments;
-            var isInterfaceCustom = interfaceGenericArguments.Any(a => typeof(BaseGenericType).IsAssignableFrom(a));
+            var isInterfaceCustom = interfaceGenericArguments.Any(a => typeof(BaseGenericConstraint).IsAssignableFrom(a));
             if (isInterfaceCustom)
             {
                 var interfacesMatchingCustomInterface = assemblyTypeFinder.GetInterfacesMatchingCustomInterface(interfaceType);
