@@ -1,5 +1,6 @@
 ﻿using ServiceLayerRegistrar.CustomGenericConstraints;
 using ServiceLayerRegistrar.Tests.TypeComparerSpecs.TestClasses;
+using ServiceLayerRegistrar.Tests.TypeComparerSpecs.TypeInterfaces;
 using System;
 using Xunit;
 
@@ -133,7 +134,7 @@ namespace ServiceLayerRegistrar.Tests.TypeComparerSpecs
 
 		[Theory]
 		[InlineData(typeof(TestGenericClass1<NonSpecifiedClass, TestGenericParameter2>), typeof(TestGenericClass1<,>), true)]
-		[InlineData(typeof(TestGenericClass1<TestGenericParameter1, NonSpecifiedClass>), typeof(TestGenericClass1<,>), false)]
+		[InlineData(typeof(TestGenericInterface1<TestGenericParameter1, NonSpecifiedClass>), typeof(TestGenericClass1<,>), false)]
 		public void Compare_open_generic_equal_to_closed_generic_type_with_custom_constraint_should_return_correct_result(
 			Type type1,
 			Type type2,
