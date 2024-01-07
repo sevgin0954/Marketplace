@@ -14,23 +14,27 @@ namespace ServiceLayerRegistrar
 			this.assembly = assembly;
 		}
 
-		public ICollection<Type> GetInterfacesMatchingCustomInterface(Type customInterface)
+		public ICollection<Type> FindDistinctInterfacesMatchingInterface(Type interfaceType)
 		{
-			var matchingClasses = this.GetAllClassesMatchingInterface(customInterface);
+			ArgumentValidator.ThrowExceptionIfNull(interfaceType, nameof(interfaceType));
+
+			var matchingClasses = this.FindAllClassesMatchingInterface(interfaceType);
 			var allInterfaces = matchingClasses
 				.SelectMany(c => c.GetInterfaces())
 				.ToList();
 
 			var matchingInterfaces = allInterfaces
-				.Where(i => TypeComparer.CompareTypes(i, customInterface))
+				.Where(i => TypeComparer.CompareTypes(i, interfaceType))
 				.Distinct()
 				.ToList();
 
 			return matchingInterfaces;
 		}
 
-		public ICollection<Type> GetAllClassesMatchingInterface(Type interfaceType)
+		public ICollection<Type> FindAllClassesMatchingInterface(Type interfaceType)
 		{
+			ArgumentValidator.ThrowExceptionIfNull(interfaceType, nameof(interfaceType));
+
 			var filterClassesFunc = new Func<Type, bool>(
 				t => t.IsClass &&
 				t.GetInterface(interfaceType.Name) != null &&

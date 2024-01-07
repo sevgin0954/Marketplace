@@ -1,7 +1,6 @@
 ﻿using ServiceLayerRegistrar.CustomGenericConstraints;
-using ServiceLayerRegistrar.Tests.TypeComparerSpecs.TestClasses;
-using ServiceLayerRegistrar.Tests.TypeComparerSpecs.TypeInterfaces;
-using System;
+using ServiceLayerRegistrar.Tests.TestClasses;
+using ServiceLayerRegistrar.Tests.TestInterfaces;
 using Xunit;
 
 namespace ServiceLayerRegistrar.Tests.TypeComparerSpecs

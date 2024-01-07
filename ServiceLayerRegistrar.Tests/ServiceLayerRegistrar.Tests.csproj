@@ -22,4 +22,8 @@
     <ProjectReference Include="..\ServiceLayerRegistrar\ServiceLayerRegistrar.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="TestClasses\GenericClasses\" />
+  </ItemGroup>
+
 </Project>

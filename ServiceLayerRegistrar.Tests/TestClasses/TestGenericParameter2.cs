@@ -1,4 +1,4 @@
-﻿namespace ServiceLayerRegistrar.Tests.TypeComparerSpecs.TestClasses
+﻿namespace ServiceLayerRegistrar.Tests.TestClasses
 {
 	internal class TestGenericParameter2 : BaseGenericParameter
 	{

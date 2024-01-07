@@ -25,7 +25,7 @@ namespace ServiceLayerRegistrar
             var isInterfaceCustom = interfaceGenericArguments.Any(a => typeof(BaseGenericConstraint).IsAssignableFrom(a));
             if (isInterfaceCustom)
             {
-                var interfacesMatchingCustomInterface = assemblyTypeFinder.GetInterfacesMatchingCustomInterface(interfaceType);
+                var interfacesMatchingCustomInterface = assemblyTypeFinder.FindDistinctInterfacesMatchingInterface(interfaceType);
 
                 foreach (var currentInterface in interfacesMatchingCustomInterface)
                 {
@@ -87,7 +87,7 @@ namespace ServiceLayerRegistrar
 
         private Type GetClosestMatchingClassForInterface(AssemblyTypeFinder assemblyTypeFinder, Type interfaceType)
         {
-			var classesImplementingInteface = assemblyTypeFinder.GetAllClassesMatchingInterface(interfaceType);
+			var classesImplementingInteface = assemblyTypeFinder.FindAllClassesMatchingInterface(interfaceType);
 
 			var classTypeToRegister = this.GetLowestInheritanceLevelClassImlementingInterface(
 				classesImplementingInteface,
