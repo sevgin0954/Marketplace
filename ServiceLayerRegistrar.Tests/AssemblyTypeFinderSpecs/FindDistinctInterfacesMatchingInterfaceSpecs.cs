@@ -1,5 +1,5 @@
 ﻿using Moq;
-using ServiceLayerRegistrar.Tests.TestClasses.AnimalClasses;
+using ServiceLayerRegistrar.Tests.TestClasses.TestAnimal;
 using ServiceLayerRegistrar.Tests.TestClasses.TestVehicle;
 using ServiceLayerRegistrar.Tests.TestInterfaces;
 using System.Reflection;

@@ -17,8 +17,10 @@ namespace ServiceLayerRegistrar
             this.services = services;
         }
 
-        public void AddScopedServices(Assembly classesAssembly, Type interfaceType)
+        public void RegisterScopedServices(Assembly classesAssembly, Type interfaceType)
         {
+            ArgumentValidator.ThrowExceptionIfNull(new object[] { classesAssembly, interfaceType }, nameof(classesAssembly), nameof(interfaceType));
+
             var assemblyTypeFinder = new AssemblyTypeFinder(classesAssembly);
 
             var interfaceGenericArguments = interfaceType.GenericTypeArguments;

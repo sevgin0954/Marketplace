@@ -100,13 +100,13 @@ namespace Marketplace.API
 			var persistenceAssembly = typeof(MarketplaceDbContext).Assembly;
 
 			var iRepositoryType = typeof(IRepository<Any,Id>);
-			serviceRegistrar.AddScopedServices(persistenceAssembly, iRepositoryType);
+			serviceRegistrar.RegisterScopedServices(persistenceAssembly, iRepositoryType);
 
 			var iSagaDataRepositoryType = typeof(ISagaDataRepository<,>);
-			serviceRegistrar.AddScopedServices(persistenceAssembly, iSagaDataRepositoryType);
+			serviceRegistrar.RegisterScopedServices(persistenceAssembly, iSagaDataRepositoryType);
 
-			//var iAggregateRepositoryType = typeof(IAggregateRepository<,>);
-			//serviceRegistrar.AddScopedServices(persistenceAssembly, iAggregateRepositoryType);
+			var iAggregateRepositoryType = typeof(IAggregateRepository<,>);
+			serviceRegistrar.RegisterScopedServices(persistenceAssembly, iAggregateRepositoryType);
 		}
 
 		private static void AddMiddlewares(WebApplication app)

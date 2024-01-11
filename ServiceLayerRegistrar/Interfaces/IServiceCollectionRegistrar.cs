@@ -5,6 +5,6 @@ namespace ServiceLayerRegistrar.Interfaces
 {
     public interface IServiceCollectionRegistrar
     {
-        void AddScopedServices(Assembly assembly, Type interfaceType);
+        void RegisterScopedServices(Assembly assembly, Type interfaceType);
     }
 }
