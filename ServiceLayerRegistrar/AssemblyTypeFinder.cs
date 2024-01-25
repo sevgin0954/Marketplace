@@ -19,14 +19,17 @@ namespace ServiceLayerRegistrar
 			ArgumentValidator.ThrowExceptionIfNull(interfaceType, nameof(interfaceType));
 
 			var matchingClasses = this.FindAllClassesMatchingInterface(interfaceType);
-			var allInterfaces = matchingClasses
+			var classesInterfaces = matchingClasses
 				.SelectMany(c => c.GetInterfaces())
 				.ToList();
 
-			var matchingInterfaces = allInterfaces
-				.Where(i => TypeComparer.CompareTypes(i, interfaceType))
+			var matchingInterfaces = classesInterfaces
+				.Where(i => TypeComparer.DoesTypeMatch(i, interfaceType))
 				.Distinct()
 				.ToList();
+
+			if (matchingInterfaces.Count == 0)
+				throw new ArgumentException("No interfaces matching the selected interface");
 
 			return matchingInterfaces;
 		}
@@ -38,7 +41,7 @@ namespace ServiceLayerRegistrar
 			var filterClassesFunc = new Func<Type, bool>(
 				t => t.IsClass &&
 				t.GetInterface(interfaceType.Name) != null &&
-				t.GetInterfaces().Any(i => TypeComparer.CompareTypes(i, interfaceType)) &&
+				t.GetInterfaces().Any(i => TypeComparer.DoesTypeMatch(i, interfaceType)) &&
 				t.IsAbstract == false
 			);
 			var classesImplementingInteface = TypeFilterer.FilterTypesFromAssembly(this.assembly, filterClassesFunc);

@@ -10,7 +10,9 @@ namespace ServiceLayerRegistrar
 {
     public class ServiceCollectionRegistrar : IServiceCollectionRegistrar
     {
-        private readonly IServiceCollection services;
+        const string NO_MATCH_EXCEPTION_MESSAGE = "No classes found for the selelcted interface - {0}";
+
+		private readonly IServiceCollection services;
 
         public ServiceCollectionRegistrar(IServiceCollection services)
         {
@@ -25,7 +27,8 @@ namespace ServiceLayerRegistrar
 
             var interfaceGenericArguments = interfaceType.GenericTypeArguments;
             var isInterfaceCustom = interfaceGenericArguments.Any(a => typeof(BaseGenericConstraint).IsAssignableFrom(a));
-            if (isInterfaceCustom)
+            var isInterfaceOpenGeneric = interfaceType.GenericTypeArguments.Length == 0;
+            if (isInterfaceCustom || isInterfaceOpenGeneric)
             {
                 var interfacesMatchingCustomInterface = assemblyTypeFinder.FindDistinctInterfacesMatchingInterface(interfaceType);
 
@@ -58,10 +61,8 @@ namespace ServiceLayerRegistrar
                     this.ConverGenericTypesToConcreteIfAny(interfaceType.GenericTypeArguments);
 				classType = classType.MakeGenericType(interfaceGenericArguments);
 			}
-            else
-            {
-				this.services.AddScoped(interfaceType, classType);
-			}
+
+			this.services.AddScoped(interfaceType, classType);
 		}
 
         private Type[] ConverGenericTypesToConcreteIfAny(Type[] types)
@@ -105,26 +106,27 @@ namespace ServiceLayerRegistrar
 
 			foreach (var currentClassType in classesTypes)
 			{
-				var currentDepthLevel =
+				var depthLevel =
 					this.FindMinimumDepthLevelAtWhichClassImplementsInterface(currentClassType, interfaceType);
-                var isAnyClassAtLowerDepthLevelExist = minDepthLevel == currentDepthLevel && lowestDepthLevelClassType != null;
-				if (isAnyClassAtLowerDepthLevelExist)
+                var isAnyClassAtSameDepthLevelExists = depthLevel == minDepthLevel && lowestDepthLevelClassType != null;
+				if (isAnyClassAtSameDepthLevelExists)
 				{
 					var exceptionMessage = 
                         "More than one classes at the same level of inheritance to register for " +
 						$"${interfaceType} interface";
 					throw new InvalidOperationException(exceptionMessage);
 				}
-				if (currentDepthLevel < minDepthLevel)
+				if (depthLevel < minDepthLevel)
 				{
 					lowestDepthLevelClassType = currentClassType;
-					minDepthLevel = currentDepthLevel;
+					minDepthLevel = depthLevel;
 				}
 			}
 
 			if (lowestDepthLevelClassType == null)
 			{
-				throw new ArgumentException($"No classes found for the selelcted interface - ${interfaceType}");
+                var exceptionMessage = string.Format(NO_MATCH_EXCEPTION_MESSAGE, interfaceType);
+				throw new ArgumentException(exceptionMessage);
 			}
 
 			return lowestDepthLevelClassType;
@@ -168,7 +170,7 @@ namespace ServiceLayerRegistrar
         {
             foreach (var currentInterface in interfacesToSearch)
             {
-                var isInterfaceMatch = TypeComparer.CompareTypes(currentInterface, searchInterface);
+                var isInterfaceMatch = TypeComparer.DoesTypeMatch(currentInterface, searchInterface);
                 if (isInterfaceMatch == true)
                 {
                     return isInterfaceMatch;

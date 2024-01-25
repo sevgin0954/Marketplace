@@ -21,16 +21,16 @@ namespace ServiceLayerRegistrar.Tests.AssemblyTypeFinderSpecs
 		}
 
 		[Fact]
-		public void When_match_doesnt_exist_should_return_an_empty_colletion()
+		public void When_match_doesnt_exist_should_throw_an_exception()
 		{
 			// Arrange
 			var assemblyTypeFinder = this.CreateAssemblyTypeFinder();
 
 			// Act
-			var result = assemblyTypeFinder.FindDistinctInterfacesMatchingInterface(typeof(TestNonGenericInterface1));
-
 			// Assert
-			Assert.Empty(result);
+			Assert.Throws<ArgumentException>(
+				() => assemblyTypeFinder.FindDistinctInterfacesMatchingInterface(typeof(TestNonGenericInterface1))
+			);
 		}
 
 		[Fact]

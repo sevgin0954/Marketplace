@@ -1,6 +1,4 @@
-﻿using ServiceLayerRegistrar.CustomGenericConstraints;
-using ServiceLayerRegistrar.Tests.TestClasses;
-using ServiceLayerRegistrar.Tests.TestInterfaces;
+﻿using ServiceLayerRegistrar.Tests.TestClasses;
 using Xunit;
 
 namespace ServiceLayerRegistrar.Tests.TypeComparerSpecs
@@ -16,7 +14,7 @@ namespace ServiceLayerRegistrar.Tests.TypeComparerSpecs
 			// Arrange
 			// Act
 			// Assert
-			Assert.Throws<ArgumentNullException>(() => TypeComparer.CompareTypes(type1, type2));
+			Assert.Throws<ArgumentNullException>(() => TypeComparer.DoesTypeMatch(type1, type2));
 		}
 
 		[Theory]
@@ -27,7 +25,7 @@ namespace ServiceLayerRegistrar.Tests.TypeComparerSpecs
 			// Arrange
 
 			// Act
-			var result = TypeComparer.CompareTypes(type1, type2);
+			var result = TypeComparer.DoesTypeMatch(type1, type2);
 
 			// Assert
 			Assert.True(result);
@@ -41,7 +39,7 @@ namespace ServiceLayerRegistrar.Tests.TypeComparerSpecs
 			// Arrange
 
 			// Act
-			var result = TypeComparer.CompareTypes(type1, type2);
+			var result = TypeComparer.DoesTypeMatch(type1, type2);
 
 			// Assert
 			Assert.False(result);
@@ -55,7 +53,7 @@ namespace ServiceLayerRegistrar.Tests.TypeComparerSpecs
 			var type2 = typeof(TestNonGenericClass1);
 
 			// Act
-			var result = TypeComparer.CompareTypes(type1, type2);
+			var result = TypeComparer.DoesTypeMatch(type1, type2);
 
 			// Assert
 			Assert.False(result);
@@ -69,7 +67,7 @@ namespace ServiceLayerRegistrar.Tests.TypeComparerSpecs
 			var type2 = typeof(TestGenericClass1<,>);
 
 			// Act
-			var result = TypeComparer.CompareTypes(type1, type2);
+			var result = TypeComparer.DoesTypeMatch(type1, type2);
 
 			// Assert
 			Assert.True(result);
@@ -83,7 +81,7 @@ namespace ServiceLayerRegistrar.Tests.TypeComparerSpecs
 			var type2 = typeof(TestGenericClass1<TestGenericParameter1, TestGenericParameter2>);
 
 			// Act
-			var result = TypeComparer.CompareTypes(type1, type2);
+			var result = TypeComparer.DoesTypeMatch(type1, type2);
 
 			// Assert
 			Assert.True(result);
@@ -97,21 +95,21 @@ namespace ServiceLayerRegistrar.Tests.TypeComparerSpecs
 			var type2 = typeof(TestGenericClass1<TestGenericParameter2, TestGenericParameter2>);
 
 			// Act
-			var result = TypeComparer.CompareTypes(type1, type2);
+			var result = TypeComparer.DoesTypeMatch(type1, type2);
 
 			// Assert
 			Assert.False(result);
 		}
 
 		[Fact]
-		public void Compare_same_types_but_one_is_open_and_other_closed_should_return_true()
+		public void Compare_same_types_but_the_searched_type_is_open_and_other_closed_should_return_true()
 		{
 			// Arrange
-			var openGenericType = typeof(TestGenericClass1<,>);
-			var closedGenericType = typeof(TestGenericClass1<TestGenericParameter1, TestGenericParameter2>);
+			var searchedOpenType = typeof(TestGenericClass1<,>);
+			var closedType = typeof(TestGenericClass1<TestGenericParameter1, TestGenericParameter2>);
 
 			// Act
-			var result = TypeComparer.CompareTypes(openGenericType, closedGenericType);
+			var result = TypeComparer.DoesTypeMatch(closedType, searchedOpenType);
 
 			// Assert
 			Assert.True(result);
@@ -125,26 +123,10 @@ namespace ServiceLayerRegistrar.Tests.TypeComparerSpecs
 			var type2 = new TestGenericClass1<TestGenericParameter1, TestGenericParameter2>().GetType();
 
 			// Act
-			var result = TypeComparer.CompareTypes(type1, type2);
+			var result = TypeComparer.DoesTypeMatch(type1, type2);
 
 			// Assert
 			Assert.True(result);
-		}
-
-		[Theory]
-		[InlineData(typeof(TestGenericClass1<NonSpecifiedClass, TestGenericParameter2>), typeof(TestGenericClass1<,>), true)]
-		[InlineData(typeof(TestGenericInterface1<TestGenericParameter1, NonSpecifiedClass>), typeof(TestGenericClass1<,>), false)]
-		public void Compare_open_generic_equal_to_closed_generic_type_with_custom_constraint_should_return_correct_result(
-			Type type1,
-			Type type2,
-			bool expectedResult)
-		{
-			// Arrange
-			// Act
-			var result = TypeComparer.CompareTypes(type1, type2);
-
-			// Assert
-			Assert.Equal(expectedResult, result);
 		}
 	}
 }

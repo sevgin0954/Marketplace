@@ -6,46 +6,40 @@ namespace ServiceLayerRegistrar
 {
 	internal static class TypeComparer
 	{
-		public static bool CompareTypes(Type type1, Type type2)
+		public static bool DoesTypeMatch(Type typeToMatch, Type matchType)
 		{
-			ArgumentValidator.ThrowExceptionIfNull(new object[] { type1, type2 }, nameof(type1), nameof(type2));
+			ArgumentValidator.ThrowExceptionIfNull(new object[] { matchType, typeToMatch }, nameof(matchType), nameof(typeToMatch));
 
-			if (type1.Name != type2.Name)
+			if (matchType.Name != typeToMatch.Name)
 				return false;
-			if (type1.Namespace != type2.Namespace)
+			if (matchType.Namespace != typeToMatch.Namespace)
 				return false;
 
-			var areTypesGeneric = type1.IsGenericType;
+			if (matchType.IsGenericTypeDefinition)
+				return true;
+
+			var areTypesGeneric = matchType.IsGenericType;
 			if (areTypesGeneric)
 			{
-				return MatchTypeGenerics(type1, type2);
+				var type1Generics = matchType.GetGenericArguments();
+				var type2Generics = typeToMatch.GetGenericArguments();
+
+				return MatchTypeGenerics(type1Generics, type2Generics);
 			}
 
-			return type1.Equals(type2);
+			return true;
 		}
 
-		private static bool MatchTypeGenerics(Type type1, Type type2)
+		private static bool MatchTypeGenerics(Type[] type1Generics, Type[] type2Generics)
 		{
 			var isAllGenericTypesMatch = true;
 
-			var isType1Closed = type1.IsGenericTypeDefinition == false;
-			var isType2Closed = type2.IsGenericTypeDefinition == false;
-
-			if (isType1Closed == isType2Closed)
-				return type1.Equals(type2);
-
-			if (isType1Closed || isType2Closed)
+			for (var i = 0; i < type1Generics.Length; i++)
 			{
-				var type1Generics = type1.GetGenericArguments();
-				var type2Generics = type2.GetGenericArguments();
-
-				for (var i = 0; i < type1Generics.Length; i++)
+				if (MatchGenericArgumentsOrParameters(type1Generics[i], type2Generics[i]) == false)
 				{
-					if (MatchGenericArgumentsOrParameters(type1Generics[i], type2Generics[i]) == false)
-					{
-						isAllGenericTypesMatch = false;
-						break;
-					}
+					isAllGenericTypesMatch = false;
+					break;
 				}
 			}
 
@@ -75,10 +69,12 @@ namespace ServiceLayerRegistrar
 			}
 			else
 			{
-				if (type1.IsGenericTypeParameter || type2.IsGenericTypeParameter)
-					doesTypesMatch = true;
-				else
-					doesTypesMatch = type1.Equals(type2);
+				if (type1.IsGenericTypeDefinition)
+					type1 = type1.BaseType;
+				if (type2.IsGenericTypeDefinition)
+					type2 = type2.BaseType;
+
+				doesTypesMatch = type1.Equals(type2);
 			}
 
 			return doesTypesMatch;
