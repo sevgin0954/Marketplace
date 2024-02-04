@@ -3,10 +3,10 @@ using Marketplace.Domain.SharedKernel;
 
 namespace Marketplace.Persistence
 {
-	// TODO: Replace TId with Id class
-	public abstract class Repository<T, TId> : IRepository<T, TId>
-		where T : class
-		where TId : Id
+	public abstract class Repository<TDomainEntity, TEntityId, TPersistenceEntity> : IRepository<TDomainEntity, TEntityId>
+		where TDomainEntity : class
+		where TEntityId : Id
+		where TPersistenceEntity : class
 	{
 		private readonly MarketplaceDbContext dbContext;
 
@@ -15,17 +15,17 @@ namespace Marketplace.Persistence
 			this.dbContext = dbContext;
 		}
 
-		public void Add(T element)
+		public void Add(TDomainEntity element)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Task<IList<T>> GetAllAsync()
+		public Task<IList<TDomainEntity>> GetAllAsync()
 		{
 			throw new NotImplementedException();
 		}
 
-		public Task<T> GetByIdAsync(TId id)
+		public Task<TDomainEntity> GetByIdAsync(TEntityId id)
 		{
 			throw new NotImplementedException();
 		}

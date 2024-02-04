@@ -29,7 +29,7 @@ namespace ServiceLayerRegistrar
 				.ToList();
 
 			if (matchingInterfaces.Count == 0)
-				throw new ArgumentException("No interfaces matching the selected interface");
+				throw new ArgumentException($"No interfaces matching the selected interface - {interfaceType.Name}");
 
 			return matchingInterfaces;
 		}

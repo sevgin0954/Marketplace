@@ -1,10 +1,11 @@
-﻿using Marketplace.Domain.SharedKernel;
+﻿using Marketplace.Domain.Browsing.ProductAggregate;
+using Marketplace.Domain.SharedKernel;
 
 namespace Marketplace.Persistence.Browsing
 {
-	public class ProductRepository : Repository<ProductEntity, Id>
+	public class ProductRepository : Repository<Product, Id, ProductEntity>
 	{
-		public ProductRepository(MarketplaceDbContext dbContext)
+		public ProductRepository(BrowsingDbContext dbContext)
 			: base(dbContext) { }
 	}
 }

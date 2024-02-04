@@ -4,10 +4,13 @@ using System.Linq.Expressions;
 
 namespace Marketplace.Persistence.SagaData
 {
-    public class SagaDataRepository<TSagaData, TSagaId> : Repository<TSagaData, TSagaId>, ISagaDataRepository<TSagaData, TSagaId>
-        where TSagaData : Domain.Common.SagaData
-		where TSagaId : Id
-    {
+    public class SagaDataRepository<TSagaData, TSagaId> : 
+        Repository<TSagaData, TSagaId, SagaDataEntity>, 
+        ISagaDataRepository<TSagaData, TSagaId>
+            where TSagaData : Domain.Common.SagaData
+		    where TSagaId : Id
+
+	{
         public SagaDataRepository(SagaDataDbContext dbContext)
             : base(dbContext) { }
 

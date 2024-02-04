@@ -1,5 +1,6 @@
 using AutoMapper;
 using AutoMapperRegistrar;
+using Marketplace.Domain.Browsing.ProductAggregate;
 using Marketplace.Domain.Common;
 using Marketplace.Domain.Sales.MakeOfferSagaNS;
 using Marketplace.Domain.SharedKernel;
@@ -72,7 +73,7 @@ namespace Marketplace.API
 
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
-			builder.Services.AddMediatR(typeof(Program), typeof(Result));
+			//builder.Services.AddMediatR(typeof(Program), typeof(Result));
 
 			var mapper = mapperConfiguration.CreateMapper();
 			builder.Services.AddSingleton(mapper);
@@ -99,14 +100,11 @@ namespace Marketplace.API
 
 			var persistenceAssembly = typeof(MarketplaceDbContext).Assembly;
 
-			var iRepositoryType = typeof(IRepository<Any,Id>);
+			var iRepositoryType = typeof(IRepository<Any, Id>);
 			serviceRegistrar.RegisterScopedServices(persistenceAssembly, iRepositoryType);
 
 			var iSagaDataRepositoryType = typeof(ISagaDataRepository<,>);
 			serviceRegistrar.RegisterScopedServices(persistenceAssembly, iSagaDataRepositoryType);
-
-			var iAggregateRepositoryType = typeof(IAggregateRepository<,>);
-			serviceRegistrar.RegisterScopedServices(persistenceAssembly, iAggregateRepositoryType);
 		}
 
 		private static void AddMiddlewares(WebApplication app)

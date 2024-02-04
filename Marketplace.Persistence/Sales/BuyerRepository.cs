@@ -1,10 +1,11 @@
-﻿using Marketplace.Domain.SharedKernel;
+﻿using Marketplace.Domain.Sales.BuyerAggregate;
+using Marketplace.Domain.SharedKernel;
 
 namespace Marketplace.Persistence.Sales
 {
-	public class BuyerRepository : Repository<BuyerEntity, Id>
+	public class BuyerRepository : Repository<Buyer, Id, BuyerEntity>
 	{
-		public BuyerRepository(MarketplaceDbContext dbContext)
+		public BuyerRepository(SalesDbContext dbContext)
 			: base(dbContext) { }
 	}
 }

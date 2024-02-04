@@ -27,8 +27,7 @@ namespace ServiceLayerRegistrar
 
             var interfaceGenericArguments = interfaceType.GenericTypeArguments;
             var isInterfaceCustom = interfaceGenericArguments.Any(a => typeof(BaseGenericConstraint).IsAssignableFrom(a));
-            var isInterfaceOpenGeneric = interfaceType.GenericTypeArguments.Length == 0;
-            if (isInterfaceCustom || isInterfaceOpenGeneric)
+            if (isInterfaceCustom)
             {
                 var interfacesMatchingCustomInterface = assemblyTypeFinder.FindDistinctInterfacesMatchingInterface(interfaceType);
 
@@ -125,7 +124,7 @@ namespace ServiceLayerRegistrar
 
 			if (lowestDepthLevelClassType == null)
 			{
-                var exceptionMessage = string.Format(NO_MATCH_EXCEPTION_MESSAGE, interfaceType);
+                var exceptionMessage = string.Format(NO_MATCH_EXCEPTION_MESSAGE, interfaceType.Name);
 				throw new ArgumentException(exceptionMessage);
 			}
 

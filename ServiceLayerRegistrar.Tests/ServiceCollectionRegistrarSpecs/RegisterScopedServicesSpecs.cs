@@ -1,9 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Moq;
-using ServiceLayerRegistrar.CustomGenericConstraints;
 using ServiceLayerRegistrar.Tests.TestClasses;
 using ServiceLayerRegistrar.Tests.TestInterfaces;
-using System.Diagnostics;
 using System.Reflection;
 using Xunit;
 
@@ -55,16 +53,13 @@ namespace ServiceLayerRegistrar.Tests.ServiceCollectionRegistrarSpecs
 			Assert.Throws<ArgumentException>(() => registerer.RegisterScopedServices(assembly, interfaceToRegister));
 		}
 
-		// TODO: IF INTERFACE IS OPEN AND CLASS NOT AND IF CLASS IS OPEN AND THE SEARCHED INTERFACE IS NOT
-
 		[Fact]
-		public void With_open_generic_interface_should_register_all_matching_interfaces_with_the_classes()
+		public void With_open_generic_interface_should_register_only_one_matching_interfaces_with_the_class_as_bot_open_generics()
 		{
 			// Arrange
-			var class1 = typeof(TestGenericClass1<TestGenericParameter1, TestGenericParameter2>);
-			var class2 = typeof(TestGenericClass1<TestGenericParameter2, TestGenericParameter2>);
+			var class1 = typeof(TestGenericClass1<,>);
 			var class3 = typeof(TestGenericClass2<,>);
-			var assembly = this.GetAssembly(class1, class2, class3);
+			var assembly = this.GetAssembly(class1, class3);
 
 			var searchedInterface = typeof(TestGenericInterface1<,>);
 
@@ -78,12 +73,9 @@ namespace ServiceLayerRegistrar.Tests.ServiceCollectionRegistrarSpecs
 			var expectedRegisteredInterface1 = typeof(TestGenericInterface1<TestGenericParameter1, TestGenericParameter2>);
 			var registeredClass1 = this.GetRegisteredService(serviceCollection, expectedRegisteredInterface1);
 
-			var expectedRegisteredInterface2 = typeof(TestGenericInterface1<TestGenericParameter2, TestGenericParameter2>);
-			var registeredClass2 = this.GetRegisteredService(serviceCollection, expectedRegisteredInterface2);
-
-			Assert.Equal(class1, registeredClass1);
-			Assert.Equal(class2, registeredClass2);
-			Assert.Equal(2, serviceCollection.Count);
+			Assert.Equal(class1.Name, registeredClass1.Name);
+			Assert.Equal(registeredClass1.GenericTypeArguments, expectedRegisteredInterface1.GenericTypeArguments);
+			Assert.Single(serviceCollection);
 		}
 
 		[Fact]
