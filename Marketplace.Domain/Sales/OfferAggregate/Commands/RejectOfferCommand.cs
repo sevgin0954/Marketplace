@@ -28,9 +28,9 @@ namespace Marketplace.Domain.Sales.OfferAggregate.Commands
 
 		internal class RejectOfferCommandHandler : IRequestHandler<RejectOfferCommand, Result>
 		{
-			private readonly IAggregateRepository<Offer, OfferId> offerRepository;
+			private readonly IRepository<Offer, OfferId> offerRepository;
 
-			internal RejectOfferCommandHandler(IAggregateRepository<Offer, OfferId> offerRepository)
+			public RejectOfferCommandHandler(IRepository<Offer, OfferId> offerRepository)
 			{
 				this.offerRepository = offerRepository;
 			}

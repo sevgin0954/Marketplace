@@ -25,9 +25,9 @@ namespace Marketplace.Domain.Sales.OfferAggregate.Commands
 
 		internal class AcceptOfferCommandHandler : IRequestHandler<AcceptOfferCommand, Result>
 		{
-			private readonly IAggregateRepository<Offer, OfferId> offerRepository;
+			private readonly IRepository<Offer, OfferId> offerRepository;
 
-			internal AcceptOfferCommandHandler(IAggregateRepository<Offer, OfferId> offerRepository)
+			public AcceptOfferCommandHandler(IRepository<Offer, OfferId> offerRepository)
 			{
 				this.offerRepository = offerRepository;
 			}
@@ -40,18 +40,14 @@ namespace Marketplace.Domain.Sales.OfferAggregate.Commands
 
 				var offer = await this.offerRepository.GetByIdAsync(offerId);
 				if (offer == null)
-				{
 					throw new NotFoundException(nameof(offer));
-				}
 
 				var sellerId = new Id(request.InitiatorId);
 				offer.AcceptOffer(sellerId);
 
 				var changedRowsCount = await this.offerRepository.SaveChangesAsync(cancellationToken);
 				if (changedRowsCount == 0)
-				{
 					return Result.Fail(ErrorConstants.NO_RECORD_ALTERED);
-				}
 
 				return Result.Ok();
 			}

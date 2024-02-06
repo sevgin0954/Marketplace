@@ -17,7 +17,7 @@ namespace Marketplace.Tests.Sales.OfferAggregateSpecs.CommandsSpecs
 		public async Task Accept_offer_command_with_incorrect_product_id_should_throw_an_exception()
 		{
 			// Arrange
-			var repositoryMock = new Mock<IAggregateRepository<Offer, OfferId>>();
+			var repositoryMock = new Mock<IRepository<Offer, OfferId>>();
 			Offer offer = null;
 			this.SetupMockedRepositoryGetByIdAsync(repositoryMock, offer);
 
@@ -33,7 +33,7 @@ namespace Marketplace.Tests.Sales.OfferAggregateSpecs.CommandsSpecs
 		public async Task Accept_offer_command_with_incorrect_buyer_id_should_throw_an_exception()
 		{
 			// Arrange
-			var repositoryMock = new Mock<IAggregateRepository<Offer, OfferId>>();
+			var repositoryMock = new Mock<IRepository<Offer, OfferId>>();
 			Offer offer = null;
 			this.SetupMockedRepositoryGetByIdAsync(repositoryMock, offer);
 
@@ -51,7 +51,7 @@ namespace Marketplace.Tests.Sales.OfferAggregateSpecs.CommandsSpecs
 			// Arrange
 			var sellerId = new Id();
 
-			var repositoryMock = new Mock<IAggregateRepository<Offer, OfferId>>();
+			var repositoryMock = new Mock<IRepository<Offer, OfferId>>();
 
 			var offer = OfferFactory.CreateWithSellerId(sellerId);
 			this.SetupMockedRepositoryGetByIdAsync(repositoryMock, offer);
@@ -77,7 +77,7 @@ namespace Marketplace.Tests.Sales.OfferAggregateSpecs.CommandsSpecs
 			// Arrange
 			var sellerId = new Id();
 
-			var repositoryMock = new Mock<IAggregateRepository<Offer, OfferId>>();
+			var repositoryMock = new Mock<IRepository<Offer, OfferId>>();
 
 			var offer = OfferFactory.CreateWithSellerId(sellerId);
 			this.SetupMockedRepositoryGetByIdAsync(repositoryMock, offer);
@@ -105,7 +105,7 @@ namespace Marketplace.Tests.Sales.OfferAggregateSpecs.CommandsSpecs
 			var buyerId = new Id();
 			var productId = new Id();
 
-			var repositoryMock = new Mock<IAggregateRepository<Offer, OfferId>>();
+			var repositoryMock = new Mock<IRepository<Offer, OfferId>>();
 
 			var offer = OfferFactory.CreateWithSellerId(sellerId);
 			this.SetupMockedRepositoryGetByIdAsync(repositoryMock, offer);
@@ -134,7 +134,7 @@ namespace Marketplace.Tests.Sales.OfferAggregateSpecs.CommandsSpecs
 			// Arrange
 			var sellerId = new Id();
 
-			var repositoryMock = new Mock<IAggregateRepository<Offer, OfferId>>();
+			var repositoryMock = new Mock<IRepository<Offer, OfferId>>();
 
 			var offer = OfferFactory.CreateWithSellerId(sellerId);
 			this.SetupMockedRepositoryGetByIdAsync(repositoryMock, offer);
@@ -171,7 +171,7 @@ namespace Marketplace.Tests.Sales.OfferAggregateSpecs.CommandsSpecs
 		}
 
 		private void SetupMockedRepositorySaveChangesAsync(
-			Mock<IAggregateRepository<Offer, OfferId>> mock, 
+			Mock<IRepository<Offer, OfferId>> mock, 
 			int returnValue)
 		{
 			mock.Setup(orm => orm.SaveChangesAsync(new CancellationToken()))
@@ -179,7 +179,7 @@ namespace Marketplace.Tests.Sales.OfferAggregateSpecs.CommandsSpecs
 		}
 
 		private void SetupMockedRepositoryGetByIdAsync(
-			Mock<IAggregateRepository<Offer, OfferId>> mock, 
+			Mock<IRepository<Offer, OfferId>> mock, 
 			Offer returnValue)
 		{
 			mock

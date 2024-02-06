@@ -3,6 +3,8 @@ using AutoMapperRegistrar;
 using Marketplace.Domain.Browsing.ProductAggregate;
 using Marketplace.Domain.Common;
 using Marketplace.Domain.Sales.MakeOfferSagaNS;
+using Marketplace.Domain.Sales.OfferAggregate;
+using Marketplace.Domain.Sales.SellerAggregate;
 using Marketplace.Domain.SharedKernel;
 using Marketplace.Persistence;
 using Marketplace.Persistence.Browsing;
@@ -73,7 +75,7 @@ namespace Marketplace.API
 
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
-			//builder.Services.AddMediatR(typeof(Program), typeof(Result));
+			builder.Services.AddMediatR(typeof(Program), typeof(Result));
 
 			var mapper = mapperConfiguration.CreateMapper();
 			builder.Services.AddSingleton(mapper);
@@ -102,6 +104,10 @@ namespace Marketplace.API
 
 			var iRepositoryType = typeof(IRepository<Any, Id>);
 			serviceRegistrar.RegisterScopedServices(persistenceAssembly, iRepositoryType);
+
+			// TODO: Make custom generic constraints work for id too
+			var iOfferRepositoryType = typeof(IRepository<Offer, OfferId>);
+			serviceRegistrar.RegisterScopedServices(persistenceAssembly, iOfferRepositoryType);
 
 			var iSagaDataRepositoryType = typeof(ISagaDataRepository<,>);
 			serviceRegistrar.RegisterScopedServices(persistenceAssembly, iSagaDataRepositoryType);

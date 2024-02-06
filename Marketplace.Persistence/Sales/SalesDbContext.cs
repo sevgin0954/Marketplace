@@ -18,6 +18,8 @@ namespace Marketplace.Persistence.Sales
 
 		public DbSet<BuyerEntity> Buyers => Set<BuyerEntity>();
 
+		public DbSet<OfferEntity> Offers => Set<OfferEntity>();
+
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<ProductEntity>(product =>
@@ -74,10 +76,6 @@ namespace Marketplace.Persistence.Sales
 			{
 				buyer.HasKey(b => b.Id);
 
-				//buyer
-				//	.HasMany(b => b.StartedPendingOffers)
-				//	.WithMany(o => o.BuyersWithStartedOffers);
-
 				buyer
 					.Property(b => b.PendingOffersCount)
 					.IsRequired();
@@ -86,6 +84,17 @@ namespace Marketplace.Persistence.Sales
 			{
 				Id = "1",
 				PendingOffersCount = 1
+			});
+
+			modelBuilder.Entity<OfferEntity>(offer =>
+			{
+				offer.HasKey(b => b.Id);
+
+				offer.HasOne(o => o.Seller);
+
+				offer.HasOne(o => o.Product);
+
+				offer.HasOne(o => o.Buyer);
 			});
 		}
 	}
