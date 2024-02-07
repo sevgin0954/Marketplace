@@ -5,7 +5,20 @@ namespace AutoMapperRegistrar
 {
 	public class MappingFinder
 	{
-		public static ICollection<MappingType> GetTypesWithMapFrom(Assembly assembly)
+		public static ICollection<MappingType> GetTypesWithMapFrom(params Assembly[] assemblies)
+		{
+			var resultTypes = new List<MappingType>();
+
+			foreach (var currentAssembly in assemblies)
+			{
+				var currentTypes = GetTypesWithMapFrom(currentAssembly);
+				resultTypes.AddRange(currentTypes);
+			}
+
+			return resultTypes;
+		}
+
+		private static ICollection<MappingType> GetTypesWithMapFrom(Assembly assembly)
 		{
 			var typesWithMapFrom = GetTypesDerivedFrom(assembly, typeof(IMappableFrom<>));
 
@@ -25,7 +38,20 @@ namespace AutoMapperRegistrar
 			return mappingTypes;
 		}
 
-		public static ICollection<MappingType> GetTypesWithMapTo(Assembly assembly)
+		public static ICollection<MappingType> GetTypesWithMapTo(params Assembly[] assemblies)
+		{
+			var resultTypes = new List<MappingType>();
+
+			foreach (var currentAssembly in assemblies)
+			{
+				var currentTypes = GetTypesWithMapTo(currentAssembly);
+				resultTypes.AddRange(currentTypes);
+			}
+
+			return resultTypes;
+		}
+
+		private static ICollection<MappingType> GetTypesWithMapTo(Assembly assembly)
 		{
 			var typesWithMapTo = GetTypesDerivedFrom(assembly, typeof(IMappableTo<>));
 
@@ -45,7 +71,20 @@ namespace AutoMapperRegistrar
 			return mappingTypes;
 		}
 
-		public static ICollection<ICustomMappings> GetTypesWitCustomMapping(Assembly assembly)
+		public static ICollection<ICustomMappings> GetTypesWitCustomMapping(params Assembly[] assemblies)
+		{
+			var resultTypes = new List<ICustomMappings>();
+
+			foreach (var currentAssembly in assemblies)
+			{
+				var currentTypes = GetTypesWitCustomMapping(currentAssembly);
+				resultTypes.AddRange(currentTypes);
+			}
+
+			return resultTypes;
+		}
+
+		private static ICollection<ICustomMappings> GetTypesWitCustomMapping(Assembly assembly)
 		{
 			var typesWithCustomMappings = 
 				 GetTypesDerivedFrom(assembly, typeof(ICustomMappings))

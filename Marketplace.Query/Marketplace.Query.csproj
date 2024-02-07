@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AutoMapperRegistrar\AutoMapperRegistrar.csproj" />
     <ProjectReference Include="..\Marketplace.Persistence\Marketplace.Persistence.csproj" />
   </ItemGroup>
 

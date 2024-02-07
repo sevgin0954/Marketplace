@@ -79,6 +79,8 @@ namespace Marketplace.Persistence.Sales
 				buyer
 					.Property(b => b.PendingOffersCount)
 					.IsRequired();
+
+				buyer.OwnsMany(b => b.StartedOffersProductsIds);
 			});
 			modelBuilder.Entity<BuyerEntity>().HasData(new BuyerEntity()
 			{

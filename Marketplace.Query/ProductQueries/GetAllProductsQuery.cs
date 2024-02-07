@@ -12,7 +12,6 @@ namespace Marketplace.Query.ProductQueries
         {
 			private readonly SalesDbContext dbContext;
 			private readonly IMapper mapper;
-
 			public GetProductsQueryHandler(SalesDbContext dbContext, IMapper mapper)
 			{
 				this.dbContext = dbContext;

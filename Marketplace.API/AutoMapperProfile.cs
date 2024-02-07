@@ -8,7 +8,7 @@ namespace Marketplace.API
 		public AutoMapperProfile()
 		{
 			this.CreateMap<Id, string>()
-			.ConvertUsing(i => i.Value);
+				.ConvertUsing(i => i.Value);
 
 			this.CreateMap<Price, decimal>()
 				.ConvertUsing(p => p.Value);

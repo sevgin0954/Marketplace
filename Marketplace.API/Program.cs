@@ -1,16 +1,15 @@
 using AutoMapper;
 using AutoMapperRegistrar;
-using Marketplace.Domain.Browsing.ProductAggregate;
 using Marketplace.Domain.Common;
-using Marketplace.Domain.Sales.MakeOfferSagaNS;
 using Marketplace.Domain.Sales.OfferAggregate;
-using Marketplace.Domain.Sales.SellerAggregate;
 using Marketplace.Domain.SharedKernel;
 using Marketplace.Persistence;
 using Marketplace.Persistence.Browsing;
 using Marketplace.Persistence.IdentityAndAccess;
 using Marketplace.Persistence.SagaData;
 using Marketplace.Persistence.Sales;
+using Marketplace.Query;
+using Marketplace.Query.ProductQueries;
 using MediatR;
 using ServiceLayerRegistrar;
 using ServiceLayerRegistrar.CustomGenericConstraints;
@@ -30,9 +29,9 @@ namespace Marketplace.API
 				.Build();
 
 			var mappingConfigExpression = new MapperConfigurationExpression();
-			var mappingConfig = new MapperConfiguration(mappingConfigExpression);
-
 			AddMappings(mappingConfigExpression);
+
+			var mappingConfig = new MapperConfiguration(mappingConfigExpression);
 			AddServices(builder, configuration, mappingConfig);
 
 			var app = builder.Build();
@@ -44,10 +43,12 @@ namespace Marketplace.API
 
 		private static void AddMappings(MapperConfigurationExpression configExpression)
 		{
-			var assembly = Assembly.GetExecutingAssembly();
-			var mappingTypesFrom = MappingFinder.GetTypesWithMapFrom(assembly);
-			var mappingTypesTo = MappingFinder.GetTypesWithMapTo(assembly);
-			var customMappingTypes = MappingFinder.GetTypesWitCustomMapping(assembly);
+			var currentAssembly = Assembly.GetExecutingAssembly();
+			var queryAsembly = typeof(PriceDto).Assembly;
+
+			var mappingTypesFrom = MappingFinder.GetTypesWithMapFrom(currentAssembly, queryAsembly);
+			var mappingTypesTo = MappingFinder.GetTypesWithMapTo(currentAssembly, queryAsembly);
+			var customMappingTypes = MappingFinder.GetTypesWitCustomMapping(currentAssembly, queryAsembly);
 
 			var mappingRegisterar = new MappingRegisterar(configExpression);
 
@@ -75,7 +76,7 @@ namespace Marketplace.API
 
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
-			builder.Services.AddMediatR(typeof(Program), typeof(Result));
+			builder.Services.AddMediatR(typeof(Program), typeof(GetAllProductsQuery));
 
 			var mapper = mapperConfiguration.CreateMapper();
 			builder.Services.AddSingleton(mapper);

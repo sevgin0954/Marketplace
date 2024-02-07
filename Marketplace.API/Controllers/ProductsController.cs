@@ -13,51 +13,51 @@ namespace Marketplace.API.Controllers
         private readonly IMediator mediator;
         private readonly IMapper mapper;
 
-  //      public ProductsController(IMediator mediator, IMapper mapper)
-		//{
-  //          this.mediator = mediator;
-  //          this.mapper = mapper;
-  //      }
+        public ProductsController(IMediator mediator, IMapper mapper)
+        {
+            this.mediator = mediator;
+            this.mapper = mapper;
+        }
 
-        //[HttpGet]
-        //public async Task<ActionResult<ProductDto>> GetProducts(ProductSearchBindingModel searchModel)
-        //{
-        //    var isAnyKeywordExist = searchModel.KeyWords != null && searchModel.KeyWords.Count > 0;
-        //    if (isAnyKeywordExist)
-        //    {
-        //        var filteredProducts = await this.mediator.Send(new GetFilteredProductQuery(searchModel.KeyWords!));
-        //        return this.Ok(filteredProducts);
-        //    }
+        [HttpGet]
+        public async Task<ActionResult<ProductDto>> GetProducts(ProductSearchBindingModel searchModel)
+        {
+            var isAnyKeywordExist = searchModel.KeyWords != null && searchModel.KeyWords.Count > 0;
+            if (isAnyKeywordExist)
+            {
+                var filteredProducts = await this.mediator.Send(new GetFilteredProductQuery(searchModel.KeyWords!));
+                return this.Ok(filteredProducts);
+            }
 
-        //    var products = await this.mediator.Send(new GetAllProductsQuery());
-        //    return this.Ok(products);
-        //}
+            var products = await this.mediator.Send(new GetAllProductsQuery());
+            return this.Ok(products);
+        }
 
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<ProductDto>> GetProduct(string id)
-        //{
-        //    var product = await this.mediator.Send(new GetProductQuery(id));
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ProductDto>> GetProduct(string id)
+        {
+            var product = await this.mediator.Send(new GetProductQuery(id));
 
-        //    if (product == null)
-        //    {
-        //        return NotFound();
-        //    }
+            if (product == null)
+            {
+                return NotFound();
+            }
 
-        //    return Ok(product);
-        //}
+            return Ok(product);
+        }
 
-        //[HttpPost]
-        //public async Task<ActionResult<string>> CreateNewProduct(CreateProductBindingModel model)
-        //{
-        //    var createProductCommand = this.mapper.Map<CreateProductCommand>(model);
-        //    var result = await this.mediator.Send(createProductCommand);
+        [HttpPost]
+        public async Task<ActionResult<string>> CreateNewProduct(CreateProductBindingModel model)
+        {
+            var createProductCommand = this.mapper.Map<CreateProductCommand>(model);
+            var result = await this.mediator.Send(createProductCommand);
 
-        //    if (result.IsFailure)
-        //    {
-        //        return BadRequest();
-        //    }
+            if (result.IsFailure)
+            {
+                return BadRequest();
+            }
 
-        //    return Ok(result.ResultObject);
-        //}
+            return Ok(result.ResultObject);
+        }
     }
 }
