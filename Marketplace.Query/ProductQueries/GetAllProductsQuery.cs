@@ -31,6 +31,7 @@ namespace Marketplace.Query.ProductQueries
 
 			public async Task<IList<ProductDto>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
 			{
+				// TODO: Use repository instead of a dbcontexts
 				var salesProductDtos = await this.salesDdContext.Products
 					.ProjectTo<ProductDto>(this.mapper.ConfigurationProvider)
 					.ToListAsync(cancellationToken);
@@ -40,7 +41,7 @@ namespace Marketplace.Query.ProductQueries
 					.ToListAsync(cancellationToken);
 
 				var identityAndAcessProductDtos = await this.identityAndAccessDbContext.Users
-					.Where(u => browsingProductDtos.Any(p => p.SellerId == u.Id))
+					.Where(u => browsingProductDtos.Select(p => p.SellerId).Contains(u.Id))
 					.ProjectTo<ProductDto>(this.mapper.ConfigurationProvider)
 					.ToListAsync();
 
