@@ -52,7 +52,7 @@ namespace Marketplace.API
 
 			var mappingRegisterar = new MappingRegisterar(configExpression);
 
-			if (mappingTypesFrom != null && mappingTypesTo.Count > 0)
+			if (mappingTypesFrom != null && mappingTypesFrom.Count > 0)
 				mappingRegisterar.RegisterMappings(mappingTypesFrom);
 
 			if (mappingTypesTo != null && mappingTypesTo.Count > 0)
@@ -61,6 +61,7 @@ namespace Marketplace.API
 			if (customMappingTypes != null && customMappingTypes.Count > 0) 
 				mappingRegisterar.RegisterCustomMappings(customMappingTypes);
 
+			// TODO: AutomapperProfile doesnt work!
 			configExpression.AddProfile<AutoMapperProfile>();
 		}
 

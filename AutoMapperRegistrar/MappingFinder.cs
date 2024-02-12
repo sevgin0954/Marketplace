@@ -26,9 +26,10 @@ namespace AutoMapperRegistrar
 
 			foreach (var currentType in typesWithMapFrom)
 			{
-				var interfaceGenericType = GetInterfacesGenericTypes(currentType, typeof(IMappableFrom<>));
+				var typeDerivedInterfaces = GetDerivedGenericInterfaces(currentType, typeof(IMappableFrom<>));
+				var interfacesGenericArguments = GetInterfacesGenericTypeArguments(typeDerivedInterfaces);
 
-				var currentMappingTypes = interfaceGenericType
+				var currentMappingTypes = interfacesGenericArguments
 					.Select(t => new MappingType(t, currentType))
 					.ToList();
 
@@ -59,9 +60,10 @@ namespace AutoMapperRegistrar
 
 			foreach (var currentType in typesWithMapTo)
 			{
-				var interfaceGenericType = GetInterfacesGenericTypes(currentType, typeof(IMappableFrom<>));
+				var typeDerivedInterfaces = GetDerivedGenericInterfaces(currentType, typeof(IMappableFrom<>));
+				var interfacesGenericArguments = GetInterfacesGenericTypeArguments(typeDerivedInterfaces);
 
-				var currentMappingTypes = interfaceGenericType
+				var currentMappingTypes = interfacesGenericArguments
 					.Select(t => new MappingType(currentType, t))
 					.ToList();
 
@@ -96,27 +98,43 @@ namespace AutoMapperRegistrar
 
 		private static ICollection<Type> GetTypesDerivedFrom(Assembly assembly, Type type)
 		{
-			var types = assembly
-				.GetTypes()
-				.Where(t => type.IsAssignableFrom(t))
-				.ToList();
+			var types = assembly.GetTypes().ToList();
+
+			if (type.IsGenericType)
+			{
+				types = types
+					.Where(t => t
+						.GetInterfaces()
+						.Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == type.GetGenericTypeDefinition())
+				).ToList();
+			}
+			else
+			{
+				types = types
+					.Where(t => t.GetInterfaces().Any(i => i == type))
+					.ToList();
+			}
 
 			return types;
 		}
 
-		private static ICollection<Type> GetInterfacesGenericTypes(Type type, Type interfaceType)
+		private static ICollection<Type> GetDerivedGenericInterfaces(Type type, Type searchedInterfaceTypeGenericTypeDefinition)
 		{
-			if (interfaceType.IsInterface == false || interfaceType.IsGenericType == false)
-				throw new ArgumentException($"type {interfaceType} is not a generic interface!");
+			var derivedTypes = new List<Type>();
 
-			if (interfaceType.IsAssignableFrom(type) == false)
-				throw new ArgumentException($"{type} is does not implement {interfaceType}!");
-
-			var genericTypes = type.GetInterfaces()
-				.Where(i => i.GetGenericTypeDefinition() == interfaceType)
-				.Select(i => i.GetGenericArguments().First())
+			derivedTypes = type.GetInterfaces()
+				.Where(t => t.IsGenericType)
+				.Where(t => t.GetGenericTypeDefinition() == searchedInterfaceTypeGenericTypeDefinition)
 				.ToList();
-			return genericTypes;
+
+			return derivedTypes;
+		}
+		
+		private static ICollection<Type> GetInterfacesGenericTypeArguments(ICollection<Type> interfaces)
+		{
+			var result = interfaces.Select(i => i.GenericTypeArguments[0]).ToList();
+
+			return result;
 		}
 	}
 }

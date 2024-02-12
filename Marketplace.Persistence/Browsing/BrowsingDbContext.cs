@@ -41,7 +41,8 @@ namespace Marketplace.Persistence.Browsing
 			{
 				Description = "Description",
 				Id = "1",
-				Name = "Name"
+				Name = "Name",
+				SellerId = "1"
 			});
 		}
 	}
