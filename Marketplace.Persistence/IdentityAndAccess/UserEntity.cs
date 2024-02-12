@@ -6,8 +6,8 @@ namespace Marketplace.Persistence.IdentityAndAccess
 	{
 		public string Id { get; set; }
 
-		public string UserName { get; }
+		public string UserName { get; set; }
 
-		public string Email { get; }
+		public string Email { get; set; }
 	}
 }

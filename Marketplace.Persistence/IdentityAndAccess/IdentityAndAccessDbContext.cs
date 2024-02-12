@@ -28,6 +28,12 @@ namespace Marketplace.Persistence.IdentityAndAccess
 					.HasIndex(u => u.Email)
 					.IsUnique();
 			});
+			modelBuilder.Entity<UserEntity>().HasData(new UserEntity
+			{
+				Id = "1",
+				UserName = "username",
+				Email = "asass@abv.bg"
+			});
 		}
 	}
 }
