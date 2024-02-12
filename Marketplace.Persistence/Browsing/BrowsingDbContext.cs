@@ -6,7 +6,7 @@ namespace Marketplace.Persistence.Browsing
 {
 	public class BrowsingDbContext : MarketplaceDbContext
 	{
-		protected BrowsingDbContext() { }
+		public BrowsingDbContext() { }
 
 		public BrowsingDbContext(string connectionString, bool isLoggingEnabled, IMediator mediator)
 			: base(connectionString, isLoggingEnabled, mediator) { }
