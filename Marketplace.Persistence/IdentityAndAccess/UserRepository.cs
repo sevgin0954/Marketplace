@@ -5,7 +5,7 @@ namespace Marketplace.Persistence.IdentityAndAccess
 {
 	public class UserRepository : Repository<User, Id, UserEntity>
 	{
-		public UserRepository(IdeneityAndAccessDbContext dbContext)
+		public UserRepository(IdentityAndAccessDbContext dbContext)
 			: base(dbContext) { }
 	}
 }

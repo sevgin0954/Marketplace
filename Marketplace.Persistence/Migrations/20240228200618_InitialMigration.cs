@@ -2,9 +2,9 @@
 
 #nullable disable
 
-namespace Marketplace.Persistence.Migrations.IdentityAndAccessDbContext
+namespace Marketplace.Persistence.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,20 +13,19 @@ namespace Marketplace.Persistence.Migrations.IdentityAndAccessDbContext
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsAdmin = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_Email",
+            migrationBuilder.InsertData(
                 table: "Users",
-                column: "Email",
-                unique: true,
-                filter: "[Email] IS NOT NULL");
+                columns: new[] { "Id", "Email", "IsAdmin", "UserName" },
+                values: new object[] { "1", "asadas@abv.bg", true, "superAdmin0954" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -7,9 +7,9 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Marketplace.Persistence.Migrations.IdentityAndAccessDbContext
+namespace Marketplace.Persistence.Migrations
 {
-    [DbContext(typeof(Marketplace.Persistence.IdentityAndAccess.IdentityAndAccessDbContext))]
+    [DbContext(typeof(IdentityAndAccessDbContext))]
     partial class IdentityAndAccessDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -27,18 +27,19 @@ namespace Marketplace.Persistence.Migrations.IdentityAndAccessDbContext
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(450)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsAdmin")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Email")
-                        .IsUnique()
-                        .HasFilter("[Email] IS NOT NULL");
 
                     b.ToTable("Users");
 
@@ -46,8 +47,9 @@ namespace Marketplace.Persistence.Migrations.IdentityAndAccessDbContext
                         new
                         {
                             Id = "1",
-                            Email = "asass@abv.bg",
-                            UserName = "username"
+                            Email = "asadas@abv.bg",
+                            IsAdmin = true,
+                            UserName = "superAdmin0954"
                         });
                 });
 #pragma warning restore 612, 618
