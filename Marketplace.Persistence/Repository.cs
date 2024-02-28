@@ -20,12 +20,22 @@ namespace Marketplace.Persistence
 			throw new NotImplementedException();
 		}
 
+		public void Remove(TEntityId id)
+		{
+			throw new NotImplementedException();
+		}
+
 		public Task<IList<TDomainEntity>> GetAllAsync()
 		{
 			throw new NotImplementedException();
 		}
 
 		public Task<TDomainEntity> GetByIdAsync(TEntityId id)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<bool> CheckIfExistAsync(TEntityId id)
 		{
 			throw new NotImplementedException();
 		}

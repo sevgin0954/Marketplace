@@ -11,9 +11,13 @@ namespace Marketplace.Domain.Common
 	{
 		void Add(T aggregate);
 
+		void Remove(TId id);
+
 		Task<T> GetByIdAsync(TId id);
 
 		Task<IList<T>> GetAllAsync();
+
+		Task<bool> CheckIfExistAsync(TId id);
 
 		Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 	}
