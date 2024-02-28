@@ -16,6 +16,7 @@ namespace Marketplace.Domain.Sales.BuyerAggregate.Commands
 		}
 
 		public string BuyerId { get; }
+
 		public string ProductId { get; }
 
 		internal class DiscardMakingOfferCommandHandler : IRequestHandler<DiscardMakingOfferCommand, Result>
