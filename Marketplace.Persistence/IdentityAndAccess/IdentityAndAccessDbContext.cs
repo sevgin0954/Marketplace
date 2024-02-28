@@ -19,20 +19,22 @@ namespace Marketplace.Persistence.IdentityAndAccess
 			{
 				user.HasKey(u => u.Id);
 
-				user
-					.Property(u => u.UserName)
-					.HasMaxLength(UserConstants.MAX_USERNAME_LENGTH)
+				user.Property(u => u.Email)
 					.IsRequired();
 
-				user
-					.HasIndex(u => u.Email)
-					.IsUnique();
+				user.Property(u => u.IsAdmin)
+					.HasDefaultValue(false)
+					.IsRequired();
+
+				user.Property(u => u.UserName)
+					.IsRequired();
 			});
-			modelBuilder.Entity<UserEntity>().HasData(new UserEntity
+			modelBuilder.Entity<UserEntity>().HasData(new UserEntity()
 			{
+				Email = "asadas@abv.bg",
 				Id = "1",
-				UserName = "username",
-				Email = "asass@abv.bg"
+				UserName = "superAdmin0954",
+				IsAdmin = true
 			});
 		}
 	}
