@@ -8,12 +8,15 @@ namespace Marketplace.Domain.IdentityAndAccess.UserAggregate
         public User(Id id, string userName, Email email)
             : base(id)
         {
-            UserName = userName;
-            Email = email;
+            this.UserName = userName;
+            this.Email = email;
+            this.IsAdmin = false;
         }
 
         public string UserName { get; }
 
         public Email Email { get; }
+
+        public bool IsAdmin { get; }
     }
 }
