@@ -1,5 +1,4 @@
-﻿using Marketplace.Domain.IdentityAndAccess.UserAggregate;
-using MediatR;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Marketplace.Persistence.IdentityAndAccess
@@ -28,13 +27,12 @@ namespace Marketplace.Persistence.IdentityAndAccess
 
 				user.Property(u => u.UserName)
 					.IsRequired();
-			});
-			modelBuilder.Entity<UserEntity>().HasData(new UserEntity()
-			{
-				Email = "asadas@abv.bg",
-				Id = "1",
-				UserName = "superAdmin0954",
-				IsAdmin = true
+
+				user.Property(u => u.PasswordHash)
+					.IsRequired();
+
+				user.Property(u => u.PasswordSalt)
+					.IsRequired();
 			});
 		}
 	}

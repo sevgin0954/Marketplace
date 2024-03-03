@@ -1,6 +1,4 @@
-﻿using Marketplace.Domain.SharedKernel;
-
-namespace Marketplace.Persistence.IdentityAndAccess
+﻿namespace Marketplace.Persistence.IdentityAndAccess
 {
 	public class UserEntity
 	{
@@ -11,5 +9,9 @@ namespace Marketplace.Persistence.IdentityAndAccess
 		public string Email { get; set; }
 
 		public bool IsAdmin { get; set; }
+
+		public string PasswordHash { get; set; }
+
+		public string PasswordSalt { get; set; }
 	}
 }

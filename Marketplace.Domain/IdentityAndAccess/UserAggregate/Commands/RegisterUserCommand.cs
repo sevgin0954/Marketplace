@@ -1,4 +1,5 @@
 ﻿using Marketplace.Domain.Common;
+using Marketplace.Domain.Common.Exceptions;
 using Marketplace.Domain.SharedKernel;
 using MediatR;
 using System.Threading;
@@ -20,9 +21,24 @@ namespace Marketplace.Domain.IdentityAndAccess.UserAggregate.Commands
 
 		internal class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, Result>
 		{
-			public Task<Result> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+			private readonly IRepository<User, Id> userRepository;
+
+			public RegisterUserCommandHandler(IRepository<User, Id> userRepository)
 			{
-				throw new System.NotImplementedException();
+				this.userRepository = userRepository;
+			}
+
+			public async Task<Result> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+			{
+				var userId = new Id();
+				var newUser = new User(userId, request.UserName, request.Email);
+
+				this.userRepository.Add(newUser);
+				var alteredRows = await this.userRepository.SaveChangesAsync();
+				if (alteredRows == 0)
+					throw new NotPersistentException(nameof(newUser));
+
+				return Result.Ok();
 			}
 		}
 	}

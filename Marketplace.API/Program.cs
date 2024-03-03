@@ -1,5 +1,6 @@
 using AutoMapper;
 using AutoMapperRegistrar;
+using Marketplace.API.Services;
 using Marketplace.Domain.Common;
 using Marketplace.Domain.Sales.OfferAggregate;
 using Marketplace.Domain.SharedKernel;
@@ -11,9 +12,13 @@ using Marketplace.Persistence.Sales;
 using Marketplace.Query;
 using Marketplace.Query.ProductQueries;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using ServiceLayerRegistrar;
 using ServiceLayerRegistrar.CustomGenericConstraints;
 using System.Reflection;
+using System.Security.Claims;
+using System.Text;
 
 namespace Marketplace.API
 {
@@ -66,7 +71,7 @@ namespace Marketplace.API
 		}
 
 		private static void AddServices(
-			WebApplicationBuilder builder, 
+			WebApplicationBuilder builder,
 			IConfigurationRoot configuration,
 			MapperConfiguration mapperConfiguration)
 		{
@@ -74,6 +79,25 @@ namespace Marketplace.API
 			{
 				options.ReturnHttpNotAcceptable = true;
 			}).AddXmlDataContractSerializerFormatters();
+
+			builder.Services
+				.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+				.AddJwtBearer(options =>
+				{
+					var jwtIssuer = configuration.GetSection("Auth0:Issuer").Value;
+					var jwtAudience = configuration.GetSection("Auth0:Audience").Value;
+					var jwtKey = configuration.GetSection("Auth0:ClientSecret").Value;
+					options.TokenValidationParameters = new TokenValidationParameters()
+					{
+						ValidateIssuer = true,
+						ValidateAudience = true,
+						ValidateLifetime = true,
+						ValidateIssuerSigningKey = true,
+						ValidIssuer = jwtIssuer,
+						ValidAudience = jwtAudience,
+						IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+					};
+				});
 
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
@@ -99,6 +123,8 @@ namespace Marketplace.API
 			var sagaDataConnectionString = configuration.GetConnectionString("SagaData");
 			builder.Services
 				.AddTransient(s => new SagaDataDbContext(sagaDataConnectionString, isLoggingEnabled, s.GetRequiredService<IMediator>()));
+
+			builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 
 			var serviceRegistrar = new ServiceCollectionRegistrar(builder.Services);
 
@@ -128,6 +154,7 @@ namespace Marketplace.API
 			app.UseRouting();
 
 			app.UseAuthorization();
+			app.UseAuthentication();
 
 			app.UseEndpoints(endpoints =>
 			{
