@@ -1,37 +1,40 @@
 ﻿using Marketplace.Domain.Common;
-using Marketplace.Domain.IdentityAndAccess.UserAggregate;
 using Marketplace.Domain.SharedKernel;
+using Marketplace.Persistence.IdentityAndAccess;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Marketplace.Query.UserQueries
 {
-	public class LogInUserQuery : IRequest<bool>
+	public class LogInUserQuery : IRequest<string>
 	{
 		public LogInUserQuery(string email, string password)
 		{
 			this.Email = email;
-			this.Passwrod = password;
+			this.PasswordHash = password;
 		}
 
 		public string Email { get; }
 
-		public string Passwrod { get; }
+		public string PasswordHash { get; set; }
 
-		internal class LogInUserQueyryHandler : IRequestHandler<LogInUserQuery, bool>
+		internal class LogInUserQueyryHandler : IRequestHandler<LogInUserQuery, string>
 		{
-			private readonly IRepository<User, Id> userRepository;
+			private readonly IRepository<UserEntity, Id> userRepository;
 
-			public LogInUserQueyryHandler(IRepository<User, Id> userRepository)
+			public LogInUserQueyryHandler(IRepository<UserEntity, Id> userRepository)
 			{
 				this.userRepository = userRepository;
 			}
 
-			public async Task<bool> Handle(LogInUserQuery request, CancellationToken cancellationToken)
+			public async Task<string> Handle(LogInUserQuery request, CancellationToken cancellationToken)
 			{
-				var userId = new Id(request.Email);
-				//var result = await this.userRepository;
+				var user = await this.userRepository
+					.GetAll()
+					.Where(u => u.Email == request.Email && u.PasswordHash == request.PasswordHash)
+					.FirstOrDefaultAsync(cancellationToken);
 
-				return true;
+				return user?.Id;
 			}
 		}
 	}

@@ -30,7 +30,7 @@ namespace Marketplace.Domain.Sales.BuyerAggregate.Commands
 			public async Task<Result> Handle(FinishMakingOfferCommand request, CancellationToken cancellationToken)
 			{
 				var buyerId = new Id(request.BuyerId);
-				var buyer = await this.buyerRepository.GetByIdAsync(buyerId);
+				var buyer = await this.buyerRepository.GetById(buyerId);
 				if (buyer == null)
 					throw new NotFoundException(nameof(buyer));
 

@@ -53,7 +53,7 @@ namespace Marketplace.Domain.Sales.MakeOfferSagaNS.Commands
 				var productId = new Id(request.ProductId);
 				var sagaId = new MakeOfferSagaId(buyerId, productId);
 
-				var sagaData = await this.sagaDataRepository.GetByIdAsync(sagaId);
+				var sagaData = await this.sagaDataRepository.GetById(sagaId);
 				if (sagaData != null)
 					return Result.Fail("Pending offer exists for this product from this buyer!");
 

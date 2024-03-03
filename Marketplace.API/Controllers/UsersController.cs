@@ -2,8 +2,6 @@
 using Marketplace.API.Models.UserModels;
 using Marketplace.Domain.IdentityAndAccess.UserAggregate.Commands;
 using MediatR;
-using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Marketplace.API.Services;
 using Marketplace.Query.UserQueries;
@@ -42,13 +40,21 @@ namespace Marketplace.API.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Login(LoginBindingModel model)
 		{
-			var loginRequest = this.mapper.Map<LogInUserQuery>(model);
-			var isUserIdValid = await this.mediator.Send(loginRequest);
-			if (isUserIdValid)
-			{
-				// var token = this.jwtTokenService.GenerateNewToken(model.)
+			var getPasswordSaltQuery = this.mapper.Map<GetPasswordSaltQuery>(model);
+			var userPasswordSalt = await this.mediator.Send(getPasswordSaltQuery);
 
-				return this.Ok();
+			if (userPasswordSalt == null)
+				return this.NotFound();
+
+			var userHashedPassword = PasswordHasher.ComputeHash(model.Password, userPasswordSalt);
+			var loginRequest = this.mapper.Map<LogInUserQuery>(model);
+			loginRequest.PasswordHash = userHashedPassword;
+
+			var userId = await this.mediator.Send(loginRequest);
+			if (userId != null)
+			{
+				var token = this.jwtTokenService.GenerateNewToken(userId);
+				return this.Ok(token);
 			}
 			else
 			{

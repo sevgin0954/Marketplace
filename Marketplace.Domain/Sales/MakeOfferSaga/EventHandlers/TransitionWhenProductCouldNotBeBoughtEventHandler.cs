@@ -26,7 +26,7 @@ namespace Marketplace.Domain.Sales.MakeOfferSagaNS.EventHandlers
 			var productId = new Id(notification.ProductId);
 			var sagaId = new MakeOfferSagaId(buyerId, productId);
 
-			var sagaData = await this.sagaDataRepository.GetByIdAsync(sagaId);
+			var sagaData = await this.sagaDataRepository.GetById(sagaId);
 
 			var saga = new MakeOfferSaga(sagaData, this.mediator);
 			await saga.TransitionAsync(notification);

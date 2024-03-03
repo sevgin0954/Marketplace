@@ -38,7 +38,7 @@ namespace Marketplace.Domain.Sales.OfferAggregate.Commands
 				var buyerId = new Id(request.BuyerId);
 				var offerId = new OfferId(productId, buyerId);
 
-				var offer = await this.offerRepository.GetByIdAsync(offerId);
+				var offer = await this.offerRepository.GetById(offerId);
 				if (offer == null)
 					throw new NotFoundException(nameof(offer));
 

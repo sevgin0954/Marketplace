@@ -31,7 +31,7 @@ namespace Marketplace.Domain.Sales.ProductAggregate.Commands
 			public async Task<Result> Handle(CheckCanBuyProductCommand request, CancellationToken cancellationToken)
 			{
 				var productId = new Id(request.ProductId);
-				var product = await this.productRepository.GetByIdAsync(productId);
+				var product = await this.productRepository.GetById(productId);
 				if (product == null)
 					throw new NotFoundException(nameof(product));
 

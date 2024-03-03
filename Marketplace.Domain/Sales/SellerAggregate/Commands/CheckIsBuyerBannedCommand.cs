@@ -31,7 +31,7 @@ namespace Marketplace.Domain.Sales.SellerAggregate.Commands
 			public async Task<Result> Handle(CheckIsBuyerBannedCommand request, CancellationToken cancellationToken)
 			{
 				var sellerId = new Id(request.SellerId);
-				var seller = await this.sellerRepository.GetByIdAsync(sellerId);
+				var seller = await this.sellerRepository.GetById(sellerId);
 				if (seller == null)
 				{
 					throw new NotFoundException(nameof(seller));

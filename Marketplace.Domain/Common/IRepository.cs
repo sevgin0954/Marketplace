@@ -1,5 +1,6 @@
 ﻿using Marketplace.Domain.SharedKernel;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,9 +14,9 @@ namespace Marketplace.Domain.Common
 
 		void Remove(TId id);
 
-		Task<T> GetByIdAsync(TId id);
+		IQueryable<T> GetById(TId id);
 
-		Task<IList<T>> GetAllAsync();
+		IQueryable<T> GetAll();
 
 		Task<bool> CheckIfExistAsync(TId id);
 

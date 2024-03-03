@@ -3,7 +3,7 @@ using Marketplace.Domain.SharedKernel;
 
 namespace Marketplace.Persistence
 {
-	public abstract class Repository<TDomainEntity, TEntityId, TPersistenceEntity> : IRepository<TDomainEntity, TEntityId>
+	public abstract class Repository<TDomainEntity, TEntityId, TPersistenceEntity> : IRepository<TPersistenceEntity, TEntityId>
 		where TDomainEntity : class
 		where TEntityId : Id
 		where TPersistenceEntity : class
@@ -15,7 +15,7 @@ namespace Marketplace.Persistence
 			this.dbContext = dbContext;
 		}
 
-		public void Add(TDomainEntity element)
+		public void Add(TPersistenceEntity element)
 		{
 			throw new NotImplementedException();
 		}
@@ -25,12 +25,12 @@ namespace Marketplace.Persistence
 			throw new NotImplementedException();
 		}
 
-		public Task<IList<TDomainEntity>> GetAllAsync()
+		public IQueryable<TPersistenceEntity> GetAll()
 		{
 			throw new NotImplementedException();
 		}
 
-		public Task<TDomainEntity> GetByIdAsync(TEntityId id)
+		public IQueryable<TPersistenceEntity> GetById(TEntityId id)
 		{
 			throw new NotImplementedException();
 		}
