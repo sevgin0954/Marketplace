@@ -15,7 +15,6 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using ServiceLayerRegistrar;
-using ServiceLayerRegistrar.CustomGenericConstraints;
 using System.Reflection;
 using System.Text;
 
@@ -132,7 +131,6 @@ namespace Marketplace.API
 			var iRepositoryType = typeof(IRepository<AggregateRoot, Id>);
 			serviceRegistrar.RegisterScopedServices(persistenceAssembly, iRepositoryType);
 
-			// TODO: Make custom generic constraints work for id too
 			var iOfferRepositoryType = typeof(IRepository<Offer, OfferId>);
 			serviceRegistrar.RegisterScopedServices(persistenceAssembly, iOfferRepositoryType);
 		}

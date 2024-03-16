@@ -54,12 +54,12 @@ namespace ServiceLayerRegistrar.Tests.ServiceCollectionRegistrarSpecs
 		}
 
 		[Fact]
-		public void With_open_generic_interface_should_register_only_one_matching_interfaces_with_the_class_as_bot_open_generics()
+		public void With_open_generic_interface_should_register_only_one_matching_interface_with_the_class_as_both_open_generics()
 		{
 			// Arrange
 			var class1 = typeof(TestGenericClass1<,>);
-			var class3 = typeof(TestGenericClass2<,>);
-			var assembly = this.GetAssembly(class1, class3);
+			var class2 = typeof(TestGenericClass2<,>);
+			var assembly = this.GetAssembly(class1, class2);
 
 			var searchedInterface = typeof(TestGenericInterface1<,>);
 
