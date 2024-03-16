@@ -1,22 +1,25 @@
 ﻿using Marketplace.Domain.SharedKernel;
+using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Marketplace.Domain.Common
 {
 	public interface IRepository<T, TId> 
-		where T : class
+		where T : AggregateRoot
 		where TId : Id
 	{
 		void Add(T aggregate);
 
-		void Remove(TId id);
+		Task MarkAsDeleted(TId id);
 
-		IQueryable<T> GetById(TId id);
+		Task<T> GetByIdAsync(TId id);
 
-		IQueryable<T> GetAll();
+		ICollection<T> GetAll();
+
+		Task<ICollection<T>> FindAsync(Expression<Func<T, bool>> predicate);
 
 		Task<bool> CheckIfExistAsync(TId id);
 

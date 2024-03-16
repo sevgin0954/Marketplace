@@ -17,22 +17,23 @@ namespace Marketplace.Query.UserQueries
 
 		internal class GetPasswordSaltQueryHandler : IRequestHandler<GetPasswordSaltQuery, string>
 		{
-			private readonly IRepository<UserEntity, Id> userRepository;
+			private readonly IdentityAndAccessDbContext dbContext;
 
-			public GetPasswordSaltQueryHandler(IRepository<UserEntity, Id> userRepository)
+			public GetPasswordSaltQueryHandler(IdentityAndAccessDbContext dbContext)
 			{
-				this.userRepository = userRepository;
+				this.dbContext = dbContext;
 			}
 
 			public async Task<string> Handle(GetPasswordSaltQuery request, CancellationToken cancellationToken)
 			{
-				var passwordSalt = await this.userRepository
-					.GetAll()
+				var userPasswrodSalt = await this.dbContext.Users
 					.Where(u => u.Email == request.Email)
 					.Select(u => u.PasswordSalt)
 					.FirstOrDefaultAsync();
 
-				return passwordSalt;
+				// TODO: Handle incorrect user
+
+				return userPasswrodSalt;
 			}
 		}
 	}

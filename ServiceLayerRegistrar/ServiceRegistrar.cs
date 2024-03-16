@@ -8,13 +8,13 @@ using System.Reflection;
 
 namespace ServiceLayerRegistrar
 {
-    public class ServiceCollectionRegistrar : IServiceCollectionRegistrar
+    public class ServiceRegistrar : IServiceCollectionRegistrar
     {
         const string NO_MATCH_EXCEPTION_MESSAGE = "No classes found for the selelcted interface - {0}";
 
 		private readonly IServiceCollection services;
 
-        public ServiceCollectionRegistrar(IServiceCollection services)
+        public ServiceRegistrar(IServiceCollection services)
         {
             this.services = services;
         }

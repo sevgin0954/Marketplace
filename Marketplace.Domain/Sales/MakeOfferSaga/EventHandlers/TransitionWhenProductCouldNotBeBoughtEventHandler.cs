@@ -9,11 +9,11 @@ namespace Marketplace.Domain.Sales.MakeOfferSagaNS.EventHandlers
 {
 	internal class TransitionWhenProductCouldNotBeBoughtEventHandler : INotificationHandler<ProductCouldNotBeBoughtEvent>
 	{
-		private readonly ISagaDataRepository<MakeOfferSagaData, MakeOfferSagaId> sagaDataRepository;
+		private readonly IRepository<MakeOfferSagaData, MakeOfferSagaId> sagaDataRepository;
 		private readonly IMediator mediator;
 
 		public TransitionWhenProductCouldNotBeBoughtEventHandler(
-			ISagaDataRepository<MakeOfferSagaData, MakeOfferSagaId> sagaDataRepository,
+			IRepository<MakeOfferSagaData, MakeOfferSagaId> sagaDataRepository,
 			IMediator mediator)
 		{
 			this.sagaDataRepository = sagaDataRepository;
@@ -26,7 +26,7 @@ namespace Marketplace.Domain.Sales.MakeOfferSagaNS.EventHandlers
 			var productId = new Id(notification.ProductId);
 			var sagaId = new MakeOfferSagaId(buyerId, productId);
 
-			var sagaData = await this.sagaDataRepository.GetById(sagaId);
+			var sagaData = await this.sagaDataRepository.GetByIdAsync(sagaId);
 
 			var saga = new MakeOfferSaga(sagaData, this.mediator);
 			await saga.TransitionAsync(notification);

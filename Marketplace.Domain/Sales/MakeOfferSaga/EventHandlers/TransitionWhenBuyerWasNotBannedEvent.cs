@@ -8,11 +8,11 @@ namespace Marketplace.Domain.Sales.MakeOfferSagaNS.EventHandlers
 {
 	internal class TransitionWhenBuyerWasNotBannedEvent : INotificationHandler<BuyerWasNotBannedEvent>
 	{
-		private readonly ISagaDataRepository<MakeOfferSagaData, MakeOfferSagaId> sagaDataRepository;
+		private readonly IRepository<MakeOfferSagaData, MakeOfferSagaId> sagaDataRepository;
 		private readonly IMediator mediator;
 
 		public TransitionWhenBuyerWasNotBannedEvent(
-			ISagaDataRepository<MakeOfferSagaData, MakeOfferSagaId> sagaDataRepository,
+			IRepository<MakeOfferSagaData, MakeOfferSagaId> sagaDataRepository,
 			IMediator mediator)
 		{
 			this.sagaDataRepository = sagaDataRepository;

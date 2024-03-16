@@ -6,7 +6,7 @@ using System;
 
 namespace Marketplace.Domain.Shipping.OrderAggregate
 {
-	public class Order : AggregateRoot<Id>
+	public class Order : AggregateRoot
 	{
 		private string? trackingNumber;
 

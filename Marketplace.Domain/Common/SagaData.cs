@@ -2,14 +2,10 @@
 
 namespace Marketplace.Domain.Common
 {
-	public class SagaData
+	public class SagaData : AggregateRoot
 	{
 		public SagaData(Id id)
-		{
-			this.Id = id;
-		}
-
-		public Id Id { get; }
+			: base(id) { }
 
 		public bool IsSagaStarted { get; set; }
 	}

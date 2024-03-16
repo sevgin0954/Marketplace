@@ -7,7 +7,7 @@ using System;
 
 namespace Marketplace.Domain.Sales.ProductAggregate
 {
-	public class Product : AggregateRoot<Id>
+	public class Product : AggregateRoot
 	{
 		private Price price = null!;
 

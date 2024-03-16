@@ -151,7 +151,7 @@ namespace ServiceLayerRegistrar.Tests.ServiceCollectionRegistrarSpecs
 			Assert.Contains("More than one classes at the same level of inheritance to register", exception.Message);
 		}
 
-		private ServiceCollectionRegistrar GetServiceCollectionRegistrar()
+		private ServiceRegistrar GetServiceCollectionRegistrar()
 		{
 			var serviceCollectionMock = new ServiceCollection();
 			var registerer = this.GetServiceCollectionRegistrar(serviceCollectionMock);
@@ -159,9 +159,9 @@ namespace ServiceLayerRegistrar.Tests.ServiceCollectionRegistrarSpecs
 			return registerer;
 		}
 
-		private ServiceCollectionRegistrar GetServiceCollectionRegistrar(IServiceCollection serviceCollection)
+		private ServiceRegistrar GetServiceCollectionRegistrar(IServiceCollection serviceCollection)
 		{
-			var registerer = new ServiceCollectionRegistrar(serviceCollection);
+			var registerer = new ServiceRegistrar(serviceCollection);
 
 			return registerer;
 		}

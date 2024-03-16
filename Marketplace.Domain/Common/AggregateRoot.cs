@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace Marketplace.Domain.Common
 {
-	public abstract class AggregateRoot<TId> : Entity<TId> where TId : Id
+	public abstract class AggregateRoot : Entity<Id>
     {
-        public AggregateRoot(TId id)
+        public AggregateRoot(Id id)
             : base(id) { }
 
         private readonly DomainEvents domainEvents = new ();

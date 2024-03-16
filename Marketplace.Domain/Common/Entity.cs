@@ -2,7 +2,8 @@
 
 namespace Marketplace.Domain.Common
 {
-	public abstract class Entity<TId> where TId : Id
+	public abstract class Entity<TId> 
+        where TId : Id
 	{
         public Entity(TId id)
 		{

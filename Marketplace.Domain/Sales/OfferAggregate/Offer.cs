@@ -6,7 +6,7 @@ using System;
 
 namespace Marketplace.Domain.Sales.OfferAggregate
 {
-	public class Offer : AggregateRoot<OfferId>
+	public class Offer : AggregateRoot
 	{
 		private string message = null!;
 		private string? rejectMessage;

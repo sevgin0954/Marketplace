@@ -1,4 +1,5 @@
 ﻿using Marketplace.Domain.Common;
+using Marketplace.Domain.IdentityAndAccess.UserAggregate;
 using Marketplace.Domain.SharedKernel;
 using Marketplace.Persistence.IdentityAndAccess;
 using MediatR;
@@ -20,17 +21,17 @@ namespace Marketplace.Query.UserQueries
 
 		internal class LogInUserQueyryHandler : IRequestHandler<LogInUserQuery, string>
 		{
-			private readonly IRepository<UserEntity, Id> userRepository;
+			private readonly IdentityAndAccessDbContext dbContext;
 
-			public LogInUserQueyryHandler(IRepository<UserEntity, Id> userRepository)
+			public LogInUserQueyryHandler(IdentityAndAccessDbContext dbContext)
 			{
-				this.userRepository = userRepository;
+				this.dbContext = dbContext;
 			}
 
 			public async Task<string> Handle(LogInUserQuery request, CancellationToken cancellationToken)
 			{
-				var user = await this.userRepository
-					.GetAll()
+				var user = await this.dbContext
+					.Users
 					.Where(u => u.Email == request.Email && u.PasswordHash == request.PasswordHash)
 					.FirstOrDefaultAsync(cancellationToken);
 

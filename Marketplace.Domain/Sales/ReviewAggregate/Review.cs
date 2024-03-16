@@ -5,7 +5,7 @@ using System;
 
 namespace Marketplace.Domain.Sales.ReviewAggregate
 {
-    public class Review : AggregateRoot<Id>
+    public class Review : AggregateRoot
     {
         public Review(ReviewId id, Score score)
             : base(id)

@@ -1,22 +1,12 @@
-﻿using Marketplace.Domain.Common;
+﻿using AutoMapper;
 using Marketplace.Domain.SharedKernel;
-using System.Linq.Expressions;
 
 namespace Marketplace.Persistence.SagaData
 {
-    public class SagaDataRepository<TSagaData, TSagaId> : 
-        Repository<TSagaData, TSagaId, SagaDataEntity>, 
-        ISagaDataRepository<TSagaData, TSagaId>
-            where TSagaData : Domain.Common.SagaData
-		    where TSagaId : Id
+    public class SagaDataRepository<TSagaId> : Repository<Domain.Common.SagaData, Id, SagaDataEntity>
 
 	{
-        public SagaDataRepository(SagaDataDbContext dbContext)
-            : base(dbContext) { }
-
-        public Task<ICollection<TSagaData>> FindAsync(Expression<Func<TSagaData, bool>> predicate)
-        {
-            throw new NotImplementedException();
-        }
+        public SagaDataRepository(SagaDataDbContext dbContext, IMapper mapper)
+            : base(dbContext, mapper) { }
     }
 }

@@ -4,7 +4,7 @@ using Marketplace.Shared;
 
 namespace Marketplace.Domain.Browsing.ProductAggregate
 {
-	public class Product : AggregateRoot<Id>
+	public class Product : AggregateRoot
 	{
 		private string name = null!;
 		private string description = null!;

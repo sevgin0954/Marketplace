@@ -122,7 +122,7 @@ namespace Marketplace.Tests.Sales.OfferAggregateSpecs.CommandsSpecs
 			await commandHandler.Handle(command, cancelationToken);
 
 			// Assert
-			repositoryMock.Verify(rm => rm.GetById(
+			repositoryMock.Verify(rm => rm.GetByIdAsync(
 				It.Is<OfferId>(o => o.BuyerId == buyerId && o.ProductId == productId))
 			);
 			Assert.Equal(OfferStatus.Accepted, offer.Status);
@@ -183,7 +183,7 @@ namespace Marketplace.Tests.Sales.OfferAggregateSpecs.CommandsSpecs
 			Offer returnValue)
 		{
 			mock
-				.Setup(orm => orm.GetById(It.IsAny<OfferId>()))
+				.Setup(orm => orm.GetByIdAsync(It.IsAny<OfferId>()))
 				.Returns(Task.FromResult(returnValue));
 		}
 

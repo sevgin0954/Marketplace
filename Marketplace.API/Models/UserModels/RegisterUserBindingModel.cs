@@ -1,6 +1,9 @@
-﻿namespace Marketplace.API.Models.UserModels
+﻿using AutoMapperRegistrar.Interfaces;
+using Marketplace.Domain.IdentityAndAccess.UserAggregate.Commands;
+
+namespace Marketplace.API.Models.UserModels
 {
-	public class RegisterUserBindingModel
+	public class RegisterUserBindingModel : IMappableTo<RegisterUserCommand>
 	{
 		public string UserName { get; set; }
 

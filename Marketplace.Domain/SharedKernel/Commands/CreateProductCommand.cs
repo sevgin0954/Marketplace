@@ -61,7 +61,8 @@ namespace Marketplace.Domain.SharedKernel.Commands
 					var salesProductRowsChanged = await this.salesProductRepository.SaveChangesAsync(cancellationToken);
                     if (salesProductRowsChanged == 0)
                     {
-                        this.browsingProductRepository.Remove(browsingProduct.Id);
+                        await this.browsingProductRepository.MarkAsDeleted(browsingProduct.Id);
+                        await this.browsingProductRepository.SaveChangesAsync();
 						throw new NotPersistentException(nameof(salesProduct));
 					}
 				}

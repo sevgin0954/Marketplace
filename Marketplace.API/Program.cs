@@ -17,7 +17,6 @@ using Microsoft.IdentityModel.Tokens;
 using ServiceLayerRegistrar;
 using ServiceLayerRegistrar.CustomGenericConstraints;
 using System.Reflection;
-using System.Security.Claims;
 using System.Text;
 
 namespace Marketplace.API
@@ -126,19 +125,16 @@ namespace Marketplace.API
 
 			builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 
-			var serviceRegistrar = new ServiceCollectionRegistrar(builder.Services);
+			var serviceRegistrar = new ServiceRegistrar(builder.Services);
 
 			var persistenceAssembly = typeof(MarketplaceDbContext).Assembly;
 
-			var iRepositoryType = typeof(IRepository<Any, Id>);
+			var iRepositoryType = typeof(IRepository<AggregateRoot, Id>);
 			serviceRegistrar.RegisterScopedServices(persistenceAssembly, iRepositoryType);
 
 			// TODO: Make custom generic constraints work for id too
 			var iOfferRepositoryType = typeof(IRepository<Offer, OfferId>);
 			serviceRegistrar.RegisterScopedServices(persistenceAssembly, iOfferRepositoryType);
-
-			var iSagaDataRepositoryType = typeof(ISagaDataRepository<,>);
-			serviceRegistrar.RegisterScopedServices(persistenceAssembly, iSagaDataRepositoryType);
 		}
 
 		private static void AddMiddlewares(WebApplication app)

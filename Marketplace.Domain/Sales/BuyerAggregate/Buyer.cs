@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Marketplace.Domain.Sales.BuyerAggregate
 {
-	public class Buyer : AggregateRoot<Id>
+	public class Buyer : AggregateRoot
 	{
 		private int pendingOffersCount = 0;
 		private readonly HashSet<string> startedOffersProductsIds = new();

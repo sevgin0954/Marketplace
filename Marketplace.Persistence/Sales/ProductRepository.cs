@@ -1,11 +1,11 @@
-﻿using Marketplace.Domain.Sales.ProductAggregate;
+﻿using AutoMapper;
 using Marketplace.Domain.SharedKernel;
 
 namespace Marketplace.Persistence.Sales
 {
-	public class ProductRepository : Repository<Product, Id, ProductEntity>
+	public class ProductRepository : Repository<Domain.Sales.ProductAggregate.Product, Id, ProductEntity>
 	{
-		public ProductRepository(SalesDbContext dbContext)
-			: base(dbContext) { }
+		public ProductRepository(SalesDbContext dbContext, IMapper mapper)
+			: base(dbContext, mapper) { }
 	}
 }

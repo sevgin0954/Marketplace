@@ -36,11 +36,11 @@ namespace Marketplace.Domain.Sales.MakeOfferSagaNS.Commands
 
 		internal class MakeOfferCommandHandler : IRequestHandler<MakeOfferCommand, Result>
 		{
-			private readonly ISagaDataRepository<MakeOfferSagaData, MakeOfferSagaId> sagaDataRepository;
+			private readonly IRepository<MakeOfferSagaData, MakeOfferSagaId> sagaDataRepository;
 			private readonly IMediator mediator;
 
 			public MakeOfferCommandHandler(
-				ISagaDataRepository<MakeOfferSagaData, MakeOfferSagaId> sagaDataRepository,
+				IRepository<MakeOfferSagaData, MakeOfferSagaId> sagaDataRepository,
 				IMediator mediator)
 			{
 				this.sagaDataRepository = sagaDataRepository;
@@ -53,7 +53,7 @@ namespace Marketplace.Domain.Sales.MakeOfferSagaNS.Commands
 				var productId = new Id(request.ProductId);
 				var sagaId = new MakeOfferSagaId(buyerId, productId);
 
-				var sagaData = await this.sagaDataRepository.GetById(sagaId);
+				var sagaData = await this.sagaDataRepository.GetByIdAsync(sagaId);
 				if (sagaData != null)
 					return Result.Fail("Pending offer exists for this product from this buyer!");
 

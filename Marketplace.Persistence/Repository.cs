@@ -1,43 +1,63 @@
-﻿using Marketplace.Domain.Common;
+﻿using AutoMapper;
+using Marketplace.Domain.Common;
 using Marketplace.Domain.SharedKernel;
+using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Marketplace.Persistence
 {
-	public abstract class Repository<TDomainEntity, TEntityId, TPersistenceEntity> : IRepository<TPersistenceEntity, TEntityId>
-		where TDomainEntity : class
+	public abstract class Repository<TDomainEntity, TEntityId, TPersistenceEntity> : IRepository<TDomainEntity, TEntityId>
+		where TDomainEntity : AggregateRoot
 		where TEntityId : Id
 		where TPersistenceEntity : class
 	{
-		private readonly MarketplaceDbContext dbContext;
+		protected readonly MarketplaceDbContext dbContext;
+		private readonly IMapper mapper;
+		protected readonly DbSet<TPersistenceEntity> entities;
 
-		public Repository(MarketplaceDbContext dbContext)
+		public Repository(MarketplaceDbContext dbContext, IMapper mapper)
 		{
 			this.dbContext = dbContext;
+			this.mapper = mapper;
+			this.entities = dbContext.Set<TPersistenceEntity>();
 		}
 
-		public void Add(TPersistenceEntity element)
+		public void Add(TDomainEntity element)
+		{
+			var persistentEntity = this.mapper.Map<TPersistenceEntity>(element);
+			this.entities.Add(persistentEntity);
+		}
+
+		public async Task MarkAsDeleted(TEntityId id)
+		{
+			var entity = await this.entities.FindAsync(id);
+			this.entities.Remove(entity);
+		}
+
+		public async Task<ICollection<TDomainEntity>> FindAsync(Expression<Func<TDomainEntity, bool>> predicate)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void Remove(TEntityId id)
+		public ICollection<TDomainEntity> GetAll()
 		{
-			throw new NotImplementedException();
+			var persistentEntities = this.entities.AsQueryable();
+			var domainEntities = this.mapper.Map<ICollection<TDomainEntity>>(persistentEntities);
+
+			return domainEntities;
 		}
 
-		public IQueryable<TPersistenceEntity> GetAll()
+		public async Task<TDomainEntity> GetByIdAsync(TEntityId id)
 		{
-			throw new NotImplementedException();
+			var peristenceEntity = await this.entities.FindAsync(id);
+			var domainEntity = this.mapper.Map<TDomainEntity>(peristenceEntity);
+
+			return domainEntity;
 		}
 
-		public IQueryable<TPersistenceEntity> GetById(TEntityId id)
+		public async Task<bool> CheckIfExistAsync(TEntityId id)
 		{
-			throw new NotImplementedException();
-		}
-
-		public Task<bool> CheckIfExistAsync(TEntityId id)
-		{
-			throw new NotImplementedException();
+			return await this.entities.FindAsync(id) == null;;
 		}
 
 		public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

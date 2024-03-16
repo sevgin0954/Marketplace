@@ -3,7 +3,7 @@ using Marketplace.Domain.SharedKernel;
 
 namespace Marketplace.Domain.IdentityAndAccess.UserAggregate
 {
-    public class User : AggregateRoot<Id>
+    public class User : AggregateRoot
     {
         public User(Id id, string userName, Email email)
             : base(id)

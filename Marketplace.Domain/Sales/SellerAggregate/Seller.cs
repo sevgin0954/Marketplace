@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Marketplace.Domain.Sales.SellerAggregate
 {
-	public class Seller : AggregateRoot<Id>
+	public class Seller : AggregateRoot
 	{
 		private readonly HashSet<string> bannedBuyerIds = new HashSet<string>();
 

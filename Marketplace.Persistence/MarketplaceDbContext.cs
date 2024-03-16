@@ -48,8 +48,8 @@ namespace Marketplace.Persistence
         {
             var aggregates = ChangeTracker
                 .Entries()
-                .Where(e => e.Entity is AggregateRoot<Id>)
-                .Select(e => e.Entity as AggregateRoot<Id>);
+                .Where(e => e.Entity is AggregateRoot)
+                .Select(e => e.Entity as AggregateRoot);
             
             foreach (var currentAggregate in aggregates)
             {
