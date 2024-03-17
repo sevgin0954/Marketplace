@@ -6,37 +6,37 @@ namespace ServiceLayerRegistrar
 {
 	internal static class TypeComparer
 	{
-		public static bool DoesTypeMatch(Type typeToMatch, Type matchType)
+		public static bool DoesTypeMatch(Type typeToMatch, Type searchedType)
 		{
-			ArgumentValidator.ThrowExceptionIfNull(new object[] { matchType, typeToMatch }, nameof(matchType), nameof(typeToMatch));
+			ArgumentValidator.ThrowExceptionIfNull(new object[] { searchedType, typeToMatch }, nameof(searchedType), nameof(typeToMatch));
 
-			if (matchType.Name != typeToMatch.Name)
+			if (searchedType.Name != typeToMatch.Name)
 				return false;
-			if (matchType.Namespace != typeToMatch.Namespace)
+			if (searchedType.Namespace != typeToMatch.Namespace)
 				return false;
 
-			if (matchType.IsGenericTypeDefinition)
+			if (searchedType.IsGenericTypeDefinition)
 				return true;
 
-			var areTypesGeneric = matchType.IsGenericType;
+			var areTypesGeneric = searchedType.IsGenericType;
 			if (areTypesGeneric)
 			{
-				var type1Generics = matchType.GetGenericArguments();
-				var type2Generics = typeToMatch.GetGenericArguments();
+				var searchedTypeGenerics = searchedType.GetGenericArguments();
+				var typeGenerics = typeToMatch.GetGenericArguments();
 
-				return MatchTypeGenerics(type1Generics, type2Generics);
+				return MatchTypeGenerics(typeGenerics, searchedTypeGenerics);
 			}
 
 			return true;
 		}
 
-		private static bool MatchTypeGenerics(Type[] type1Generics, Type[] type2Generics)
+		private static bool MatchTypeGenerics(Type[] typeGenerics, Type[] searchedTypeGenerics)
 		{
 			var isAllGenericTypesMatch = true;
 
-			for (var i = 0; i < type1Generics.Length; i++)
+			for (var i = 0; i < typeGenerics.Length; i++)
 			{
-				if (MatchGenericArgumentsOrParameters(type1Generics[i], type2Generics[i]) == false)
+				if (MatchGenericArgumentsOrParameters(typeGenerics[i], searchedTypeGenerics[i]) == false)
 				{
 					isAllGenericTypesMatch = false;
 					break;
@@ -46,10 +46,10 @@ namespace ServiceLayerRegistrar
 			return isAllGenericTypesMatch;
 		}
 
-		private static bool MatchGenericArgumentsOrParameters(Type type1, Type type2)
+		private static bool MatchGenericArgumentsOrParameters(Type type, Type searchedType)
 		{
-			var isType1CustomGenericType = typeof(BaseGenericConstraint).IsAssignableFrom(type1);
-			var isType2CustomGenericType = typeof(BaseGenericConstraint).IsAssignableFrom(type2);
+			var isType1CustomGenericType = typeof(BaseGenericConstraint).IsAssignableFrom(type);
+			var isType2CustomGenericType = typeof(BaseGenericConstraint).IsAssignableFrom(searchedType);
 
 			if (isType1CustomGenericType && isType2CustomGenericType)
 				throw new ArgumentException("Both generic types or parameters are custom generic constraints!");
@@ -59,22 +59,22 @@ namespace ServiceLayerRegistrar
 			var assembly = Assembly.GetExecutingAssembly();
 			if (isType1CustomGenericType)
 			{
-				var type1Instance = assembly.CreateInstance(type1.FullName) as BaseGenericConstraint;
-				doesTypesMatch = type1Instance.IsMatch(type2);
+				var type1Instance = assembly.CreateInstance(type.FullName) as BaseGenericConstraint;
+				doesTypesMatch = type1Instance.IsMatch(searchedType);
 			}
 			else if (isType2CustomGenericType)
 			{
-				var type2Instance = assembly.CreateInstance(type2.FullName) as BaseGenericConstraint;
-				doesTypesMatch = type2Instance.IsMatch(type1);
+				var type2Instance = assembly.CreateInstance(searchedType.FullName) as BaseGenericConstraint;
+				doesTypesMatch = type2Instance.IsMatch(type);
 			}
 			else
 			{
-				if (type1.IsGenericTypeDefinition)
-					type1 = type1.BaseType;
-				if (type2.IsGenericTypeDefinition)
-					type2 = type2.BaseType;
+				if (type.IsGenericTypeDefinition || type.ContainsGenericParameters)
+					type = type.BaseType;
+				if (searchedType.IsGenericTypeDefinition || searchedType.ContainsGenericParameters)
+					searchedType = searchedType.BaseType;
 
-				doesTypesMatch = type1.Equals(type2);
+				doesTypesMatch = type.Equals(searchedType) || searchedType.IsAssignableFrom(type);
 			}
 
 			return doesTypesMatch;

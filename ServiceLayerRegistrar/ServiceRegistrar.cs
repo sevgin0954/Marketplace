@@ -26,12 +26,13 @@ namespace ServiceLayerRegistrar
             var assemblyTypeFinder = new AssemblyTypeFinder(classesAssembly);
 
             var interfaceGenericArguments = interfaceType.GenericTypeArguments;
+            var isInterfaceClosedGeneric = interfaceType.IsGenericTypeDefinition == false;
             var isInterfaceCustom = interfaceGenericArguments.Any(a => typeof(BaseGenericConstraint).IsAssignableFrom(a));
-            if (isInterfaceCustom)
+            if (isInterfaceCustom || isInterfaceClosedGeneric)
             {
-                var interfacesMatchingCustomInterface = assemblyTypeFinder.FindDistinctInterfacesMatchingInterface(interfaceType);
+                var interfacesMatchingInterface = assemblyTypeFinder.FindDistinctInterfacesMatchingInterface(interfaceType);
 
-                foreach (var currentInterface in interfacesMatchingCustomInterface)
+                foreach (var currentInterface in interfacesMatchingInterface)
                 {
                     var classToRegister = this.GetClosestMatchingClassForInterface(assemblyTypeFinder, currentInterface);
 					this.AddScopedService(currentInterface, classToRegister);
@@ -131,6 +132,7 @@ namespace ServiceLayerRegistrar
 			return lowestDepthLevelClassType;
 		}
 
+        // TODO: Move to TipeFinder
         private int FindMinimumDepthLevelAtWhichClassImplementsInterface(
             Type classType,
             Type interfaceType,
