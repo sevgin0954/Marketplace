@@ -5,7 +5,7 @@ using ServiceLayerRegistrar.Tests.TestInterfaces;
 using System.Reflection;
 using Xunit;
 
-namespace ServiceLayerRegistrar.Tests.ServiceCollectionRegistrarSpecs
+namespace ServiceLayerRegistrar.Tests.ServiceRegistrarSpecs
 {
 	public class RegisterScopedServicesSpecs
 	{
@@ -79,16 +79,14 @@ namespace ServiceLayerRegistrar.Tests.ServiceCollectionRegistrarSpecs
 		}
 
 		[Fact]
-		public void With_closed_generic_interface_and_no_custom_generic_constraints_should_register_only_one_class_and_interface()
+		public void With_closed_generic_interface_should_register_all_matching_non_generic_classes()
 		{
 			// Arrange
-			var class1 = typeof(TestGenericClass1<TestGenericParameter1, TestGenericParameter2>);
-			var class2 = typeof(TestGenericClass1<TestGenericParameter2, TestGenericParameter2>);
-			var class3 = typeof(TestGenericClass1<,>);
-			var class4 = typeof(TestGenericClass2<,>);
-			var assembly = this.GetAssembly(class1, class2, class3, class4);
+			var class1 = typeof(TestNonGenericClassWithGenericInterface1);
+			var class2 = typeof(TestNonGenericClassWithGenericInterface2);
+			var assembly = this.GetAssembly(class1, class2);
 
-			var searchedInterface = typeof(TestGenericInterface1<TestGenericParameter1, TestGenericParameter2>);
+			var searchedInterface = typeof(TestGenericInterface1<BaseGenericParameter, BaseGenericParameter>);
 
 			var serviceCollection = new ServiceCollection();
 			var registerer = this.GetServiceCollectionRegistrar(serviceCollection);
@@ -97,13 +95,19 @@ namespace ServiceLayerRegistrar.Tests.ServiceCollectionRegistrarSpecs
 			registerer.RegisterScopedServices(assembly, searchedInterface);
 
 			// Assert
-			var registeredClass1 = this.GetRegisteredService(serviceCollection, searchedInterface);
+			var registeredClass1Interface = typeof(TestGenericInterface1<TestGenericParameter1, TestGenericParameter1>);
+			var registeredClass1 = this.GetRegisteredService(serviceCollection, registeredClass1Interface);
 			Assert.Equal(class1, registeredClass1);
-			Assert.Single(serviceCollection);
+
+			var registeredClass2Interface = typeof(TestGenericInterface1<TestGenericParameter2, TestGenericParameter2>);
+			var registeredClass2 = this.GetRegisteredService(serviceCollection, registeredClass2Interface);
+			Assert.Equal(class2, registeredClass2);
+
+			Assert.Equal(2, serviceCollection.Count);
 		}
 
 		class TestGenericClass11<T1, T2> : TestGenericClass1<T1, T2>
-			where T1 : class
+			where T1 : BaseGenericParameter
 			where T2 : TestGenericParameter2
 		{ }
 

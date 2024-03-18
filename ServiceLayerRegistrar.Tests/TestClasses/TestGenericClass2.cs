@@ -2,7 +2,9 @@
 
 namespace ServiceLayerRegistrar.Tests.TestClasses
 {
-	public class TestGenericClass2<T1, T2> : TestGenericInterface2<T1, T2>
+	internal class TestGenericClass2<T1, T2> : TestGenericInterface2<T1, T2>
+		where T1 : BaseGenericParameter
+		where T2 : TestGenericParameter2
 	{
 	}
 }
