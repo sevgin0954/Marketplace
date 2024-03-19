@@ -48,21 +48,23 @@ namespace Marketplace.API
 		{
 			var currentAssembly = Assembly.GetExecutingAssembly();
 			var queryAsembly = typeof(PriceDto).Assembly;
+			var pesistenceAssembly = typeof(MarketplaceDbContext).Assembly;
 
-			var mappingTypesFrom = MappingFinder.GetTypesWithMapFrom(currentAssembly, queryAsembly);
-			var mappingTypesTo = MappingFinder.GetTypesWithMapTo(currentAssembly, queryAsembly);
-			var customMappingTypes = MappingFinder.GetTypesWitCustomMapping(currentAssembly, queryAsembly);
+			var mappingsFrom = MappingFinder.GetTypesWithMapFrom(currentAssembly, queryAsembly, pesistenceAssembly);
+			var mappingsTo = MappingFinder.GetTypesWithMapTo(currentAssembly, queryAsembly, pesistenceAssembly);
+			var customMappings = MappingFinder.GetTypesWitCustomMapping(currentAssembly, queryAsembly, pesistenceAssembly);
+			//var twoDirectionMappings = 
 
 			var mappingRegisterar = new MappingRegisterar(configExpression);
 
-			if (mappingTypesFrom != null && mappingTypesFrom.Count > 0)
-				mappingRegisterar.RegisterMappings(mappingTypesFrom);
+			if (mappingsFrom != null && mappingsFrom.Count > 0)
+				mappingRegisterar.RegisterMappings(mappingsFrom);
 
-			if (mappingTypesTo != null && mappingTypesTo.Count > 0)
-				mappingRegisterar.RegisterMappings(mappingTypesTo);
+			if (mappingsTo != null && mappingsTo.Count > 0)
+				mappingRegisterar.RegisterMappings(mappingsTo);
 
-			if (customMappingTypes != null && customMappingTypes.Count > 0) 
-				mappingRegisterar.RegisterCustomMappings(customMappingTypes);
+			if (customMappings != null && customMappings.Count > 0) 
+				mappingRegisterar.RegisterCustomMappings(customMappings);
 
 			// TODO: AutomapperProfile doesnt work!
 			configExpression.AddProfile<AutoMapperProfile>();

@@ -11,5 +11,7 @@
 		public Type Source { get; }
 
 		public Type Destination { get; }
+
+		public bool IsReversible { get; internal set; } = false;
 	}
 }

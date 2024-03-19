@@ -29,7 +29,7 @@ namespace Marketplace.Shared
 
 		public static void MinLength(string str, int minLength, string argumentName)
 		{
-			if (str.Length > minLength)
+			if (str.Length < minLength)
 			{
 				var exceptionMessage = $"The string should be at least {minLength} characters long!";
 				throw new ArgumentOutOfRangeException(argumentName, exceptionMessage);
