@@ -1,12 +1,10 @@
 ﻿using AutoMapperRegistrar.Interfaces;
 using BrowsingBoundedContext = Marketplace.Domain.Browsing;
-using SalesBoundedContext = Marketplace.Domain.Sales;
 
 namespace Marketplace.Persistence.Browsing
 {
 	public class ProductEntity : 
-		IMappableBothDirections<BrowsingBoundedContext.ProductAggregate.Product>, 
-		IMappableBothDirections<SalesBoundedContext.ProductAggregate.Product>
+		IMappableBothDirections<BrowsingBoundedContext.ProductAggregate.Product>
 	{
 		public string Id { get; set; }
 

@@ -49,11 +49,12 @@ namespace Marketplace.API
 			var currentAssembly = Assembly.GetExecutingAssembly();
 			var queryAsembly = typeof(PriceDto).Assembly;
 			var pesistenceAssembly = typeof(MarketplaceDbContext).Assembly;
+			var assembliesToMap = new Assembly[] { currentAssembly, queryAsembly, pesistenceAssembly };
 
-			var mappingsFrom = MappingFinder.GetTypesWithMapFrom(currentAssembly, queryAsembly, pesistenceAssembly);
-			var mappingsTo = MappingFinder.GetTypesWithMapTo(currentAssembly, queryAsembly, pesistenceAssembly);
-			var customMappings = MappingFinder.GetTypesWitCustomMapping(currentAssembly, queryAsembly, pesistenceAssembly);
-			//var twoDirectionMappings = 
+			var mappingsFrom = MappingFinder.GetTypesWithMapFrom(assembliesToMap);
+			var mappingsTo = MappingFinder.GetTypesWithMapTo(assembliesToMap);
+			var customMappings = MappingFinder.GetTypesWitCustomMapping(assembliesToMap);
+			var twoDirectionMappings = MappingFinder.GetTypesWithMapBothDirections(assembliesToMap);
 
 			var mappingRegisterar = new MappingRegisterar(configExpression);
 
@@ -65,6 +66,9 @@ namespace Marketplace.API
 
 			if (customMappings != null && customMappings.Count > 0) 
 				mappingRegisterar.RegisterCustomMappings(customMappings);
+
+			if (twoDirectionMappings != null && twoDirectionMappings.Count > 0)
+				mappingRegisterar.RegisterMappings(twoDirectionMappings);
 
 			// TODO: AutomapperProfile doesnt work!
 			configExpression.AddProfile<AutoMapperProfile>();

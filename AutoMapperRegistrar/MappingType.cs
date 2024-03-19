@@ -2,10 +2,11 @@
 {
 	public struct MappingType
 	{
-		public MappingType(Type source, Type destination)
+		internal MappingType(Type source, Type destination, bool isReversible = false)
 		{
 			this.Source = source;
 			this.Destination = destination;
+			this.IsReversible = isReversible;
 		}
 
 		public Type Source { get; }

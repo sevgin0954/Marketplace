@@ -3,6 +3,7 @@ using System.Reflection;
 
 namespace AutoMapperRegistrar
 {
+	// TODO: Refactor
 	public class MappingFinder
 	{
 		public static ICollection<MappingType> GetTypesWithMapFrom(params Assembly[] assemblies)
@@ -65,6 +66,40 @@ namespace AutoMapperRegistrar
 
 				var currentMappingTypes = interfacesGenericArguments
 					.Select(t => new MappingType(currentType, t))
+					.ToList();
+
+				mappingTypes.AddRange(currentMappingTypes);
+			}
+
+			return mappingTypes;
+		}
+
+		public static ICollection<MappingType> GetTypesWithMapBothDirections(params Assembly[] assemblies)
+		{
+			var resultTypes = new List<MappingType>();
+
+			foreach (var currentAssembly in assemblies)
+			{
+				var currentTypes = GetTypesWithMapBothDirections(currentAssembly);
+				resultTypes.AddRange(currentTypes);
+			}
+
+			return resultTypes;
+		}
+
+		private static ICollection<MappingType> GetTypesWithMapBothDirections(Assembly assembly)
+		{
+			var typesWithMapTo = GetTypesDerivedFrom(assembly, typeof(IMappableBothDirections<>));
+
+			var mappingTypes = new List<MappingType>();
+
+			foreach (var currentType in typesWithMapTo)
+			{
+				var typeDerivedInterfaces = GetDerivedGenericInterfaces(currentType, typeof(IMappableBothDirections<>));
+				var interfacesGenericArguments = GetInterfacesGenericTypeArguments(typeDerivedInterfaces);
+
+				var currentMappingTypes = interfacesGenericArguments
+					.Select(t => new MappingType(currentType, t, true))
 					.ToList();
 
 				mappingTypes.AddRange(currentMappingTypes);

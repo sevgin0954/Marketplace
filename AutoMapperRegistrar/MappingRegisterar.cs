@@ -21,7 +21,9 @@ namespace AutoMapperRegistrar
 
 			foreach (var currentMapping in mappings)
 			{
-				this.configurationExpression.CreateMap(currentMapping.Source, currentMapping.Destination);
+				var currentMap = this.configurationExpression.CreateMap(currentMapping.Source, currentMapping.Destination);
+				if (currentMapping.IsReversible)
+					currentMap.ReverseMap();
 			}
 		}
 

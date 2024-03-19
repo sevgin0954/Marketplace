@@ -1,6 +1,9 @@
-﻿namespace Marketplace.Persistence.Sales
+﻿using AutoMapperRegistrar.Interfaces;
+using SalesBoundedContext = Marketplace.Domain.Sales;
+
+namespace Marketplace.Persistence.Sales
 {
-	public class ProductEntity
+	public class ProductEntity : IMappableBothDirections<SalesBoundedContext.ProductAggregate.Product>
 	{
 		public string Id { get; set; }
 
