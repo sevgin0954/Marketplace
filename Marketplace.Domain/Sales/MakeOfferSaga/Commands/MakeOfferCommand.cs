@@ -53,12 +53,12 @@ namespace Marketplace.Domain.Sales.MakeOfferSagaNS.Commands
 				var productId = new Id(request.ProductId);
 				var sagaId = new MakeOfferSagaId(buyerId, productId);
 
-				var sagaData = await this.sagaDataRepository.GetByIdAsync(sagaId);
-				if (sagaData != null)
+				var isSagaDataAvailible = await this.sagaDataRepository.CheckIfExistAsync(sagaId);
+				if (isSagaDataAvailible)
 					return Result.Fail("Pending offer exists for this product from this buyer!");
 
 				var sellerId = new Id(request.SellerId);
-				sagaData = new MakeOfferSagaData(sagaId, sellerId, request.Message, request.Quantity);
+				var sagaData = new MakeOfferSagaData(sagaId, sellerId, request.Message, request.Quantity);
 				var saga = new MakeOfferSaga(sagaData, this.mediator);
 
 				await saga.StartSagaAsync();

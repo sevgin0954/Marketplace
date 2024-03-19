@@ -46,6 +46,7 @@ namespace Marketplace.API.Controllers
             return Ok(product);
         }
 
+        // TODO: Add model validation
         [HttpPost]
         public async Task<ActionResult<string>> CreateNewProduct(CreateProductBindingModel model)
         {

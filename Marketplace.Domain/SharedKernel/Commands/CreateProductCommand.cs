@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Marketplace.Domain.Browsing.ProductAggregate;
 using Marketplace.Domain.Common.Exceptions;
 using Marketplace.Domain.IdentityAndAccess.UserAggregate;
-using Marketplace.Domain.Sales.SellerAggregate;
 
 namespace Marketplace.Domain.SharedKernel.Commands
 {

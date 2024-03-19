@@ -4,10 +4,10 @@ using Marketplace.API.Services;
 using Marketplace.Domain.Common;
 using Marketplace.Domain.Sales.OfferAggregate;
 using Marketplace.Domain.SharedKernel;
+using Marketplace.Domain.SharedKernel.Commands;
 using Marketplace.Persistence;
 using Marketplace.Persistence.Browsing;
 using Marketplace.Persistence.IdentityAndAccess;
-using Marketplace.Persistence.SagaData;
 using Marketplace.Persistence.Sales;
 using Marketplace.Query;
 using Marketplace.Query.ProductQueries;
@@ -78,28 +78,28 @@ namespace Marketplace.API
 				options.ReturnHttpNotAcceptable = true;
 			}).AddXmlDataContractSerializerFormatters();
 
-			builder.Services
-				.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-				.AddJwtBearer(options =>
-				{
-					var jwtIssuer = configuration.GetSection("Auth0:Issuer").Value;
-					var jwtAudience = configuration.GetSection("Auth0:Audience").Value;
-					var jwtKey = configuration.GetSection("Auth0:ClientSecret").Value;
-					options.TokenValidationParameters = new TokenValidationParameters()
-					{
-						ValidateIssuer = true,
-						ValidateAudience = true,
-						ValidateLifetime = true,
-						ValidateIssuerSigningKey = true,
-						ValidIssuer = jwtIssuer,
-						ValidAudience = jwtAudience,
-						IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
-					};
-				});
+			//builder.Services
+			//	.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+			//	.AddJwtBearer(options =>
+			//	{
+			//		var jwtIssuer = configuration.GetSection("Auth0:Issuer").Value;
+			//		var jwtAudience = configuration.GetSection("Auth0:Audience").Value;
+			//		var jwtKey = configuration.GetSection("Auth0:ClientSecret").Value;
+			//		options.TokenValidationParameters = new TokenValidationParameters()
+			//		{
+			//			ValidateIssuer = true,
+			//			ValidateAudience = true,
+			//			ValidateLifetime = true,
+			//			ValidateIssuerSigningKey = true,
+			//			ValidIssuer = jwtIssuer,
+			//			ValidAudience = jwtAudience,
+			//			IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+			//		};
+			//	});
 
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
-			builder.Services.AddMediatR(typeof(Program), typeof(GetAllProductsQuery));
+			builder.Services.AddMediatR(typeof(Program), typeof(GetAllProductsQuery), typeof(CreateProductCommand));
 
 			var mapper = mapperConfiguration.CreateMapper();
 			builder.Services.AddSingleton(mapper);
@@ -117,10 +117,6 @@ namespace Marketplace.API
 			var browsingConnectionString = configuration.GetConnectionString("Browsing");
 			builder.Services
 				.AddTransient(s => new BrowsingDbContext(browsingConnectionString, isLoggingEnabled, s.GetRequiredService<IMediator>()));
-
-			var sagaDataConnectionString = configuration.GetConnectionString("SagaData");
-			builder.Services
-				.AddTransient(s => new SagaDataDbContext(sagaDataConnectionString, isLoggingEnabled, s.GetRequiredService<IMediator>()));
 
 			builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 

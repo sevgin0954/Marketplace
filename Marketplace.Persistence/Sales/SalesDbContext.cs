@@ -20,6 +20,8 @@ namespace Marketplace.Persistence.Sales
 
 		public DbSet<OfferEntity> Offers => Set<OfferEntity>();
 
+		public DbSet<MakeOfferSagaDataEntity> MakeOfferSagaDatas => Set<MakeOfferSagaDataEntity>();
+
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<ProductEntity>(product =>
@@ -97,6 +99,25 @@ namespace Marketplace.Persistence.Sales
 				offer.HasOne(o => o.Product);
 
 				offer.HasOne(o => o.Buyer);
+			});
+
+			modelBuilder.Entity<MakeOfferSagaDataEntity>(sagaData =>
+			{
+				sagaData.HasKey(s => new { s.SellerId, s.BuyerId, s.ProductId });
+
+				sagaData.Property(s => s.Message)
+					.IsRequired();
+
+				sagaData.Property(s => s.Quantity)
+					.IsRequired();
+
+				sagaData.Property(s => s.IsBuyerNotBannedChecked)
+					.IsRequired()
+					.HasDefaultValue(false);
+
+				sagaData.Property(s => s.IsProductEligableForBuyChecked)
+					.IsRequired()
+					.HasDefaultValue(false);
 			});
 		}
 	}

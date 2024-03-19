@@ -6,8 +6,8 @@ using System.Linq.Expressions;
 
 namespace Marketplace.Persistence
 {
-	public abstract class Repository<TDomainEntity, TEntityId, TPersistenceEntity> : IRepository<TDomainEntity, TEntityId>
-		where TDomainEntity : AggregateRoot
+	public abstract class Repository<TDomainAggregate, TEntityId, TPersistenceEntity> : IRepository<TDomainAggregate, TEntityId>
+		where TDomainAggregate : AggregateRoot
 		where TEntityId : Id
 		where TPersistenceEntity : class
 	{
@@ -22,7 +22,7 @@ namespace Marketplace.Persistence
 			this.entities = dbContext.Set<TPersistenceEntity>();
 		}
 
-		public void Add(TDomainEntity element)
+		public void Add(TDomainAggregate element)
 		{
 			var persistentEntity = this.mapper.Map<TPersistenceEntity>(element);
 			this.entities.Add(persistentEntity);
@@ -34,23 +34,23 @@ namespace Marketplace.Persistence
 			this.entities.Remove(entity);
 		}
 
-		public async Task<ICollection<TDomainEntity>> FindAsync(Expression<Func<TDomainEntity, bool>> predicate)
+		public async Task<ICollection<TDomainAggregate>> FindAsync(Expression<Func<TDomainAggregate, bool>> predicate)
 		{
 			throw new NotImplementedException();
 		}
 
-		public ICollection<TDomainEntity> GetAll()
+		public ICollection<TDomainAggregate> GetAll()
 		{
 			var persistentEntities = this.entities.AsQueryable();
-			var domainEntities = this.mapper.Map<ICollection<TDomainEntity>>(persistentEntities);
+			var domainEntities = this.mapper.Map<ICollection<TDomainAggregate>>(persistentEntities);
 
 			return domainEntities;
 		}
 
-		public async Task<TDomainEntity> GetByIdAsync(TEntityId id)
+		public async Task<TDomainAggregate> GetByIdAsync(TEntityId id)
 		{
 			var peristenceEntity = await this.entities.FindAsync(id);
-			var domainEntity = this.mapper.Map<TDomainEntity>(peristenceEntity);
+			var domainEntity = this.mapper.Map<TDomainAggregate>(peristenceEntity);
 
 			return domainEntity;
 		}
