@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using Marketplace.Domain.IdentityAndAccess.UserAggregate;
+using Marketplace.Domain.SharedKernel;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Marketplace.Persistence.IdentityAndAccess
@@ -19,6 +21,7 @@ namespace Marketplace.Persistence.IdentityAndAccess
 				user.HasKey(u => u.Id);
 
 				user.Property(u => u.Email)
+					.HasMaxLength(Email.MaxLength)
 					.IsRequired();
 
 				user.Property(u => u.IsAdmin)
@@ -26,6 +29,7 @@ namespace Marketplace.Persistence.IdentityAndAccess
 					.IsRequired();
 
 				user.Property(u => u.UserName)
+					.HasMaxLength(UserConstants.MAX_USERNAME_LENGTH)
 					.IsRequired();
 
 				user.Property(u => u.PasswordHash)

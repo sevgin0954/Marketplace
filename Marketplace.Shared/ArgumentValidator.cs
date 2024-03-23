@@ -2,6 +2,7 @@
 
 namespace Marketplace.Shared
 {
+	// TODO: Split to smller classes (number validator, string validator.......)
 	public static class ArgumentValidator
 	{
 		public static void NotNullValidator(object obj, string argumentName)
@@ -43,6 +44,12 @@ namespace Marketplace.Shared
 				var exceptionMessage = $"The value should not be less than {minValue}";
 				throw new ArgumentOutOfRangeException(argumentName, exceptionMessage);
 			}
+		}
+
+		public static void NotNegative(decimal value, string argumentName)
+		{
+			if (value < 0)
+				throw new ArgumentException($"The number {argumentName} should be posive number!");
 		}
 	}
 }

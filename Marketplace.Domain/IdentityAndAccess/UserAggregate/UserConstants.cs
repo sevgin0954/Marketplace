@@ -1,7 +1,8 @@
 ﻿namespace Marketplace.Domain.IdentityAndAccess.UserAggregate
 {
-	public class UserConstants
+	public static class UserConstants
 	{
-		public static readonly int MAX_USERNAME_LENGTH = 10;
+		public const int MAX_USERNAME_LENGTH = 10;
+		public const int MIN_USERNAME_LENGTH = 1;
 	}
 }

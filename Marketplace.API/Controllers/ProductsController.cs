@@ -22,7 +22,7 @@ namespace Marketplace.API.Controllers
         [HttpGet]
         public async Task<ActionResult<ProductDto>> GetProducts(ProductSearchBindingModel searchModel)
         {
-            var isAnyKeywordExist = searchModel.KeyWords != null && searchModel.KeyWords.Count > 0;
+            var isAnyKeywordExist = searchModel.KeyWords.Count > 0;
             if (isAnyKeywordExist)
             {
                 var filteredProducts = await this.mediator.Send(new GetFilteredProductQuery(searchModel.KeyWords!));
@@ -46,7 +46,6 @@ namespace Marketplace.API.Controllers
             return Ok(product);
         }
 
-        // TODO: Add model validation
         [HttpPost]
         public async Task<ActionResult<string>> CreateNewProduct(CreateProductBindingModel model)
         {

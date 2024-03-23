@@ -12,11 +12,10 @@ using Marketplace.Persistence.Sales;
 using Marketplace.Query;
 using Marketplace.Query.ProductQueries;
 using MediatR;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Mvc;
 using ServiceLayerRegistrar;
 using System.Reflection;
-using System.Text;
+[assembly: ApiController]
 
 namespace Marketplace.API
 {

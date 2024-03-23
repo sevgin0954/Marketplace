@@ -14,8 +14,13 @@ namespace Marketplace.Domain.SharedKernel
 
 		public string DomainName { get; private set; }
 
+		public const int MaxLength = 320;
+
 		private void Initialize(string emailAddress)
 		{
+			if (emailAddress.Length > MaxLength)
+				throw new ArgumentOutOfRangeException(nameof(emailAddress), "Email address is too long!");
+
 			var nameRegexGroup = "nameGroup";
 			var domainRegexGroup = "domainGroup";
 			var regexPattern =

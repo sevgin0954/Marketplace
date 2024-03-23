@@ -29,6 +29,7 @@ namespace Marketplace.Domain.Sales.ProductAggregate
 			private set
 			{
 				ArgumentValidator.NotNullValidator(value, nameof(price));
+				ArgumentValidator.NotNegative(value.Value, nameof(price));
 
 				this.price = value;
 			}
