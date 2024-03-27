@@ -1,4 +1,4 @@
-﻿namespace Marketplace.API.Attributes
+﻿namespace Marketplace.API.Attributes.Validation
 {
     public class NotNullOrEmptyStringInCollectionAttribute : BaseCollectionElementsValidationAttribute
     {

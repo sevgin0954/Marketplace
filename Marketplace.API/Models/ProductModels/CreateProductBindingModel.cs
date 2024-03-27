@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapperRegistrar.Interfaces;
 using Marketplace.API.Attributes;
+using Marketplace.API.Attributes.Validation;
 using Marketplace.Domain.Browsing.ProductAggregate;
 using Marketplace.Domain.SharedKernel;
 using Marketplace.Domain.SharedKernel.Commands;
@@ -26,7 +27,7 @@ namespace Marketplace.API.Models.ProductModels
 		[StringCurrencyCode]
 		public string Currency { get; set; }
 
-		[Required]
+		[MapFromJwtToken("Id")]
 		public string UserId { get; set; }
 
 		public void CreateMappings(IProfileExpression configuration)

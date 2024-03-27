@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.ComponentModel.DataAnnotations;
 
-namespace Marketplace.API.Attributes
+namespace Marketplace.API.Attributes.Validation
 {
     public abstract class BaseCollectionElementsValidationAttribute : ValidationAttribute
     {
@@ -11,7 +11,7 @@ namespace Marketplace.API.Attributes
 
         protected abstract string ErrorMessage { get; }
 
-        protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             if (value == null)
                 return ValidationResult.Success;

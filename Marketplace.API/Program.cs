@@ -148,10 +148,9 @@ namespace Marketplace.API
 
 			app.UseHttpsRedirection();
 
-			app.UseRouting();
-
-			app.UseAuthorization();
 			app.UseAuthentication();
+			app.UseRouting();
+			app.UseAuthorization();
 
 			app.UseEndpoints(endpoints =>
 			{
