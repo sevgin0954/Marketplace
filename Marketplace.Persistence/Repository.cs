@@ -12,7 +12,7 @@ namespace Marketplace.Persistence
 		where TPersistenceEntity : class
 	{
 		protected readonly MarketplaceDbContext dbContext;
-		private readonly IMapper mapper;
+		protected readonly IMapper mapper;
 		protected readonly DbSet<TPersistenceEntity> entities;
 
 		public Repository(MarketplaceDbContext dbContext, IMapper mapper)
@@ -22,7 +22,7 @@ namespace Marketplace.Persistence
 			this.entities = dbContext.Set<TPersistenceEntity>();
 		}
 
-		public void Add(TDomainAggregate element)
+		public virtual void Add(TDomainAggregate element)
 		{
 			var persistentEntity = this.mapper.Map<TPersistenceEntity>(element);
 			this.entities.Add(persistentEntity);

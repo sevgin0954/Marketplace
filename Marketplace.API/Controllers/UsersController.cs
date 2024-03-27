@@ -28,7 +28,14 @@ namespace Marketplace.API.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Register(RegisterUserBindingModel model)
 		{
+			var passwordSalt = PasswordHasher.GenerateSalt();
+			var hashedPassword = PasswordHasher.ComputeHash(model.Password, passwordSalt);
+
 			var command = this.mapper.Map<RegisterUserCommand>(model);
+			command.PasswordHash = hashedPassword;
+			command.PasswordSalt = passwordSalt;
+
+
 			var result = await this.mediator.Send(command);
 			if (result.IsSuccess)
 				return this.Ok();
@@ -36,19 +43,19 @@ namespace Marketplace.API.Controllers
 				return this.BadRequest();
 		}
 
-		[Route("users/login")]
+		[Route("login")]
 		[HttpPost]
 		public async Task<IActionResult> Login(LoginBindingModel model)
 		{
 			var getPasswordSaltQuery = this.mapper.Map<GetPasswordSaltQuery>(model);
-			var userPasswordSalt = await this.mediator.Send(getPasswordSaltQuery);
+			var passwordSalt = await this.mediator.Send(getPasswordSaltQuery);
 
-			if (userPasswordSalt == null)
-				return this.NotFound();
+			if (passwordSalt == null)
+				return this.BadRequest("Invalid email address!");
 
-			var userHashedPassword = PasswordHasher.ComputeHash(model.Password, userPasswordSalt);
+			var hashedPassword = PasswordHasher.ComputeHash(model.Password, passwordSalt);
 			var loginRequest = this.mapper.Map<LogInUserQuery>(model);
-			loginRequest.PasswordHash = userHashedPassword;
+			loginRequest.PasswordHash = hashedPassword;
 
 			var userId = await this.mediator.Send(loginRequest);
 			if (userId != null)
@@ -58,7 +65,7 @@ namespace Marketplace.API.Controllers
 			}
 			else
 			{
-				return this.NotFound();
+				return this.BadRequest("Invalid password!");
 			}
 		}
 	}

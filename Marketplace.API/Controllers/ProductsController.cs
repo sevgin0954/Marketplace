@@ -3,6 +3,7 @@ using Marketplace.API.Models.ProductModels;
 using Marketplace.Domain.SharedKernel.Commands;
 using Marketplace.Query.ProductQueries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Marketplace.API.Controllers
@@ -46,6 +47,7 @@ namespace Marketplace.API.Controllers
             return Ok(product);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<string>> CreateNewProduct(CreateProductBindingModel model)
         {

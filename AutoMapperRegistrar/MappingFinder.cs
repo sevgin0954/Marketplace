@@ -55,13 +55,14 @@ namespace AutoMapperRegistrar
 
 		private static ICollection<MappingType> GetTypesWithMapTo(Assembly assembly)
 		{
+			// TODO: Rename
 			var typesWithMapTo = GetTypesDerivedFrom(assembly, typeof(IMappableTo<>));
 
 			var mappingTypes = new List<MappingType>();
 
 			foreach (var currentType in typesWithMapTo)
 			{
-				var typeDerivedInterfaces = GetDerivedGenericInterfaces(currentType, typeof(IMappableFrom<>));
+				var typeDerivedInterfaces = GetDerivedGenericInterfaces(currentType, typeof(IMappableTo<>));
 				var interfacesGenericArguments = GetInterfacesGenericTypeArguments(typeDerivedInterfaces);
 
 				var currentMappingTypes = interfacesGenericArguments

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Marketplace.Domain.IdentityAndAccess.UserAggregate;
 using Marketplace.Domain.SharedKernel;
 
 namespace Marketplace.API
@@ -12,6 +13,9 @@ namespace Marketplace.API
 
 			this.CreateMap<Price, decimal>()
 				.ConvertUsing(p => p.Value);
+
+			this.CreateMap<string, Email>()
+				.ConvertUsing(str => new Email(str));
 		}
 	}
 }

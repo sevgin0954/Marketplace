@@ -16,12 +16,12 @@ namespace Marketplace.API.Services
 
 		public string GenerateNewToken(string userId)
 		{
-			var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.config["Jwt:Key"]));
+			var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.config["Auth:ClientSecret"]));
 			var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
 			var token = new JwtSecurityToken(
-				this.config["Jwt:Issuer"],
-				this.config["Jwt:Issuer"],
+				this.config["Auth:Issuer"],
+				null,
 				new List<Claim>() { new Claim("id", userId) },
 				expires: DateTime.Now.AddMinutes(120),
 				signingCredentials: credentials

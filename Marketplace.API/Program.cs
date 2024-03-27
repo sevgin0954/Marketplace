@@ -12,9 +12,13 @@ using Marketplace.Persistence.Sales;
 using Marketplace.Query;
 using Marketplace.Query.ProductQueries;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using ServiceLayerRegistrar;
 using System.Reflection;
+using System.Text;
+
 [assembly: ApiController]
 
 namespace Marketplace.API
@@ -83,28 +87,26 @@ namespace Marketplace.API
 				options.ReturnHttpNotAcceptable = true;
 			}).AddXmlDataContractSerializerFormatters();
 
-			//builder.Services
-			//	.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-			//	.AddJwtBearer(options =>
-			//	{
-			//		var jwtIssuer = configuration.GetSection("Auth0:Issuer").Value;
-			//		var jwtAudience = configuration.GetSection("Auth0:Audience").Value;
-			//		var jwtKey = configuration.GetSection("Auth0:ClientSecret").Value;
-			//		options.TokenValidationParameters = new TokenValidationParameters()
-			//		{
-			//			ValidateIssuer = true,
-			//			ValidateAudience = true,
-			//			ValidateLifetime = true,
-			//			ValidateIssuerSigningKey = true,
-			//			ValidIssuer = jwtIssuer,
-			//			ValidAudience = jwtAudience,
-			//			IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
-			//		};
-			//	});
-
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
 			builder.Services.AddMediatR(typeof(Program), typeof(GetAllProductsQuery), typeof(CreateProductCommand));
+
+			builder.Services
+				.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+				.AddJwtBearer(options =>
+				{
+					var jwtIssuer = configuration.GetSection("Auth:Issuer").Value;
+					var jwtKey = configuration.GetSection("Auth:ClientSecret").Value;
+					options.TokenValidationParameters = new TokenValidationParameters()
+					{
+						ValidateIssuer = true,
+						ValidateAudience = false,
+						ValidateLifetime = true,
+						ValidateIssuerSigningKey = true,
+						ValidIssuer = jwtIssuer,
+						IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+					};
+				});
 
 			var mapper = mapperConfiguration.CreateMapper();
 			builder.Services.AddSingleton(mapper);

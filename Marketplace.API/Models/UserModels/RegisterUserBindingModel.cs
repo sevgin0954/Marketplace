@@ -13,5 +13,8 @@ namespace Marketplace.API.Models.UserModels
 		[Required]
 		[StringLength(Domain.SharedKernel.Email.MaxLength, MinimumLength = 2)]
 		public string Email { get; set; }
+
+		[Required]
+		public string Password { get; set; }
 	}
 }

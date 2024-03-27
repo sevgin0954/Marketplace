@@ -19,6 +19,10 @@ namespace Marketplace.Domain.IdentityAndAccess.UserAggregate.Commands
 
 		public Email Email { get; }
 
+		public string PasswordHash { get; set; }
+
+		public string PasswordSalt { get; set; }
+
 		internal class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, Result>
 		{
 			private readonly IRepository<User, Id> userRepository;
@@ -31,11 +35,12 @@ namespace Marketplace.Domain.IdentityAndAccess.UserAggregate.Commands
 			public async Task<Result> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
 			{
 				var userId = new Id();
-				var newUser = new User(userId, request.UserName, request.Email);
+				var password = new Password(request.PasswordHash, request.PasswordSalt);
+				var newUser = new User(userId, request.UserName, request.Email, password);
 
 				this.userRepository.Add(newUser);
-				var alteredRows = await this.userRepository.SaveChangesAsync();
-				if (alteredRows == 0)
+				var isUserRegistered = await this.userRepository.SaveChangesAsync();
+				if (isUserRegistered == 0)
 					throw new NotPersistentException(nameof(newUser));
 
 				return Result.Ok();

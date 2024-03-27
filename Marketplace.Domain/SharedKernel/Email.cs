@@ -36,8 +36,13 @@ namespace Marketplace.Domain.SharedKernel
 			var nameGroupNumber = regex.GroupNumberFromName(nameRegexGroup);
 			var domainGroupNumber = regex.GroupNumberFromName(domainRegexGroup);
 
-			this.Name = regex.GroupNameFromNumber(nameGroupNumber);
-			this.DomainName = regex.GroupNameFromNumber(domainGroupNumber);
+			this.Name = regex.Match(emailAddress).Groups[nameGroupNumber].Value;
+			this.DomainName = regex.Match(emailAddress).Groups[domainGroupNumber].Value;
+		}
+
+		public override string ToString()
+		{
+			return this.Name + "@" + this.DomainName;
 		}
 	}
 }
