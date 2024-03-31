@@ -27,7 +27,7 @@ namespace Marketplace.API.Models.ProductModels
 		[StringCurrencyCode]
 		public string Currency { get; set; }
 
-		[MapFromJwtToken("Id")]
+		[MapFromJwtToken("id")]
 		public string UserId { get; set; }
 
 		public void CreateMappings(IProfileExpression configuration)

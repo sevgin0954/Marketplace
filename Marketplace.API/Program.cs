@@ -1,5 +1,6 @@
 using AutoMapper;
 using AutoMapperRegistrar;
+using Marketplace.API.Filters;
 using Marketplace.API.Services;
 using Marketplace.Domain.Common;
 using Marketplace.Domain.Sales.OfferAggregate;
@@ -85,6 +86,7 @@ namespace Marketplace.API
 			builder.Services.AddControllers(options =>
 			{
 				options.ReturnHttpNotAcceptable = true;
+				options.Filters.Add(typeof(MapFromJwtTokenActionFilter));
 			}).AddXmlDataContractSerializerFormatters();
 
 			builder.Services.AddEndpointsApiExplorer();
@@ -95,8 +97,8 @@ namespace Marketplace.API
 				.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 				.AddJwtBearer(options =>
 				{
-					var jwtIssuer = configuration.GetSection("Auth:Issuer").Value;
-					var jwtKey = configuration.GetSection("Auth:ClientSecret").Value;
+					var jwtIssuer = configuration.GetSection(ConfigurationConstants.AuthIssuerKey).Value;
+					var jwtKey = configuration.GetSection(ConfigurationConstants.AuthClientSecretKey).Value;
 					options.TokenValidationParameters = new TokenValidationParameters()
 					{
 						ValidateIssuer = true,

@@ -1,4 +1,4 @@
-﻿using Marketplace.API.Attributes;
+﻿using Marketplace.API.Attributes.Validation;
 using System.ComponentModel.DataAnnotations;
 
 namespace Marketplace.API.Models.OfferModels
