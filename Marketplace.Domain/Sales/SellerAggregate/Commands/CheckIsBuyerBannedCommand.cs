@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Marketplace.Domain.Sales.SellerAggregate.Commands
 {
-	internal class CheckIsBuyerBannedCommand : IRequest<Result>
+    internal class CheckIsBuyerBannedCommand : IRequest<Result>
 	{
 		public CheckIsBuyerBannedCommand(string sellerId, string buyerId)
 		{

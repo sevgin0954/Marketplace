@@ -11,7 +11,7 @@ using static Marketplace.Domain.Sales.OfferAggregate.Commands.MakeOfferCommand;
 
 namespace Marketplace.Tests.Sales.OfferAggregateSpecs.CommandsSpecs
 {
-	public class MakeOfferCommandSpecs
+    public class MakeOfferCommandSpecs
 	{
 		[Fact]
 		public async Task Make_offer_should_create_offer_with_correct_id()

@@ -9,8 +9,6 @@ namespace Marketplace.API.Attributes.Validation
 
         protected abstract Predicate<object> IsValidPredicate { get; }
 
-        protected abstract string ErrorMessage { get; }
-
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             if (value == null)

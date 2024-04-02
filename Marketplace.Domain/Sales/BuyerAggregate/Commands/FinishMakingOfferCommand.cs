@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Marketplace.Domain.Sales.BuyerAggregate.Commands
 {
-	internal class FinishMakingOfferCommand : IRequest<Result>
+    internal class FinishMakingOfferCommand : IRequest<Result>
 	{
 		public FinishMakingOfferCommand(string buyerId, string productId)
 		{

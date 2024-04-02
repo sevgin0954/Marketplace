@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Marketplace.Domain.Common
 {
-	public abstract class AggregateRoot : Entity<Id>
+    public abstract class AggregateRoot : Entity<Id>
     {
         public AggregateRoot(Id id)
             : base(id) { }

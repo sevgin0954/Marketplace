@@ -28,10 +28,10 @@ namespace Marketplace.Persistence
 			this.entities.Add(persistentEntity);
 		}
 
-		public async Task MarkAsDeleted(TEntityId id)
+		public void Remove(TDomainAggregate element)
 		{
-			var entity = await this.entities.FindAsync(id.Value);
-			this.entities.Remove(entity);
+			var persistentEntity = this.mapper.Map<TPersistenceEntity>(element);
+			this.entities.Remove(persistentEntity);
 		}
 
 		public async Task<ICollection<TDomainAggregate>> FindAsync(Expression<Func<TDomainAggregate, bool>> predicate)
@@ -57,7 +57,7 @@ namespace Marketplace.Persistence
 
 		public async Task<bool> CheckIfExistAsync(TEntityId id)
 		{
-			return await this.entities.FindAsync(id.Value) != null;;
+			return await this.entities.FindAsync(id.Value) != null;
 		}
 
 		public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

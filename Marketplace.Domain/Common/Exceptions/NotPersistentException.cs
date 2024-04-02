@@ -4,11 +4,7 @@ namespace Marketplace.Domain.Common.Exceptions
 {
 	public class NotPersistentException : Exception
 	{
-		public NotPersistentException(string objectName)
-		{
-			this.ObjectName = objectName;
-		}
-
-		public string ObjectName { get; }
+		public NotPersistentException(params string[] objectNames)
+			: base(String.Join(", ", objectNames)) { }
 	}
 }

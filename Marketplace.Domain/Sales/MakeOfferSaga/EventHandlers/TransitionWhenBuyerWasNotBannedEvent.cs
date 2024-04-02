@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Marketplace.Domain.Sales.MakeOfferSagaNS.EventHandlers
 {
-	internal class TransitionWhenBuyerWasNotBannedEvent : INotificationHandler<BuyerWasNotBannedEvent>
+    internal class TransitionWhenBuyerWasNotBannedEvent : INotificationHandler<BuyerWasNotBannedEvent>
 	{
 		private readonly IRepository<MakeOfferSagaData, MakeOfferSagaId> sagaDataRepository;
 		private readonly IMediator mediator;

@@ -3,6 +3,7 @@ using AutoMapperRegistrar;
 using Marketplace.API.Filters;
 using Marketplace.API.Services;
 using Marketplace.Domain.Common;
+using Marketplace.Domain.Common.Services;
 using Marketplace.Domain.Sales.OfferAggregate;
 using Marketplace.Domain.SharedKernel;
 using Marketplace.Domain.SharedKernel.Commands;
@@ -128,6 +129,7 @@ namespace Marketplace.API
 				.AddTransient(s => new BrowsingDbContext(browsingConnectionString, isLoggingEnabled, s.GetRequiredService<IMediator>()));
 
 			builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
+			builder.Services.AddScoped<IProductService, ProductService>();
 
 			var serviceRegistrar = new ServiceRegistrar(builder.Services);
 

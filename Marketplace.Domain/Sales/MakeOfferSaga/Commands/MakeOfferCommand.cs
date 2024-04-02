@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Marketplace.Domain.Sales.MakeOfferSagaNS.Commands
 {
-	public class MakeOfferCommand : IRequest<Result>
+    public class MakeOfferCommand : IRequest<Result>
 	{
 		public MakeOfferCommand(
 			string buyerId,

@@ -7,22 +7,23 @@ using System.Threading.Tasks;
 
 namespace Marketplace.Domain.Common
 {
-	public interface IRepository<T, TId> 
-		where T : AggregateRoot
-		where TId : Id
-	{
-		void Add(T aggregate);
+    public interface IRepository<T, TId>
+        where T : AggregateRoot
+        where TId : Id
+    {
+        void Add(T aggregate);
 
-		Task MarkAsDeleted(TId id);
+        void Remove(T aggregate);
 
-		Task<T> GetByIdAsync(TId id);
+        Task<T> GetByIdAsync(TId id);
 
-		ICollection<T> GetAll();
+        ICollection<T> GetAll();
 
-		Task<ICollection<T>> FindAsync(Expression<Func<T, bool>> predicate);
+        Task<bool> CheckIfExistAsync(TId id);
 
-		Task<bool> CheckIfExistAsync(TId id);
+        Task<ICollection<T>> FindAsync(Expression<Func<T, bool>> predicate);
 
-		Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+        // TODO: Refactor to return bool
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 	}
 }

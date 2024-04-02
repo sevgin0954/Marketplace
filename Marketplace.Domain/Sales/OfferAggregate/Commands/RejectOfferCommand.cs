@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Marketplace.Domain.Sales.OfferAggregate.Commands
 {
-	public class RejectOfferCommand : IRequest<Result>
+    public class RejectOfferCommand : IRequest<Result>
 	{
 		public RejectOfferCommand(string productId, string initiatorId, string buyerId, string rejectReasone)
 		{

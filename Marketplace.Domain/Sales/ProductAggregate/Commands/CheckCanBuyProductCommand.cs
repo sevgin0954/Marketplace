@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Marketplace.Domain.Sales.ProductAggregate.Commands
 {
-	internal class CheckCanBuyProductCommand : IRequest<Result>
+    internal class CheckCanBuyProductCommand : IRequest<Result>
 	{
 		public CheckCanBuyProductCommand(string productId, string initiatorId)
 		{

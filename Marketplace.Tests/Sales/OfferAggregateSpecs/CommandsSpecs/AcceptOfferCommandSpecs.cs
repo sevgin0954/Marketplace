@@ -11,7 +11,7 @@ using static Marketplace.Domain.Sales.OfferAggregate.Commands.AcceptOfferCommand
 
 namespace Marketplace.Tests.Sales.OfferAggregateSpecs.CommandsSpecs
 {
-	public class AcceptOfferCommandSpecs
+    public class AcceptOfferCommandSpecs
 	{
 		[Fact]
 		public async Task Accept_offer_command_with_incorrect_product_id_should_throw_an_exception()

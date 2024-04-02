@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Marketplace.Domain.Sales.ReviewAggregate
 {
-	internal class Comment : Entity<Id>
+    internal class Comment : Entity<Id>
 	{
 		private readonly IDictionary<Id, CommentReply> authorIdAndReplies = new Dictionary<Id, CommentReply>();
 		private readonly IList<CommentEdit> edits = new List<CommentEdit>();

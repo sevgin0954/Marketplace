@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Marketplace.Domain.Sales.BuyerAggregate.Commands
 {
-	internal class DiscardMakingOfferCommand : IRequest<Result>
+    internal class DiscardMakingOfferCommand : IRequest<Result>
 	{
 		public DiscardMakingOfferCommand(string buyerId, string productId)
 		{

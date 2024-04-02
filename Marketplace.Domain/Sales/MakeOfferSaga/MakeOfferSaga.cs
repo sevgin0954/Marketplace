@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Marketplace.Domain.Sales.MakeOfferSagaNS
 {
-	internal class MakeOfferSaga : Saga<MakeOfferSagaData>
+    internal class MakeOfferSaga : Saga<MakeOfferSagaData>
 	{
 		private readonly IMediator mediator;
 

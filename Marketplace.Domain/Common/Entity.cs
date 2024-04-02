@@ -2,13 +2,13 @@
 
 namespace Marketplace.Domain.Common
 {
-	public abstract class Entity<TId> 
+    public abstract class Entity<TId>
         where TId : Id
-	{
+    {
         public Entity(TId id)
-		{
-            this.Id = id;
-		}
+        {
+            Id = id;
+        }
 
         public virtual TId Id { get; }
 
@@ -22,7 +22,7 @@ namespace Marketplace.Domain.Common
             if (ReferenceEquals(this, other))
                 return true;
 
-            if (this.GetType() != other.GetType())
+            if (GetType() != other.GetType())
                 return false;
 
             return Id == other.Id;
@@ -46,7 +46,7 @@ namespace Marketplace.Domain.Common
 
         public override int GetHashCode()
         {
-            return (this.GetType().ToString() + Id).GetHashCode();
+            return (GetType().ToString() + Id).GetHashCode();
         }
     }
 }

@@ -1,6 +1,9 @@
-﻿namespace Marketplace.Persistence.Sales
+﻿using AutoMapperRegistrar.Interfaces;
+using Marketplace.Domain.Sales.SellerAggregate;
+
+namespace Marketplace.Persistence.Sales
 {
-	public class SellerEntity
+	public class SellerEntity : IMappableBothDirections<Seller>
 	{
 		public string Id { get; set; }
 

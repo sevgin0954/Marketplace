@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Marketplace.Domain.IdentityAndAccess.UserAggregate.Commands
 {
-	public class RegisterUserCommand : IRequest<Result>
+    public class RegisterUserCommand : IRequest<Result>
 	{
 		public RegisterUserCommand(string userName, Email email)
 		{

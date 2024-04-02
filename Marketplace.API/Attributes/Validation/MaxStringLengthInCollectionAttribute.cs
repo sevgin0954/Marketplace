@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Marketplace.API.Attributes.Validation
+﻿namespace Marketplace.API.Attributes.Validation
 {
     public class MaxStringLengthInCollectionAttribute : BaseCollectionElementsValidationAttribute
     {
@@ -9,12 +7,11 @@ namespace Marketplace.API.Attributes.Validation
         public MaxStringLengthInCollectionAttribute(int maxLength)
         {
             this.maxLength = maxLength;
-        }
+            this.ErrorMessage = "String is too large!";
+		}
 
         protected override Predicate<object> IsValidPredicate => obj => (obj as string).Length <= maxLength;
 
         protected override Type ElementsType => typeof(string);
-
-        protected override string ErrorMessage => "String is too large!";
     }
 }

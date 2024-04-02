@@ -4,9 +4,10 @@ using MediatR;
 using SalesContext = Marketplace.Domain.Sales.ProductAggregate;
 using System.Threading;
 using System.Threading.Tasks;
-using Marketplace.Domain.Browsing.ProductAggregate;
 using Marketplace.Domain.Common.Exceptions;
 using Marketplace.Domain.IdentityAndAccess.UserAggregate;
+using Marketplace.Domain.Sales.SellerAggregate;
+using Marketplace.Domain.Common.Services;
 
 namespace Marketplace.Domain.SharedKernel.Commands
 {
@@ -22,25 +23,35 @@ namespace Marketplace.Domain.SharedKernel.Commands
 
         internal class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, Result>
         {
-            private readonly IRepository<Product, Id> browsingProductRepository;
-            private readonly IRepository<SalesContext.Product, Id> salesProductRepository;
             private readonly IRepository<User, Id> userRepository;
+            private readonly IRepository<Seller, Id> sellerRepository;
+            private readonly IProductService productService;
 
             public CreateProductCommandHandler(
-                IRepository<BrowsingContext.Product, Id> browsingProductRepository,
-                IRepository<SalesContext.Product, Id> salesProductRepository,
-                IRepository<User, Id> userRepository)
+                IRepository<User, Id> userRepository,
+                IRepository<Seller, Id> sellerRepository,
+				IProductService productService)
             {
-                this.browsingProductRepository = browsingProductRepository;
-                this.salesProductRepository = salesProductRepository;
                 this.userRepository = userRepository;
+                this.sellerRepository = sellerRepository;
+                this.productService = productService;
             }
 
             public async Task<Result> Handle(CreateProductCommand request, CancellationToken cancellationToken)
             {
-                var isSellerIdValid = await this.userRepository.CheckIfExistAsync(request.SellerId);
-                if (isSellerIdValid == false)
+                var isUserIdValid = await this.userRepository.CheckIfExistAsync(request.SellerId);
+                if (isUserIdValid == false)
                     throw new InvalidIdException(nameof(request.SellerId));
+
+                var isSellerExist = await this.sellerRepository.CheckIfExistAsync(request.SellerId);
+                if (isSellerExist == false)
+                {
+                    var seller = new Seller(request.SellerId);
+					this.sellerRepository.Add(seller);
+                    var isSellerAddedSuccessfully = await this.sellerRepository.SaveChangesAsync() > 0;
+                    if (isSellerAddedSuccessfully == false)
+                        throw new NotPersistentException(nameof(seller));
+				}
 
 				var browsingProductId = new Id();
 				var browsingProduct = new BrowsingContext.Product(
@@ -49,24 +60,12 @@ namespace Marketplace.Domain.SharedKernel.Commands
                 var salesContextId = new Id();
 				var salesProduct = new SalesContext.Product(salesContextId, request.Price, request.SellerId);
 
-                this.browsingProductRepository.Add(browsingProduct);
-                this.salesProductRepository.Add(salesProduct);
-
-                var browsingProductsRowsChanged = await this.browsingProductRepository.SaveChangesAsync(cancellationToken);
-                if (browsingProductsRowsChanged == 0)
-					throw new NotPersistentException(nameof(browsingProduct));
-				if (browsingProductsRowsChanged > 0)
-                {
-					var salesProductRowsChanged = await this.salesProductRepository.SaveChangesAsync(cancellationToken);
-                    if (salesProductRowsChanged == 0)
-                    {
-                        await this.browsingProductRepository.MarkAsDeleted(browsingProduct.Id);
-                        await this.browsingProductRepository.SaveChangesAsync();
-						throw new NotPersistentException(nameof(salesProduct));
-					}
-				}
-                
-                return Result.Ok();
+				var isPersistingSuccessfull = await this.productService
+                    .CreateAsync(browsingProduct, salesProduct, cancellationToken);
+				if (isPersistingSuccessfull)
+                    return Result.Ok();
+                else
+                    throw new NotPersistentException(nameof(browsingProduct), nameof(salesProduct));
 			}
         }
     }
