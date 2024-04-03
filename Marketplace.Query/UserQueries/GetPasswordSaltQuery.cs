@@ -1,6 +1,4 @@
-﻿using Marketplace.Domain.Common;
-using Marketplace.Domain.SharedKernel;
-using Marketplace.Persistence.IdentityAndAccess;
+﻿using Marketplace.Persistence.IdentityAndAccess;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,8 +28,6 @@ namespace Marketplace.Query.UserQueries
 					.Where(u => u.Email == request.Email)
 					.Select(u => u.PasswordSalt)
 					.FirstOrDefaultAsync();
-
-				// TODO: Handle incorrect user
 
 				return userPasswrodSalt;
 			}

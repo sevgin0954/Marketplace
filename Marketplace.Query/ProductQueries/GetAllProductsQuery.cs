@@ -5,7 +5,6 @@ using Marketplace.Persistence.IdentityAndAccess;
 using Marketplace.Persistence.Sales;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Marketplace.Query.ProductQueries
 {
@@ -31,7 +30,6 @@ namespace Marketplace.Query.ProductQueries
 
 			public async Task<IList<ProductDto>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
 			{
-				// TODO: Use repository instead of a dbcontexts
 				var salesProductDtos = await this.salesDdContext.Products
 					.ProjectTo<ProductDto>(this.mapper.ConfigurationProvider)
 					.ToListAsync(cancellationToken);

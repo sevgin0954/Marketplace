@@ -38,9 +38,6 @@ namespace ServiceLayerRegistrar
 		{
 			ArgumentValidator.ThrowExceptionIfNull(interfaceType, nameof(interfaceType));
 
-			// TODO:
-			// USERREPOSITORY GetInterfaces return null and BaseRepository isAbstract == true
-			// USERREPOSITORY GENERICS ARE USER AND ID NOT AGGREGATE AND ID
 			var filterClassesFunc = new Func<Type, bool>(
 				t => t.IsClass &&
 				t.GetInterface(interfaceType.Name) != null &&
