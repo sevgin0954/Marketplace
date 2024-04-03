@@ -1,4 +1,8 @@
-﻿namespace AutoMapperRegistrar
+﻿using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("AutoMapperRegistrar.Tests")]
+
+namespace AutoMapperRegistrar
 {
 	public struct MappingType
 	{
