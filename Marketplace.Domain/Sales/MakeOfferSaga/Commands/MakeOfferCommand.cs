@@ -63,8 +63,8 @@ namespace Marketplace.Domain.Sales.MakeOfferSagaNS.Commands
 
 				await saga.StartSagaAsync();
 
-				var rowsChanged = await this.sagaDataRepository.SaveChangesAsync();
-				if (rowsChanged == 0)
+				var isSagaUpdateSuccessfully = await this.sagaDataRepository.SaveChangesAsync();
+				if (isSagaUpdateSuccessfully == false)
 					return Result.Fail(ErrorConstants.NO_RECORD_ALTERED);
 
 				return Result.Ok();

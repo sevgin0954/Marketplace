@@ -39,8 +39,8 @@ namespace Marketplace.Domain.IdentityAndAccess.UserAggregate.Commands
 				var newUser = new User(userId, request.UserName, request.Email, password);
 
 				this.userRepository.Add(newUser);
-				var isUserRegistered = await this.userRepository.SaveChangesAsync();
-				if (isUserRegistered == 0)
+				var isUserRegisteredSuccessfully = await this.userRepository.SaveChangesAsync();
+				if (isUserRegisteredSuccessfully == false)
 					throw new NotPersistentException(nameof(newUser));
 
 				return Result.Ok();

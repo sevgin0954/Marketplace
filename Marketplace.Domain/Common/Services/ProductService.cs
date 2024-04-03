@@ -29,7 +29,7 @@ namespace Marketplace.Domain.Common.Services
 			var isSuccessfullyCreated = true;
 			
 			this.salesProductRepository.Add(salesProduct);
-			var isSalesProductAddedSuccessfully = await this.salesProductRepository.SaveChangesAsync(cancellationToken) > 0;
+			var isSalesProductAddedSuccessfully = await this.salesProductRepository.SaveChangesAsync(cancellationToken);
 			if (isSalesProductAddedSuccessfully == false)
 			{
 				isSuccessfullyCreated = false;
@@ -37,11 +37,11 @@ namespace Marketplace.Domain.Common.Services
 			}
 
 			this.browsingProductRepository.Add(browsingProduct);
-			var isBrowsingProductAddedSuccessfully = await this.browsingProductRepository.SaveChangesAsync(cancellationToken) > 0;
+			var isBrowsingProductAddedSuccessfully = await this.browsingProductRepository.SaveChangesAsync(cancellationToken);
 			if (isBrowsingProductAddedSuccessfully == false)
 			{
 				this.salesProductRepository.Remove(salesProduct);
-				var isSalesProductRemovedSuccessfully = await this.salesProductRepository.SaveChangesAsync(cancellationToken) > 0;
+				var isSalesProductRemovedSuccessfully = await this.salesProductRepository.SaveChangesAsync(cancellationToken);
 				if (isSalesProductRemovedSuccessfully == false)
 					throw new NotPersistentException(nameof(salesProduct));
 

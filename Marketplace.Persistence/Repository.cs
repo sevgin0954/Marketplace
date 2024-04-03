@@ -60,9 +60,12 @@ namespace Marketplace.Persistence
 			return await this.entities.FindAsync(id.Value) != null;
 		}
 
-		public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+		public async Task<bool> SaveChangesAsync(CancellationToken cancellationToken = default)
 		{
-			return await this.dbContext.SaveChangesAsync(cancellationToken);
+			var rowsAltered = await this.dbContext.SaveChangesAsync(cancellationToken);
+
+			var isSuccessfullySaved = rowsAltered > 0;
+			return isSuccessfullySaved;
 		}
 	}
 }

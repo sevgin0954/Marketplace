@@ -51,11 +51,9 @@ namespace Marketplace.Domain.Sales.OfferAggregate.Commands
 				var initiatorId = new Id(request.InitiatorId);
 				offer.RejectOffer(initiatorId, request.RejectReasone);
 
-				var changedRowsCount = await this.offerRepository.SaveChangesAsync(cancellationToken);
-				if (changedRowsCount == 0)
-				{
+				var isOfferUpdatedSuccessfully = await this.offerRepository.SaveChangesAsync(cancellationToken);
+				if (isOfferUpdatedSuccessfully == false)
 					return Result.Fail(ErrorConstants.NO_RECORD_ALTERED);
-				}
 
 				return Result.Ok();
 			}

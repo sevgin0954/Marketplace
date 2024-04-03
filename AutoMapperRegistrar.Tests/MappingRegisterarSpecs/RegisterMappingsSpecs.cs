@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Moq;
+using System.Reflection;
 using Xunit;
 
 namespace AutoMapperRegistrar.Tests.MappingRegisterarSpecs
@@ -57,7 +58,7 @@ namespace AutoMapperRegistrar.Tests.MappingRegisterarSpecs
 		{
 			var sourceType1 = "".GetType();
 			var destinationType1 = "".GetType();
-			var mapping1 = new MappingType(sourceType1, destinationType1);
+			var mapping1 = this.CreateMappingType(sourceType1, destinationType1);
 
 			return mapping1;
 		}
@@ -66,9 +67,18 @@ namespace AutoMapperRegistrar.Tests.MappingRegisterarSpecs
 		{
 			var sourceType2 = new Object().GetType();
 			var destinationType2 = new Object().GetType();
-			var mapping2 = new MappingType(sourceType2, destinationType2);
+			var mapping2 = this.CreateMappingType(sourceType2, destinationType2);
 
 			return mapping2;
+		}
+
+		private MappingType CreateMappingType(params Type[] consructorParams)
+		{
+			var constructorInfo = typeof(MappingType)
+				.GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, null, new Type[] { typeof(int) }, null);
+			var instance = (MappingType)constructorInfo.Invoke(consructorParams);
+
+			return instance;
 		}
 	}
 }

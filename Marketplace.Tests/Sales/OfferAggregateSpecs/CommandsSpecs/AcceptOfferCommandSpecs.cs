@@ -56,7 +56,7 @@ namespace Marketplace.Tests.Sales.OfferAggregateSpecs.CommandsSpecs
 			var offer = OfferFactory.CreateWithSellerId(sellerId);
 			this.SetupMockedRepositoryGetByIdAsync(repositoryMock, offer);
 
-			var saveChangesReturnValue = 0;
+			var saveChangesReturnValue = false;
 			this.SetupMockedRepositorySaveChangesAsync(repositoryMock, saveChangesReturnValue);
 
 			var commandHandler = new AcceptOfferCommandHandler(repositoryMock.Object);
@@ -82,7 +82,7 @@ namespace Marketplace.Tests.Sales.OfferAggregateSpecs.CommandsSpecs
 			var offer = OfferFactory.CreateWithSellerId(sellerId);
 			this.SetupMockedRepositoryGetByIdAsync(repositoryMock, offer);
 
-			var saveChangesReturnValue = 1;
+			var saveChangesReturnValue = true;
 			this.SetupMockedRepositorySaveChangesAsync(repositoryMock, saveChangesReturnValue);
 
 			var commandHandler = new AcceptOfferCommandHandler(repositoryMock.Object);
@@ -110,7 +110,7 @@ namespace Marketplace.Tests.Sales.OfferAggregateSpecs.CommandsSpecs
 			var offer = OfferFactory.CreateWithSellerId(sellerId);
 			this.SetupMockedRepositoryGetByIdAsync(repositoryMock, offer);
 
-			var saveChangesReturnValue = 1;
+			var saveChangesReturnValue = true;
 			this.SetupMockedRepositorySaveChangesAsync(repositoryMock, saveChangesReturnValue);
 
 			var commandHandler = new AcceptOfferCommandHandler(repositoryMock.Object);
@@ -139,7 +139,7 @@ namespace Marketplace.Tests.Sales.OfferAggregateSpecs.CommandsSpecs
 			var offer = OfferFactory.CreateWithSellerId(sellerId);
 			this.SetupMockedRepositoryGetByIdAsync(repositoryMock, offer);
 
-			var saveChangesReturnValue = 1;
+			var saveChangesReturnValue = true;
 			this.SetupMockedRepositorySaveChangesAsync(repositoryMock, saveChangesReturnValue);
 
 			var commandHandler = new AcceptOfferCommandHandler(repositoryMock.Object);
@@ -172,7 +172,7 @@ namespace Marketplace.Tests.Sales.OfferAggregateSpecs.CommandsSpecs
 
 		private void SetupMockedRepositorySaveChangesAsync(
 			Mock<IRepository<Offer, OfferId>> mock, 
-			int returnValue)
+			bool returnValue)
 		{
 			mock.Setup(orm => orm.SaveChangesAsync(new CancellationToken()))
 				.Returns(Task.FromResult(returnValue));

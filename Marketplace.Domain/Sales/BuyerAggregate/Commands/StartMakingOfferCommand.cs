@@ -41,8 +41,8 @@ namespace Marketplace.Domain.Sales.BuyerAggregate.Commands
 				buyer.StartMakingOffer(productId);
 
 				// TODO: Move to generic base class
-				var alteredRows = await this.buyerRepository.SaveChangesAsync();
-				if (alteredRows <= 0)
+				var isBuyerUpdatedSuccessfully = await this.buyerRepository.SaveChangesAsync();
+				if (isBuyerUpdatedSuccessfully == false)
 					throw new NotPersistentException(nameof(buyer));
 
 				return Result.Ok();

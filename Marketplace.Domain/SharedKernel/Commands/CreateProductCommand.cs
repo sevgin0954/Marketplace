@@ -48,7 +48,7 @@ namespace Marketplace.Domain.SharedKernel.Commands
                 {
                     var seller = new Seller(request.SellerId);
 					this.sellerRepository.Add(seller);
-                    var isSellerAddedSuccessfully = await this.sellerRepository.SaveChangesAsync() > 0;
+                    var isSellerAddedSuccessfully = await this.sellerRepository.SaveChangesAsync();
                     if (isSellerAddedSuccessfully == false)
                         throw new NotPersistentException(nameof(seller));
 				}

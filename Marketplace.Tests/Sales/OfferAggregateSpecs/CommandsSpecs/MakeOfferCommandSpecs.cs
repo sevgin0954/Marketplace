@@ -86,7 +86,7 @@ namespace Marketplace.Tests.Sales.OfferAggregateSpecs.CommandsSpecs
 			var command = this.CreateCommand();
 
 			var repositoryMock = new Mock<IRepository<Offer, OfferId>>();
-			var saveChangesReturnValue = 0;
+			var saveChangesReturnValue = false;
 			repositoryMock.Setup(rm => rm.SaveChangesAsync(new CancellationToken())).Returns(Task.FromResult(saveChangesReturnValue));
 
 			var commandHandler = new MakeOfferCommandHandler(repositoryMock.Object);
@@ -105,7 +105,7 @@ namespace Marketplace.Tests.Sales.OfferAggregateSpecs.CommandsSpecs
 			var command = this.CreateCommand();
 
 			var repositoryMock = new Mock<IRepository<Offer, OfferId>>();
-			var saveChangesReturnValue = 1;
+			var saveChangesReturnValue = true;
 			repositoryMock.Setup(rm => rm.SaveChangesAsync(new CancellationToken())).Returns(Task.FromResult(saveChangesReturnValue));
 
 			var commandHandler = new MakeOfferCommandHandler(repositoryMock.Object);

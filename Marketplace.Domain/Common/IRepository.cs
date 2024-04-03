@@ -23,7 +23,6 @@ namespace Marketplace.Domain.Common
 
         Task<ICollection<T>> FindAsync(Expression<Func<T, bool>> predicate);
 
-        // TODO: Refactor to return bool
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+        Task<bool> SaveChangesAsync(CancellationToken cancellationToken = default);
 	}
 }

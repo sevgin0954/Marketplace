@@ -47,11 +47,9 @@ namespace Marketplace.Domain.Sales.OfferAggregate.Commands
 				var offer = new Offer(offerId, sellerId, request.Message);
 
 				this.offerRepository.Add(offer);
-				var rowsChanged = await this.offerRepository.SaveChangesAsync(cancellationToken);
-				if (rowsChanged == 0)
-				{
+				var isOfferAddedSuccesfully = await this.offerRepository.SaveChangesAsync(cancellationToken);
+				if (isOfferAddedSuccesfully == false)
 					return Result.Fail(ErrorConstants.NO_RECORD_ALTERED);
-				}
 
 				return Result.Ok();
 			}
