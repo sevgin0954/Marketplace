@@ -16,7 +16,6 @@ namespace Marketplace.Domain.Sales.MakeOfferSagaNS.Commands
 			string message,
 			int quantity)
 		{
-			// TODO: Validate ids existence
 			this.BuyerId = buyerId;
 			this.ProductId = productId;
 			this.SellerId = sellerId;

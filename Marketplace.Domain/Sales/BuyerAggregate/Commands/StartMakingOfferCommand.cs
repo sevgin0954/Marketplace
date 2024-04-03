@@ -40,7 +40,6 @@ namespace Marketplace.Domain.Sales.BuyerAggregate.Commands
 				var productId = new Id(request.ProductId);
 				buyer.StartMakingOffer(productId);
 
-				// TODO: Move to generic base class
 				var isBuyerUpdatedSuccessfully = await this.buyerRepository.SaveChangesAsync();
 				if (isBuyerUpdatedSuccessfully == false)
 					throw new NotPersistentException(nameof(buyer));

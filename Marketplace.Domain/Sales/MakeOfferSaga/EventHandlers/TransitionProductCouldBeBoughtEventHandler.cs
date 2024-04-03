@@ -1,4 +1,5 @@
 ﻿using Marketplace.Domain.Common;
+using Marketplace.Domain.Common.Exceptions;
 using Marketplace.Domain.Sales.ProductAggregate.Events;
 using Marketplace.Domain.SharedKernel;
 using MediatR;
@@ -31,8 +32,9 @@ namespace Marketplace.Domain.Sales.MakeOfferSagaNS.EventHandlers
 			var saga = new MakeOfferSaga(sagaData, this.mediator);
 			await saga.TransitionAsync(notification);
 
-			await this.sagaDataRepository.SaveChangesAsync(cancellationToken);
-			// TODO
+			var isSagaUpdatedSuccessfully = await this.sagaDataRepository.SaveChangesAsync(cancellationToken);
+			if (isSagaUpdatedSuccessfully == false)
+				throw new NotPersistentException(nameof(saga));
 		}
 	}
 }
