@@ -4,6 +4,7 @@ using Marketplace.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 
 namespace Marketplace.Domain.Browsing.ProductAggregate
 {
@@ -60,7 +61,7 @@ namespace Marketplace.Domain.Browsing.ProductAggregate
 
 		public int ViewCount { get; private set; }
 
-		public ICollection<Image> Images { get; private set; }
+		public ICollection<Image> Images { get; private set; } = new List<Image>();
 
 		public void RegisterView()
 		{

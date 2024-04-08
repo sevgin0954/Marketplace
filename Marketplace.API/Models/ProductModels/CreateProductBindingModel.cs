@@ -31,7 +31,6 @@ namespace Marketplace.API.Models.ProductModels
 		public string UserId { get; set; }
 
 		[Required]
-
 		[NotNullOrEmptyStringInCollection]
 		public IEnumerable<string> ImageIds { get; set; }
 
