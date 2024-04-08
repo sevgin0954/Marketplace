@@ -1,4 +1,5 @@
 ﻿using Marketplace.Domain.Browsing.ProductAggregate;
+using Marketplace.Persistence.Sales;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -36,13 +37,9 @@ namespace Marketplace.Persistence.Browsing
 				product
 					.Property(p => p.SellerId)
 					.IsRequired();
-			});
-			modelBuilder.Entity<ProductEntity>().HasData(new ProductEntity
-			{
-				Description = "Description",
-				Id = "1",
-				Name = "Name",
-				SellerId = "1"
+
+				product
+					.OwnsMany(p => p.Images);
 			});
 		}
 	}

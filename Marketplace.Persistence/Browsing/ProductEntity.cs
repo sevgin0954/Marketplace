@@ -15,5 +15,7 @@ namespace Marketplace.Persistence.Browsing
 		public string SellerId { get; set; }
 
 		public int ViewCount { get; set; }
+
+		public IEnumerable<ImageEntity> Images { get; set; }
 	}
 }

@@ -3,16 +3,18 @@ using Marketplace.Persistence.Browsing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Marketplace.Persistence.Migrations.BrowsingDbContext
+namespace Marketplace.Persistence.Migrations.BrowsingDb
 {
-    [DbContext(typeof(Marketplace.Persistence.Browsing.BrowsingDbContext))]
-    partial class BrowsingDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(BrowsingDbContext))]
+    [Migration("20240408181553_InitialMigration")]
+    partial class InitialMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,16 +50,30 @@ namespace Marketplace.Persistence.Migrations.BrowsingDbContext
                     b.HasKey("Id");
 
                     b.ToTable("Products");
+                });
 
-                    b.HasData(
-                        new
+            modelBuilder.Entity("Marketplace.Persistence.Browsing.ProductEntity", b =>
+                {
+                    b.OwnsMany("Marketplace.Persistence.Browsing.ImageEntity", "Images", b1 =>
                         {
-                            Id = "1",
-                            Description = "Description",
-                            Name = "Name",
-                            SellerId = "1",
-                            ViewCount = 0
+                            b1.Property<string>("ProductEntityId")
+                                .HasColumnType("nvarchar(450)");
+
+                            b1.Property<string>("Id")
+                                .HasColumnType("nvarchar(450)");
+
+                            b1.Property<int>("DisplayPriority")
+                                .HasColumnType("int");
+
+                            b1.HasKey("ProductEntityId", "Id");
+
+                            b1.ToTable("ImageEntity");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ProductEntityId");
                         });
+
+                    b.Navigation("Images");
                 });
 #pragma warning restore 612, 618
         }

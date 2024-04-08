@@ -8,18 +8,22 @@ using Marketplace.Domain.Common.Exceptions;
 using Marketplace.Domain.IdentityAndAccess.UserAggregate;
 using Marketplace.Domain.Sales.SellerAggregate;
 using Marketplace.Domain.Common.Services;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Marketplace.Domain.SharedKernel.Commands
 {
     public class CreateProductCommand : IRequest<Result>
     {
-        public string Name { get; set; } = string.Empty;
+        public string Name { get; set; }
 
-        public string Description { get; set; } = string.Empty;
+        public string Description { get; set; }
 
-        public Price Price { get; set; } = new Price(0, Currency.BGN);
+        public Price Price { get; set; }
 
-        public Id SellerId { get; set; } = new Id();
+        public Id SellerId { get; set; }
+
+        public IEnumerable<string> ImageIds { get; set; }
 
         internal class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, Result>
         {
@@ -54,7 +58,9 @@ namespace Marketplace.Domain.SharedKernel.Commands
 				}
 
 				var productId = new Id();
-				var browsingProduct = new BrowsingContext.Product(productId, request.Name, request.Description, request.SellerId);
+                var images = request.ImageIds.Select((id, n) => new Image(id, n));
+				var browsingProduct = new BrowsingContext.Product(productId, request.Name, request.Description, request.SellerId, images);
+
 				var salesProduct = new SalesContext.Product(productId, request.Price, request.SellerId);
 
 				var isPersistingSuccessfull = await this.productService

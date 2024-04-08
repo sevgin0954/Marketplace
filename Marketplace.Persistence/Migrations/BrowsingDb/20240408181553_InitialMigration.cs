@@ -2,9 +2,9 @@
 
 #nullable disable
 
-namespace Marketplace.Persistence.Migrations.BrowsingDbContext
+namespace Marketplace.Persistence.Migrations.BrowsingDb
 {
-    public partial class InitialCreate : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -23,14 +23,31 @@ namespace Marketplace.Persistence.Migrations.BrowsingDbContext
                     table.PrimaryKey("PK_Products", x => x.Id);
                 });
 
-            migrationBuilder.InsertData(
-                table: "Products",
-                columns: new[] { "Id", "Description", "Name", "SellerId" },
-                values: new object[] { "1", "Description", "Name", "1" });
+            migrationBuilder.CreateTable(
+                name: "ImageEntity",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProductEntityId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    DisplayPriority = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ImageEntity", x => new { x.ProductEntityId, x.Id });
+                    table.ForeignKey(
+                        name: "FK_ImageEntity_Products_ProductEntityId",
+                        column: x => x.ProductEntityId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "ImageEntity");
+
             migrationBuilder.DropTable(
                 name: "Products");
         }

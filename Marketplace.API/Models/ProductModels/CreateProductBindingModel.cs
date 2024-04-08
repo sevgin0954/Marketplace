@@ -30,6 +30,11 @@ namespace Marketplace.API.Models.ProductModels
 		[MapFromJwtToken("id")]
 		public string UserId { get; set; }
 
+		[Required]
+
+		[NotNullOrEmptyStringInCollection]
+		public IEnumerable<string> ImageIds { get; set; }
+
 		public void CreateMappings(IProfileExpression configuration)
 		{
 			configuration.CreateMap<CreateProductBindingModel, CreateProductCommand>()

@@ -5,7 +5,6 @@ using Marketplace.Persistence.IdentityAndAccess;
 using Marketplace.Persistence.Sales;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System.Runtime;
 
 namespace Marketplace.Query.ProductQueries
 {
