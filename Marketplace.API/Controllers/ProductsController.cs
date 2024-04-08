@@ -21,16 +21,20 @@ namespace Marketplace.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ProductDto>> GetProducts(ProductSearchBindingModel searchModel)
+        public async Task<ActionResult<ProductDto>> GetProducts([FromQuery]ProductSearchBindingModel searchModel)
         {
+			IList<ProductDto> products;
+
             var isAnyKeywordExist = searchModel.KeyWords.Count > 0;
             if (isAnyKeywordExist)
             {
-                var filteredProducts = await this.mediator.Send(new GetFilteredProductQuery(searchModel.KeyWords!));
-                return this.Ok(filteredProducts);
+				products = await this.mediator.Send(new GetFilteredProductQuery(searchModel.KeyWords!));
             }
+            else
+            {
+				products = await this.mediator.Send(new GetAllProductsQuery());
+			}
 
-            var products = await this.mediator.Send(new GetAllProductsQuery());
             return this.Ok(products);
         }
 

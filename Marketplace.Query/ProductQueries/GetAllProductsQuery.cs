@@ -5,6 +5,7 @@ using Marketplace.Persistence.IdentityAndAccess;
 using Marketplace.Persistence.Sales;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime;
 
 namespace Marketplace.Query.ProductQueries
 {
@@ -30,40 +31,38 @@ namespace Marketplace.Query.ProductQueries
 
 			public async Task<IList<ProductDto>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
 			{
-				var salesProductDtos = await this.salesDdContext.Products
+				var browsingProductDtos = await this.browsingDbContext.Products
 					.ProjectTo<ProductDto>(this.mapper.ConfigurationProvider)
 					.ToListAsync(cancellationToken);
 
-				var browsingProductDtos = await this.browsingDbContext.Products
+				var salesProductDtos = await this.salesDdContext.Products
 					.ProjectTo<ProductDto>(this.mapper.ConfigurationProvider)
 					.ToListAsync(cancellationToken);
 
 				var identityAndAcessProductDtos = await this.identityAndAccessDbContext.Users
 					.Where(u => browsingProductDtos.Select(p => p.SellerId).Contains(u.Id))
 					.ProjectTo<ProductDto>(this.mapper.ConfigurationProvider)
-					.ToListAsync();
+					.ToListAsync(cancellationToken);
 
-				var combinedProductDtoes = browsingProductDtos
-					.Join(
-						salesProductDtos,
-						browsingProduct => browsingProduct.Id,
-						salesProduct => salesProduct.Id,
-						(browsingProduct, salesProduct) => new { id = browsingProduct.Id, browsingProduct, salesProduct }
-					).Join(
-						identityAndAcessProductDtos,
-						browsingAndSalesProduct => browsingAndSalesProduct.id,
-						identityAndAccessProduct => identityAndAccessProduct.Id,
-						(browsingAndSalesProduct, identityAndAccessProduct) => new ProductDto()
-						{
-							Id = browsingAndSalesProduct.id,
-							Name = browsingAndSalesProduct.browsingProduct.Name,
-							Price = browsingAndSalesProduct.salesProduct.Price,
-							SellerId = browsingAndSalesProduct.salesProduct.SellerId,
-							SellerName = identityAndAccessProduct.SellerName,
-							Status = browsingAndSalesProduct.salesProduct.Status
-						}).ToList();
+				var combinedProducts = salesProductDtos
+					.Join(browsingProductDtos, sp => sp.Id, bp => bp.Id, (salesProduct, browsingProduct) => new ProductDto()
+					{
+						Id = browsingProduct.Id,
+						Name = browsingProduct.Name,
+						Price = salesProduct.Price,
+						SellerId = salesProduct.SellerId,
+						Status = salesProduct.Status
+					}).Join(identityAndAcessProductDtos, p => p.SellerId, i => i.Id, (product, identityProduct) => new ProductDto()
+					{
+						Id = product.Id,
+						Name = product.Name,
+						Price = product.Price,
+						SellerId = identityProduct.Id,
+						Status = product.Status,
+						SellerName = identityProduct.SellerName
+					}).ToList();
 
-				return combinedProductDtoes;
+				return combinedProducts;
             }
         }
     }

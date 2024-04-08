@@ -53,12 +53,9 @@ namespace Marketplace.Domain.SharedKernel.Commands
                         throw new NotPersistentException(nameof(seller));
 				}
 
-				var browsingProductId = new Id();
-				var browsingProduct = new BrowsingContext.Product(
-                    browsingProductId, request.Name, request.Description, request.SellerId);
-
-                var salesContextId = new Id();
-				var salesProduct = new SalesContext.Product(salesContextId, request.Price, request.SellerId);
+				var productId = new Id();
+				var browsingProduct = new BrowsingContext.Product(productId, request.Name, request.Description, request.SellerId);
+				var salesProduct = new SalesContext.Product(productId, request.Price, request.SellerId);
 
 				var isPersistingSuccessfull = await this.productService
                     .CreateAsync(browsingProduct, salesProduct, cancellationToken);

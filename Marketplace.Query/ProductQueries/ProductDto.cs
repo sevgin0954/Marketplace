@@ -26,9 +26,11 @@ namespace Marketplace.Query.ProductQueries
 
         public void CreateMappings(IProfileExpression configuration)
         {
-			configuration.CreateMap<PersistenceSales.ProductEntity, ProductDto>()
-				.ForPath(dest => dest.Price.Value, opt => opt.MapFrom(src => src.Price))
-				.ForPath(dest => dest.Price.Currency, opt => opt.MapFrom(src => src.PriceCurrency));
+            configuration.CreateMap<PersistenceSales.ProductEntity, ProductDto>()
+                .ForMember(
+                    dest => dest.Price, 
+                    opt => opt.MapFrom(src => new PriceDto() { Currency = src.PriceCurrency, Value = src.Price })
+                );
 
             configuration.CreateMap<PersistenceIdeneityAndAccess.UserEntity, ProductDto>()
                 .ForMember(dest => dest.SellerName, opt => opt.MapFrom(src => src.UserName));

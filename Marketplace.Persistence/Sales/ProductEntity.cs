@@ -1,9 +1,9 @@
-﻿using AutoMapperRegistrar.Interfaces;
-using SalesBoundedContext = Marketplace.Domain.Sales;
+﻿using AutoMapper;
+using AutoMapperRegistrar.Interfaces;
 
 namespace Marketplace.Persistence.Sales
 {
-	public class ProductEntity : IMappableBothDirections<SalesBoundedContext.ProductAggregate.Product>
+	public class ProductEntity : IMappableBothDirections<Domain.Sales.ProductAggregate.Product>, ICustomMappings
 	{
 		public string Id { get; set; }
 
@@ -14,5 +14,12 @@ namespace Marketplace.Persistence.Sales
 		public string PriceCurrency { get; set; }
 
 		public string Status { get; set; }
+
+		public void CreateMappings(IProfileExpression configuration)
+		{
+			configuration.CreateMap<Domain.Sales.ProductAggregate.Product, ProductEntity>()
+				.ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price.Value))
+				.ForMember(dest => dest.PriceCurrency, opt => opt.MapFrom(src => src.Price.Currency));
+		}
 	}
 }

@@ -15,7 +15,7 @@ namespace Marketplace.API.Attributes.Validation
                 return ValidationResult.Success;
 
             var isCorrectType = value is IEnumerable && value.GetType().GenericTypeArguments[0] == ElementsType;
-            if (isCorrectType)
+            if (isCorrectType == false)
                 throw new InvalidOperationException($"Can't use {value.GetType().Name} on this attribute!");
 
             var elements = value as IEnumerable;

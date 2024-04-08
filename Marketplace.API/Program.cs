@@ -27,6 +27,8 @@ namespace Marketplace.API
 {
     public class Program
 	{
+		const string CORS_POLICY_NAME = "CustomPolicy";
+
 		public static void Main(string[] args)
 		{
 			var builder = WebApplication.CreateBuilder(args);
@@ -93,6 +95,17 @@ namespace Marketplace.API
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
 			builder.Services.AddMediatR(typeof(Program), typeof(GetAllProductsQuery), typeof(CreateProductCommand));
+			builder.Services.AddCors(options =>
+			{
+				options.AddPolicy(CORS_POLICY_NAME, builder =>
+				{
+					builder
+					// TODO: Allow only one origin
+						.AllowAnyOrigin()
+						.AllowAnyHeader()
+						.AllowAnyMethod();
+				});
+			});
 
 			builder.Services
 				.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -154,6 +167,7 @@ namespace Marketplace.API
 
 			app.UseAuthentication();
 			app.UseRouting();
+			app.UseCors(CORS_POLICY_NAME);
 			app.UseAuthorization();
 
 			app.UseEndpoints(endpoints =>
