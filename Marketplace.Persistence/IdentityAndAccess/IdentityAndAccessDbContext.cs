@@ -20,14 +20,17 @@ namespace Marketplace.Persistence.IdentityAndAccess
 			{
 				user.HasKey(u => u.Id);
 
+				user.HasIndex(u => u.Email)
+					.IsUnique();
 				user.Property(u => u.Email)
-					.HasMaxLength(Email.MaxLength)
-					.IsRequired();
+					.HasMaxLength(Email.MaxLength);
 
 				user.Property(u => u.IsAdmin)
 					.HasDefaultValue(false)
 					.IsRequired();
 
+				user.HasIndex(u => u.UserName)
+					.IsUnique();
 				user.Property(u => u.UserName)
 					.HasMaxLength(UserConstants.MAX_USERNAME_LENGTH)
 					.IsRequired();

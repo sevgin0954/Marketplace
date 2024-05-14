@@ -25,7 +25,7 @@ namespace Marketplace.API.Services
 				this.config[ConfigurationConstants.AuthIssuerKey],
 				null,
 				new List<Claim>() { new Claim("id", userId) },
-				expires: DateTime.Now.AddMinutes(120),
+				expires: DateTime.Now.AddMinutes(GlobalConstants.JwtTokenLifetimeMinutes),
 				signingCredentials: credentials
 			);
 
