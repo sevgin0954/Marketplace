@@ -4,15 +4,15 @@ namespace Marketplace.Domain.Browsing
 {
     public record Category : ValueObject
     {
-        public Category(string name, string subcateryName)
+        public Category(string name, Category parentCategory = null)
         {
             Name = name;
-            SubcateryName = subcateryName;
+			ParentCategory = parentCategory;
         }
 
 
         public string Name { get; }
 
-        public string SubcateryName { get; }
+        public Category ParentCategory { get; }
     }
 }

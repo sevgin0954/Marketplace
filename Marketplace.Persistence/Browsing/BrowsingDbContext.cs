@@ -14,8 +14,29 @@ namespace Marketplace.Persistence.Browsing
 
 		public DbSet<ProductEntity> Products => Set<ProductEntity>();
 
+		public DbSet<UserEntity> Users => Set<UserEntity>();
+
+		public DbSet<CategoryEntity> Categories => Set<CategoryEntity>();
+
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
+			modelBuilder.Entity<UserEntity>(user =>
+			{
+				user.HasKey(u => u.Id);
+
+				user.OwnsMany(u => u.Searches);
+
+				user.OwnsMany(u => u.Views);
+			});
+
+			modelBuilder.Entity<CategoryEntity>(category =>
+			{
+				category.HasKey(c => c.Name);
+
+				category.Property(c => c.ParentCategoryId)
+					.IsRequired(false);
+			});
+			
 			modelBuilder.Entity<ProductEntity>(product =>
 			{
 				product.HasKey(p => p.Id);
