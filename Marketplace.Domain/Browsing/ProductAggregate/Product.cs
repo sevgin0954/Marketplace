@@ -4,22 +4,22 @@ using Marketplace.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http.Headers;
 
 namespace Marketplace.Domain.Browsing.ProductAggregate
 {
-	public class Product : AggregateRoot
+    public class Product : AggregateRoot
 	{
 		private string name = null!;
 		private string description = null!;
 
-		public Product(Id id, string name, string description, Id sellerId, IEnumerable<Image> images)
+		public Product(Id id, string name, string description, Id sellerId, IEnumerable<Image> images, Category category)
 			: base(id)
 		{
 			this.Name = name;
 			this.Description = description;
 			this.ViewCount = 1;
 			this.SellerId = sellerId;
+			this.Category = category;
 			this.AddImages(images);
 		}
 
@@ -57,7 +57,9 @@ namespace Marketplace.Domain.Browsing.ProductAggregate
 			}
 		}
 
-		public Id SellerId { get; } 
+		public Id SellerId { get; }
+
+		public Category Category { get; }
 
 		public int ViewCount { get; private set; }
 

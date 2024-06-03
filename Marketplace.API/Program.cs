@@ -164,6 +164,7 @@ namespace Marketplace.API
 			}
 
 			app.UseHttpsRedirection();
+			app.UseSetIdentity();
 
 			app.UseAuthentication();
 			app.UseRouting();

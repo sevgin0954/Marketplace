@@ -16,7 +16,7 @@ namespace Marketplace.API.Services
 			this.config = config;
 		}
 
-		public string GenerateNewToken(string userId)
+		public string GenerateNewToken(List<Claim> claims)
 		{
 			var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.config[ConfigurationConstants.AuthClientSecretKey]));
 			var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -24,8 +24,8 @@ namespace Marketplace.API.Services
 			var token = new JwtSecurityToken(
 				this.config[ConfigurationConstants.AuthIssuerKey],
 				null,
-				new List<Claim>() { new Claim("id", userId) },
-				expires: DateTime.Now.AddMinutes(GlobalConstants.JwtTokenLifetimeMinutes),
+				claims,
+				expires: DateTime.Now.AddMinutes(GlobalConstants.JWT_TOKEN_LIFETIME_MINUTES),
 				signingCredentials: credentials
 			);
 

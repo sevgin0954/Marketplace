@@ -30,10 +30,10 @@ namespace Marketplace.Query.ProductQueries
 			{
 				var keywordsLowerCase = request.Keywords.Select(k => k.ToLower());
 
+				// TODO: Add keywords to product aggregate
 				var products = await this.dbContext.Products
 					.Where(p => 
-						keywordsLowerCase.Any(k => p.Name.ToLower().Contains(k)) ||
-						keywordsLowerCase.Any(k => p.Description.ToLower().Contains(k))
+						keywordsLowerCase.Any(k => p.Name.ToLower().Contains(k))
 					).ProjectTo<ProductDto>(this.mapper.ConfigurationProvider)
 					.ToListAsync();
 

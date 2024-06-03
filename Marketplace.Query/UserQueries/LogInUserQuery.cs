@@ -1,13 +1,11 @@
-﻿using Marketplace.Domain.Common;
-using Marketplace.Domain.IdentityAndAccess.UserAggregate;
-using Marketplace.Domain.SharedKernel;
+﻿using AutoMapper;
 using Marketplace.Persistence.IdentityAndAccess;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Marketplace.Query.UserQueries
 {
-	public class LogInUserQuery : IRequest<string>
+	public class LogInUserQuery : IRequest<UserDto>
 	{
 		public LogInUserQuery(string email, string password)
 		{
@@ -19,23 +17,28 @@ namespace Marketplace.Query.UserQueries
 
 		public string PasswordHash { get; set; }
 
-		internal class LogInUserQueyryHandler : IRequestHandler<LogInUserQuery, string>
+		internal class LogInUserQueyryHandler : IRequestHandler<LogInUserQuery, UserDto>
 		{
 			private readonly IdentityAndAccessDbContext dbContext;
+			private readonly IMapper mapper;
 
-			public LogInUserQueyryHandler(IdentityAndAccessDbContext dbContext)
+			public LogInUserQueyryHandler(IdentityAndAccessDbContext dbContext, IMapper mapper)
 			{
 				this.dbContext = dbContext;
+				this.mapper = mapper;
 			}
 
-			public async Task<string> Handle(LogInUserQuery request, CancellationToken cancellationToken)
+			public async Task<UserDto> Handle(LogInUserQuery request, CancellationToken cancellationToken)
 			{
 				var user = await this.dbContext
 					.Users
 					.Where(u => u.Email == request.Email && u.PasswordHash == request.PasswordHash)
 					.FirstOrDefaultAsync(cancellationToken);
 
-				return user?.Id;
+				if (user == null)
+					return null;
+				else
+					return this.mapper.Map<UserDto>(user);
 			}
 		}
 	}

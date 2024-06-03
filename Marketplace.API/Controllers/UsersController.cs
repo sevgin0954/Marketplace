@@ -5,6 +5,8 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Marketplace.API.Services;
 using Marketplace.Query.UserQueries;
+using System.Security.Claims;
+using Marketplace.Domain.IdentityAndAccess.UserAggregate;
 
 namespace Marketplace.API.Controllers
 {
@@ -57,11 +59,16 @@ namespace Marketplace.API.Controllers
 			var loginRequest = this.mapper.Map<LogInUserQuery>(model);
 			loginRequest.PasswordHash = hashedPassword;
 
-			var userId = await this.mediator.Send(loginRequest);
-			if (userId != null)
+			var user = await this.mediator.Send(loginRequest);
+			if (user != null)
 			{
-				var token = this.jwtTokenService.GenerateNewToken(userId);
-				return this.Ok(token);
+				var claims = new List<Claim>() { new Claim(GlobalConstants.JWT_TOKEN_ID_CLAIM_NAME, user.Id) };
+				var token = this.jwtTokenService.GenerateNewToken(claims);
+
+				var loginModel = this.mapper.Map<LoginViewModel>(user);
+				loginModel.Token = token;
+
+				return this.Ok(loginModel);
 			}
 			else
 			{

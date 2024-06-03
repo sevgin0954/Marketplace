@@ -40,7 +40,7 @@ namespace Marketplace.API.Filters
 				var authorizationHeaderValue = context.HttpContext.Request.Headers.Authorization;
 				var jwtToken = authorizationHeaderValue
 					.ToString()
-					.Remove(0, GlobalConstants.AuthenticationMethod.Length)
+					.Remove(0, GlobalConstants.AUTHENTICATION_METHOD.Length)
 					.Trim();
 
 				var tokenClaim = await jwtTokenService.GetClaimFromTokenAsync(jwtToken, jwtAttribute.JwtTokenClaimName);
