@@ -1,4 +1,5 @@
-﻿using Marketplace.Domain.Common;
+﻿using Marketplace.Domain.Browsing.CategoryAggregate;
+using Marketplace.Domain.Common;
 using Marketplace.Domain.SharedKernel;
 using Marketplace.Shared;
 using System;

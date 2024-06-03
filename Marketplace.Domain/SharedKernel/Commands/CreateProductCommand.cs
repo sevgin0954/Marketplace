@@ -10,6 +10,7 @@ using Marketplace.Domain.Sales.SellerAggregate;
 using Marketplace.Domain.Common.Services;
 using System.Collections.Generic;
 using System.Linq;
+using Marketplace.Domain.Browsing.CategoryAggregate;
 
 namespace Marketplace.Domain.SharedKernel.Commands
 {
@@ -24,6 +25,8 @@ namespace Marketplace.Domain.SharedKernel.Commands
         public Id SellerId { get; set; }
 
         public IEnumerable<string> ImageIds { get; set; }
+
+        public Category Category { get; set; }
 
         internal class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, Result>
         {
@@ -59,7 +62,12 @@ namespace Marketplace.Domain.SharedKernel.Commands
 
 				var productId = new Id();
                 var images = request.ImageIds.Select((id, n) => new Image(id, n));
-				var browsingProduct = new BrowsingContext.Product(productId, request.Name, request.Description, request.SellerId, images);
+				var browsingProduct = new BrowsingContext.Product(
+                    productId, request.Name, 
+                    request.Description, 
+                    request.SellerId, 
+                    images,
+                    request.Category);
 
 				var salesProduct = new SalesContext.Product(productId, request.Price, request.SellerId);
 

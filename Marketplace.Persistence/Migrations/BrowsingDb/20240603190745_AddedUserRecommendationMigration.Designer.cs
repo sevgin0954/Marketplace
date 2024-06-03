@@ -4,6 +4,7 @@ using Marketplace.Persistence.Browsing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Marketplace.Persistence.Migrations.BrowsingDb
 {
     [DbContext(typeof(BrowsingDbContext))]
-    partial class BrowsingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240603190745_AddedUserRecommendationMigration")]
+    partial class AddedUserRecommendationMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

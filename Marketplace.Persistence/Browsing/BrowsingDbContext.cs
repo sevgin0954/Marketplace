@@ -1,5 +1,4 @@
 ﻿using Marketplace.Domain.Browsing.ProductAggregate;
-using Marketplace.Persistence.Sales;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,7 +25,8 @@ namespace Marketplace.Persistence.Browsing
 
 				user.OwnsMany(u => u.Searches);
 
-				user.OwnsMany(u => u.Views);
+				user.OwnsMany(u => u.Views)
+					.OwnsOne(v => v.Search);
 			});
 
 			modelBuilder.Entity<CategoryEntity>(category =>

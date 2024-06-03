@@ -1,11 +1,12 @@
-﻿using Marketplace.Domain.Common;
+﻿using Marketplace.Domain.Browsing.CategoryAggregate;
+using Marketplace.Domain.Common;
 using Marketplace.Domain.SharedKernel;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Marketplace.Domain.Browsing.UserAggregate
 {
-	public class User : AggregateRoot
+    public class User : AggregateRoot
 	{
 		private const int MAX_RECOMMENDED_ELEMENTS_COUNT = 5;
 

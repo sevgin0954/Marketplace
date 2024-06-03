@@ -1,4 +1,5 @@
 ﻿using System;
+using Marketplace.Domain.Browsing.CategoryAggregate;
 
 namespace Marketplace.Domain.Browsing
 {

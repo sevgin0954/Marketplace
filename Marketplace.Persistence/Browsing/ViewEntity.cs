@@ -1,10 +1,9 @@
-﻿using Marketplace.Domain.Browsing;
-
-namespace Marketplace.Persistence.Browsing
+﻿namespace Marketplace.Persistence.Browsing
 {
 	public class ViewEntity
 	{
 		public CategoryEntity Category { get; set; }
+		public string CategoryId { get; set; }
 
 		public SearchEntity Search { get; set; }
 
