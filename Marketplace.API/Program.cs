@@ -65,17 +65,18 @@ namespace Marketplace.API
 
 			var mappingRegisterar = new MappingRegisterar(configExpression);
 
+			// TODO: If I first register two direction mappings and then custom mapping then custom mappings stops working
 			if (mappingsFrom != null && mappingsFrom.Count > 0)
 				mappingRegisterar.RegisterMappings(mappingsFrom);
 
 			if (mappingsTo != null && mappingsTo.Count > 0)
 				mappingRegisterar.RegisterMappings(mappingsTo);
 
-			if (customMappings != null && customMappings.Count > 0) 
-				mappingRegisterar.RegisterCustomMappings(customMappings);
-
 			if (twoDirectionMappings != null && twoDirectionMappings.Count > 0)
 				mappingRegisterar.RegisterMappings(twoDirectionMappings);
+
+			if (customMappings != null && customMappings.Count > 0)
+				mappingRegisterar.RegisterCustomMappings(customMappings);
 
 			// TODO: AutomapperProfile doesnt work!
 			configExpression.AddProfile<AutoMapperProfile>();
@@ -143,6 +144,7 @@ namespace Marketplace.API
 
 			builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 			builder.Services.AddScoped<IProductService, ProductService>();
+			builder.Services.AddScoped<IKeywordsService, KeywordsService>();
 
 			var serviceRegistrar = new ServiceRegistrar(builder.Services);
 
@@ -164,7 +166,6 @@ namespace Marketplace.API
 			}
 
 			app.UseHttpsRedirection();
-			app.UseSetIdentity();
 
 			app.UseAuthentication();
 			app.UseRouting();

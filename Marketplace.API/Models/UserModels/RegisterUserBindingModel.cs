@@ -1,6 +1,6 @@
 ﻿using AutoMapperRegistrar.Interfaces;
 using Marketplace.Domain.IdentityAndAccess.UserAggregate;
-using Marketplace.Domain.IdentityAndAccess.UserAggregate.Commands;
+using Marketplace.Domain.SharedKernel.Commands;
 using System.ComponentModel.DataAnnotations;
 
 namespace Marketplace.API.Models.UserModels

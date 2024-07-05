@@ -1,5 +1,4 @@
 ﻿using Marketplace.Domain.Common;
-using Marketplace.Domain.SharedKernel;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -22,6 +21,8 @@ namespace Marketplace.Persistence
             this.connectionString = connectionString;
             this.isLoggingEnabled = isLoggingEnabled;
             this.mediator = mediator;
+
+            this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         protected sealed override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

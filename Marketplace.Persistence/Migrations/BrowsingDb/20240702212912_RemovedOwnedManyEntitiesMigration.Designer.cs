@@ -12,22 +12,26 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Marketplace.Persistence.Migrations.BrowsingDb
 {
     [DbContext(typeof(BrowsingDbContext))]
-    [Migration("20240603190745_AddedUserRecommendationMigration")]
-    partial class AddedUserRecommendationMigration
+    [Migration("20240702212912_RemovedOwnedManyEntitiesMigration")]
+    partial class RemovedOwnedManyEntitiesMigration
     {
+        /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.9")
+                .HasAnnotation("ProductVersion", "8.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("Marketplace.Persistence.Browsing.CategoryEntity", b =>
                 {
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ParentCategoryId")
                         .HasColumnType("nvarchar(max)");
@@ -66,6 +70,30 @@ namespace Marketplace.Persistence.Migrations.BrowsingDb
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("Marketplace.Persistence.Browsing.SearchEntity", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Keywords")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SearchCount")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SearchDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("SearchEntity");
+                });
+
             modelBuilder.Entity("Marketplace.Persistence.Browsing.UserEntity", b =>
                 {
                     b.Property<string>("Id")
@@ -74,6 +102,37 @@ namespace Marketplace.Persistence.Migrations.BrowsingDb
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Marketplace.Persistence.Browsing.ViewEntity", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CategoryId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("SearchId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("ViewCount")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ViewDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("SearchId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ViewEntity");
                 });
 
             modelBuilder.Entity("Marketplace.Persistence.Browsing.ProductEntity", b =>
@@ -100,78 +159,38 @@ namespace Marketplace.Persistence.Migrations.BrowsingDb
                     b.Navigation("Images");
                 });
 
+            modelBuilder.Entity("Marketplace.Persistence.Browsing.SearchEntity", b =>
+                {
+                    b.HasOne("Marketplace.Persistence.Browsing.UserEntity", "User")
+                        .WithMany("Searches")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Marketplace.Persistence.Browsing.ViewEntity", b =>
+                {
+                    b.HasOne("Marketplace.Persistence.Browsing.CategoryEntity", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId");
+
+                    b.HasOne("Marketplace.Persistence.Browsing.SearchEntity", "Search")
+                        .WithMany()
+                        .HasForeignKey("SearchId");
+
+                    b.HasOne("Marketplace.Persistence.Browsing.UserEntity", "User")
+                        .WithMany("Views")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Search");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Marketplace.Persistence.Browsing.UserEntity", b =>
                 {
-                    b.OwnsMany("Marketplace.Persistence.Browsing.SearchEntity", "Searches", b1 =>
-                        {
-                            b1.Property<string>("UserEntityId")
-                                .HasColumnType("nvarchar(450)");
-
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int");
-
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"), 1L, 1);
-
-                            b1.HasKey("UserEntityId", "Id");
-
-                            b1.ToTable("Users_Searches");
-
-                            b1.WithOwner()
-                                .HasForeignKey("UserEntityId");
-                        });
-
-                    b.OwnsMany("Marketplace.Persistence.Browsing.ViewEntity", "Views", b1 =>
-                        {
-                            b1.Property<string>("UserEntityId")
-                                .HasColumnType("nvarchar(450)");
-
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int");
-
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"), 1L, 1);
-
-                            b1.Property<string>("CategoryId")
-                                .HasColumnType("nvarchar(450)");
-
-                            b1.Property<DateTime>("ViewDate")
-                                .HasColumnType("datetime2");
-
-                            b1.HasKey("UserEntityId", "Id");
-
-                            b1.HasIndex("CategoryId");
-
-                            b1.ToTable("ViewEntity");
-
-                            b1.HasOne("Marketplace.Persistence.Browsing.CategoryEntity", "Category")
-                                .WithMany()
-                                .HasForeignKey("CategoryId");
-
-                            b1.WithOwner()
-                                .HasForeignKey("UserEntityId");
-
-                            b1.OwnsOne("Marketplace.Persistence.Browsing.SearchEntity", "Search", b2 =>
-                                {
-                                    b2.Property<string>("ViewEntityUserEntityId")
-                                        .HasColumnType("nvarchar(450)");
-
-                                    b2.Property<int>("ViewEntityId")
-                                        .HasColumnType("int");
-
-                                    b2.HasKey("ViewEntityUserEntityId", "ViewEntityId");
-
-                                    b2.ToTable("ViewEntity");
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("ViewEntityUserEntityId", "ViewEntityId");
-                                });
-
-                            b1.Navigation("Category");
-
-                            b1.Navigation("Search");
-                        });
-
                     b.Navigation("Searches");
 
                     b.Navigation("Views");

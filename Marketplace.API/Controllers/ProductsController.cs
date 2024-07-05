@@ -34,7 +34,8 @@ namespace Marketplace.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ProductDto>> Search([FromQuery] ProductSearchBindingModel searchModel)
+        [Route("search")]
+        public async Task<ActionResult<ProductDto>> Search([FromQuery]ProductSearchBindingModel searchModel)
         {
 			var isAnyKeywordExist = searchModel.KeyWords.Count > 0;
 			if (isAnyKeywordExist == false)
@@ -49,7 +50,7 @@ namespace Marketplace.API.Controllers
 
             var userIdClaim = this.HttpContext.User.Claims.Where(c => c.Type == GlobalConstants.JWT_TOKEN_ID_CLAIM_NAME).FirstOrDefault();
             if (userIdClaim != null)
-				this.mediator.Send(new SearchProductsCommand(userIdClaim.Value, matchingKeywords));
+				await this.mediator.Send(new SearchProductsCommand(userIdClaim.Value, matchingKeywords));
 
 			return this.Ok(products);
 		}

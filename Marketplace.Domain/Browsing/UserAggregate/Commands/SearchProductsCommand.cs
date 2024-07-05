@@ -36,8 +36,10 @@ namespace Marketplace.Domain.Browsing.UserAggregate.Commands
 				if (user == null)
 					throw new NotFoundException(nameof(user));
 
-				var search = new Search(request.MatchingKeywords[0], request.MatchingKeywords[1], request.MatchingKeywords[2]);
+				var search = new Search(request.MatchingKeywords);
 				user.SearchProduct(search);
+
+				this.userRepository.Update(user);
 
 				var isUserPersistedSuccessfully = await this.userRepository.SaveChangesAsync(cancellationToken);
 				if (isUserPersistedSuccessfully == false)

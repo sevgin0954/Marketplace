@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
 using Marketplace.API.Models.UserModels;
-using Marketplace.Domain.IdentityAndAccess.UserAggregate.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Marketplace.API.Services;
 using Marketplace.Query.UserQueries;
 using System.Security.Claims;
-using Marketplace.Domain.IdentityAndAccess.UserAggregate;
+using Marketplace.Domain.SharedKernel.Commands;
 
 namespace Marketplace.API.Controllers
 {

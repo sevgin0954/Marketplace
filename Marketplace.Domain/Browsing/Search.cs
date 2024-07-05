@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Marketplace.Domain.Browsing
 {
 	public class Search
 	{
-		public Search(string keyword1, string keyword2 = null, string keyword3 = null)
+		private const int KEYWORDS_MAX_COUNT = 3;
+
+		public Search(ICollection<string> keywords)
 		{
-			this.Keywords.Add(keyword1);
-			if (keyword2 != null) 
-				this.Keywords.Add(keyword2);
-			if (keyword3 != null)
-				this.Keywords.Add(keyword3);
+			if (keywords.Count > KEYWORDS_MAX_COUNT)
+				keywords = keywords.Take(KEYWORDS_MAX_COUNT).ToList();
+
+			this.Keywords = new SortedSet<string>(keywords);
 
 			this.SearchDate = DateTime.Now;
 		}

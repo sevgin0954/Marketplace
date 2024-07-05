@@ -23,10 +23,22 @@ namespace Marketplace.Persistence.Browsing
 			{
 				user.HasKey(u => u.Id);
 
-				user.OwnsMany(u => u.Searches);
+				user.HasMany(u => u.Searches)
+					.WithOne(u => u.User)
+					.HasForeignKey(u => u.UserId);
 
-				user.OwnsMany(u => u.Views)
-					.OwnsOne(v => v.Search);
+				user.HasMany(u => u.Views)
+					.WithOne(u => u.User)
+					.HasForeignKey(u => u.UserId);
+			});
+
+			modelBuilder.Entity<SearchEntity>(search =>
+			{
+				search.Property(s => s.Keywords)
+					.HasConversion(
+						v => string.Join(' ', v),
+						v => v.Split(' ', StringSplitOptions.RemoveEmptyEntries)
+					);
 			});
 
 			modelBuilder.Entity<CategoryEntity>(category =>

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Marketplace.Domain.Common;
 using Marketplace.Domain.SharedKernel;
+using Marketplace.Persistence.Browsing;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -34,7 +35,7 @@ namespace Marketplace.Persistence
 			this.entities.Remove(persistentEntity);
 		}
 
-		public async Task<ICollection<TDomainAggregate>> FindAsync(Expression<Func<TDomainAggregate, bool>> predicate)
+		public async Task<ICollection<TDomainAggregate>> WhereAsync(Expression<Func<TDomainAggregate, bool>> predicate)
 		{
 			throw new NotImplementedException();
 		}
@@ -49,8 +50,8 @@ namespace Marketplace.Persistence
 
 		public async Task<TDomainAggregate> GetByIdAsync(TEntityId id)
 		{
-			var peristenceEntity = await this.entities.FindAsync(id.Value);
-			var domainEntity = this.mapper.Map<TDomainAggregate>(peristenceEntity);
+			var persistenceEntity = await this.entities.FindAsync(id.Value);
+			var domainEntity = this.mapper.Map<TDomainAggregate>(persistenceEntity);
 
 			return domainEntity;
 		}
@@ -58,6 +59,12 @@ namespace Marketplace.Persistence
 		public async Task<bool> CheckIfExistAsync(TEntityId id)
 		{
 			return await this.entities.FindAsync(id.Value) != null;
+		}
+
+		public void Update(TDomainAggregate aggregate)
+		{
+			var persistentEntity = this.mapper.Map<TPersistenceEntity>(aggregate);
+			this.entities.Update(persistentEntity);
 		}
 
 		public async Task<bool> SaveChangesAsync(CancellationToken cancellationToken = default)

@@ -23,7 +23,7 @@ namespace Marketplace.Domain.Sales.MakeOfferSagaNS.EventHandlers
 		public async Task Handle(BuyerWasBannedEvent notification, CancellationToken cancellationToken)
 		{
 			var sagaDatas = await this.sagaDataRepository
-				.FindAsync(sd => sd.SellerId.Value == notification.SellerId && sd.BuyerId.Value == notification.BuyerId);
+				.WhereAsync(sd => sd.SellerId.Value == notification.SellerId && sd.BuyerId.Value == notification.BuyerId);
 
 			foreach (var currentSagaData in sagaDatas)
 			{

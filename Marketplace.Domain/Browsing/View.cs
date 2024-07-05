@@ -12,11 +12,11 @@ namespace Marketplace.Domain.Browsing
             ViewDate = DateTime.Now;
         }
 
-        internal Category Category { get; }
+        public Category Category { get; }
 
-        internal Search Search { get; }
+        public Search Search { get; }
 
-        internal DateTime ViewDate { get; }
+        public DateTime ViewDate { get; }
 
 		public override bool Equals(object other)
 		{

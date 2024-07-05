@@ -21,7 +21,9 @@ namespace Marketplace.Domain.Common
 
         Task<bool> CheckIfExistAsync(TId id);
 
-        Task<ICollection<T>> FindAsync(Expression<Func<T, bool>> predicate);
+        Task<ICollection<T>> WhereAsync(Expression<Func<T, bool>> predicate);
+
+        void Update(T aggregate);
 
         Task<bool> SaveChangesAsync(CancellationToken cancellationToken = default);
 	}

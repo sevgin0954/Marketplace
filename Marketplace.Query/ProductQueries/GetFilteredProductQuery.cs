@@ -31,13 +31,23 @@ namespace Marketplace.Query.ProductQueries
 				var keywordsLowerCase = request.Keywords.Select(k => k.ToLower());
 
 				// TODO: Add keywords to product aggregate
-				var products = await this.dbContext.Products
-					.Where(p => 
-						keywordsLowerCase.Any(k => p.Name.ToLower().Contains(k))
-					).ProjectTo<ProductDto>(this.mapper.ConfigurationProvider)
+				var products = await this.FilterProductsByKeywords(this.dbContext.Products, keywordsLowerCase)
+					.ProjectTo<ProductDto>(this.mapper.ConfigurationProvider)
 					.ToListAsync();
 
 				return products;
+			}
+
+			private IQueryable<ProductEntity> FilterProductsByKeywords(DbSet<ProductEntity> products, IEnumerable<string> keywords)
+			{
+				var filteredProducts = products.AsQueryable();
+
+				foreach (var  keyword in keywords)
+				{
+					filteredProducts = filteredProducts.Where(p => p.Name.Contains(keyword));
+				}
+
+				return filteredProducts;
 			}
 		}
 	}
