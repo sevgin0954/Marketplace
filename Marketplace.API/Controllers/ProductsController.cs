@@ -28,9 +28,17 @@ namespace Marketplace.API.Controllers
 		}
 
         [HttpGet]
-        public async Task<ActionResult<ProductDto>> GetProducts()
+        public async Task<ActionResult<ProductDto>> RecommendedProducts()
         {
-            throw new NotImplementedException();
+            var userId = this.GetCurrentUserId();
+            if (userId == null)
+            {
+
+            }
+            else
+            {
+
+            }
         }
 
         [HttpGet]
@@ -48,9 +56,9 @@ namespace Marketplace.API.Controllers
             var productNames = products.Select(p => p.Name);
             var matchingKeywords = this.keywordsService.GetMatchingKeywordsOrderedByImportance(productNames, searchModel.KeyWords);
 
-            var userIdClaim = this.HttpContext.User.Claims.Where(c => c.Type == GlobalConstants.JWT_TOKEN_ID_CLAIM_NAME).FirstOrDefault();
-            if (userIdClaim != null)
-				await this.mediator.Send(new SearchProductsCommand(userIdClaim.Value, matchingKeywords));
+            var userId = this.GetCurrentUserId();
+            if (userId != null)
+				await this.mediator.Send(new SearchProductsCommand(userId, matchingKeywords));
 
 			return this.Ok(products);
 		}

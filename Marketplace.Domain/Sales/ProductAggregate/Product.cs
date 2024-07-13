@@ -23,6 +23,8 @@ namespace Marketplace.Domain.Sales.ProductAggregate
 
 		public Id SellerId { get; }
 
+		public DateTime PromotedEndDate { get; private set; } = DateTime.MinValue;
+
 		public Price Price
 		{
 			get { return this.price; }
@@ -100,6 +102,27 @@ namespace Marketplace.Domain.Sales.ProductAggregate
 		{
 			if (initiatorId != this.SellerId)
 				throw new InvalidOperationException(ErrorConstants.INITIATOR_SHOULD_BE_THE_SELLER);
+		}
+
+		public void Promote(PromotionDuration promotionDuration)
+		{
+			if (this.CheckIsPromoted())
+				throw new InvalidOperationException("Product is already promoted!");
+
+			this.PromotedEndDate = DateTime.UtcNow + TimeSpan.FromDays((int)promotionDuration);
+		}
+
+		public void ExtentPromotion(PromotionDuration promotionDuration)
+		{
+			if (this.CheckIsPromoted() == false)
+				throw new InvalidOperationException("Product is not promoted!");
+
+			this.PromotedEndDate += TimeSpan.FromDays((int)promotionDuration);
+		}
+
+		public bool CheckIsPromoted()
+		{
+			return this.PromotedEndDate >= DateTime.UtcNow;
 		}
 	}
 }

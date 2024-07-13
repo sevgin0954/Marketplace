@@ -16,6 +16,8 @@ namespace Marketplace.Persistence.Browsing
 
 		public int ViewCount { get; set; }
 
+		public DateTime PromotedEndDate { get; set; }
+
 		public IEnumerable<ImageEntity> Images { get; set; }
 	}
 }

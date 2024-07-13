@@ -73,6 +73,9 @@ namespace Marketplace.Persistence.Browsing
 
 				product
 					.OwnsMany(p => p.Images);
+
+				product
+					.Property(p => p.PromotedEndDate);
 			});
 		}
 	}
