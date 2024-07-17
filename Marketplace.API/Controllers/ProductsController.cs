@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Marketplace.API.Models.ProductModels;
 using Marketplace.API.Services;
+using Marketplace.Domain.Browsing.ProductAggregate.Commands;
 using Marketplace.Domain.Browsing.UserAggregate.Commands;
 using Marketplace.Domain.SharedKernel.Commands;
 using Marketplace.Query.ProductQueries;
@@ -71,6 +72,12 @@ namespace Marketplace.API.Controllers
             if (product == null)
             {
                 return NotFound();
+            }
+
+            var isProductViewedSuccessfully = await this.mediator.Send(new RecordProductViewCommand(id));
+            if (isProductViewedSuccessfully == false)
+            {
+                // TODO
             }
 
             return Ok(product);
